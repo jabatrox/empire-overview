@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name				Empire Overview
+// @name				Empire Overview v3
 // @author				germano / 1.17 to 1.18 by Ariston / 1.183 germano/ 1.20 thomasccm / 1.21 lokurapc / 1.22 panos78
 // @description			Script improvement for Ikariam 8.x.x, Overview tables for resources, buildings and military inspired by Ikariam Empire Board
 
@@ -155,7 +155,7 @@
 			return elementStyle;
 		},
 		escapeRegExp: function(str) { return str.replace(/[\[\]\/\{\}\(\)\-\?\$\*\+\.\\\^\|]/g, "\\$&"); },
-		format: function(inputString,replacements)
+		format: function(inputString, replacements)
 		{
 			var str = inputString;
 			var keys = Object.keys(replacements);
@@ -712,7 +712,7 @@
 						this.getUnits.addUnit(id, count);
 						changes.push(id);
 					}.bind(this));
-					if(changes.length) events(Constant.Events.MILITARY_UPDATED).pub(this.city().getId, changes);
+					if(changes.length)events(Constant.Events.MILITARY_UPDATED).pub(this.city().getId, changes);
 				}
 			}
 			this._startTrainingTimer();
@@ -751,7 +751,7 @@
 			return changed;
 		},
 		get totals() { return this._units; },
-		addUnit: function(unitId,count) { return this.setUnit(unitId, this.getUnit(unitId)+count); },
+		addUnit: function(unitId, count) { return this.setUnit(unitId, this.getUnit(unitId) + count); },
 		removeUnit: function(unitId,count) { return this.setUnit(unitId,Math.max(0,this.getUnit[unitId]-count)); }
 	};
 	function Building(city, pos) {
@@ -2329,7 +2329,7 @@
 					var total = 0;
 					var table = '<table><thead><th colspan="3"><div align="center"><img src="{0}" style="height: 18px; float: left"></td><b>'+LD.training+'</b></div></th></thead><tbody>{1}</tbody><tfoot><tr class="big"><td><b>Σ +</b></td><td>{2}</td><td class="left">« '+LD.total_+'</td></tr></tfoot></table>';
 					var rows = '';
-					$.each(city.military.getTrainingForUnit(unit),function(index,data)
+					$.each(city.military.getTrainingForUnit(unit),function(index, data)
 					{
 						rows += Utils.format('<tr class="data"><td><img src="skin/resources/icon_time.png" style="height: 12px;float:left"><b>+</b></td><td>{0}</td><td>« {1}</td></tr>',[data.count,Utils.FormatTimeLengthToStr(data.time-$.now(),3)]);
 						total += data.count;
@@ -2793,7 +2793,7 @@
 					});
 					var r = '';
 					var finalSums = {income: 0, total: 0, day: 0, week: 0};
-					$.each(totals, function(resourceName,data)
+					$.each(totals, function(resourceName, data)
 					{
 						var day = data.total + data.income * 24;
 						var week = data.total + data.income * 168;
@@ -3110,7 +3110,7 @@
 				render.cityRows.building = {};
 				$('table.buildings').html(render.getBuildingTable());
 				render.updateCitiesBuildingData();
-				$.each(database.cities, function(cityId,city)
+				$.each(database.cities, function(cityId, city)
 				{
 					render.setCityName(city);
 					render.setActionPoints(city);
@@ -3128,7 +3128,7 @@
 				render.cityRows.building = {};
 				$('table.buildings').html(render.getBuildingTable());
 				render.updateCitiesBuildingData();
-				$.each(database.cities, function(cityId,city)
+				$.each(database.cities, function(cityId, city)
 				{
 					render.setCityName(city);
 					render.setActionPoints(city);
@@ -3146,7 +3146,7 @@
 				render.cityRows.building = {};
 				$('table.buildings').html(render.getBuildingTable());
 				render.updateCitiesBuildingData();
-				$.each(database.cities, function(cityId,city)
+				$.each(database.cities, function(cityId, city)
 				{
 					render.setCityName(city);
 					render.setActionPoints(city);
@@ -3266,10 +3266,9 @@
 				{
 					var keycodes = '';
 					var codeTyp = ikariam.Nationality();
-					switch(codeTyp)
-					{
-						case 'en':
-						case 'gr':
+                    switch(codeTyp){
+                        case 'en':
+                        case 'gr':
                         case 'ro':
                         case 'ru':
                         case 'pl':
@@ -3283,12 +3282,12 @@
                         case 'lt':
                         case 'nl':
                         case 'tw':
-						case 'us':
-							keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 173, 61]; //EN - =
-							if(isChrome)
-								keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 189, 187]; //US - =
-							break;
-						case 'de':
+                        case 'us':
+                            keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 173, 61]; //EN - =
+                            if (isChrome)
+                                keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 189, 187]; //US - =
+                            break;
+                        case 'de':
                             keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 63, 192]; //DE ß ´
                             if (isChrome)
                                 keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 219, 221]; //DE ß ´
@@ -3334,7 +3333,7 @@
                         case 'sk':
                             keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 61, 0]; //SK = ´
                             break;
-					}
+                    }
 					index = keycodes.indexOf(event.which);
 					if(index !== -1)
 					{
@@ -3517,7 +3516,7 @@
 			function getBody()
 			{
 				var body = '';
-				$.each(database.cities,function(cityId,city)
+				$.each(database.cities,function(cityId, city)
 				{
 					var rowCells = '';
 					var a = [LD[city.isCapital ? 'capital' : 'colony'],city._name];
@@ -3714,11 +3713,11 @@
 			}
 			for(var armyId in Constant.UnitData)
 			{
-				this.updateCityArmyCell(cityId,armyId,$node);
+				this.updateCityArmyCell(cityId, armyId, $node);
 			}
 			if(rowLevel)
 			{
-				Utils.setClone($row,$node);
+				Utils.setClone($row, $node);
 				this.setArmyTotals();
 				delete this.cityRows.army[cityId];
 			}
@@ -3735,11 +3734,11 @@
 			Utils.setClone($node, $clone);
 			this.cityRows.army = {};
 		},
-		updateChangesForCityMilitary: function(cityId,changes)
+		updateChangesForCityMilitary: function(cityId, changes)
 		{
 			if(changes && changes.length < 5)
 			{
-				$.each(changes, function(index,unit)
+				$.each(changes, function(index, unit)
 				{
 					this.updateCityArmyCell(cityId,unit);
 				}.bind(render));
@@ -3769,7 +3768,7 @@
 				}.bind(render));
 			}
 		},
-		updateResourcesForCity: function(cityId,changes)
+		updateResourcesForCity: function(cityId, changes)
 		{
 			var city = database.getCityFromId(cityId);
 			if(city)
@@ -3777,7 +3776,7 @@
 				events.scheduleAction(this.updateResourceCounters.bind(render,true));
 			}
 		},
-		updateCityDataForCity: function(cityId,changes)
+		updateCityDataForCity: function(cityId, changes)
 		{
 			var city = database.getCityFromId(cityId);
 			if(city)
@@ -3831,7 +3830,7 @@
 				}
 			}
 		},
-		setArmyTotals: function($node,unitId)
+		setArmyTotals: function($node, unitId)
 		{
 			var data = database.getArmyTotals;
 			if(!$node)
@@ -3852,7 +3851,7 @@
 			}
 			else
 			{
-				$.each(Constant.UnitData, function(unit,info)
+				$.each(Constant.UnitData, function(unit, info)
 				{
 					$node.find('td.total.' + unit).eq(0).text(Utils.FormatNumToStr(data[unit].total,false) ||'' ).next().children('span').eq(0).text(Utils.FormatNumToStr(data[unit].incoming,true) ||'' ).next().text(Utils.FormatNumToStr(data[unit].training,true) || '' );
 					if(data[unit].training || data[unit].incoming || data[unit].total || database.settings.fullArmyTable.value)
@@ -3866,7 +3865,7 @@
 				});
 			}
 		},
-		updateChangesForCityBuilding: function(cityID,changes)
+		updateChangesForCityBuilding: function(cityID, changes)
 		{
 			try
 			{
@@ -3960,7 +3959,7 @@
 			}
 			return true;
 		},
-		updateCityBuildingRow: function(city,$node)
+		updateCityBuildingRow: function(city, $node)
 		{
 			try
 			{
@@ -3972,7 +3971,7 @@
 					$node = Utils.getClone($row);
 				}
 				var success = true;
-				$.each(city.getBuildings, function(position,building)
+				$.each(city.getBuildings, function(position, building)
 				{
 					success = this.updateCityBuildingPosition(city, position, $node);
 					return success;
@@ -4006,7 +4005,7 @@
 				var i = 0;
 				var $node = $('#BuildTab').find('table.buildings');
 				var $clone = $redraw || Utils.getClone($node);
-				$.each(database.cities, function(cityId,city)
+				$.each(database.cities, function(cityId, city)
 				{
 					success = empire.time(this.updateCityBuildingRow.bind(this, city, $clone.find('#building_' + city.getId)), 'updateBuildingRow');
 					return success;
@@ -4798,7 +4797,7 @@
 			return this.cityRows[type][city.getId];
 		},
 		getAllRowsForCity: function(city) { return this.getResourceRow(city).add(this.getBuildingsRow(city)).add(this.getArmyRow(city)); },
-		setCityName: function(city,rows)
+		setCityName: function(city, rows)
 		{
 			if(!rows)
 			{
@@ -4813,7 +4812,7 @@
 				$(elem).eq(2).attr('data-tooltip',LD.free_ground).text(' '+(city.getAvailableBuildings||'')+' ');
 			});
 		},
-		setActionPoints: function(city,rows)
+		setActionPoints: function(city, rows)
 		{
 			if(!rows)
 			{
@@ -4822,14 +4821,14 @@
 			rows.find('span.ap').text(city.getAvailableActions + '/' + city.maxAP);
 			rows.find('span.garrisonlimit img').attr('src', 'skin/advisors/military/bang_soldier.png');
 		},
-		setFinanceData: function(city,row)
+		setFinanceData: function(city, row)
 		{
 			if(!row)
 			{
 				row = this.getResourceRow(city);
 			}
 		},
-		setPopulationData: function(city,row)
+		setPopulationData: function(city, row)
 		{
 			if(!row)
 			{
@@ -4880,14 +4879,14 @@
 			var fillperc = (100 * researchData.scientists) / city.maxSci;
 			row.find('td.research div.progressbarSci').find('div.ui-progressbar-value').width(fillperc + "%").removeClass('normal, full').addClass(researchData.scientists === 0 ? '' : city.maxSci - researchData.scientists > 0 ? 'normal' : 'full' );
 		},
-		setMovementDataForCity: function(city,row)
+		setMovementDataForCity: function(city, row)
 		{
 			if(!row)
 			{
 				row = this.getResourceRow(city);
 			}
 			var totalIncoming = {wood:0,wine:0,marble:0,glass:0,sulfur:0,gold:0};
-			$.each(city.getIncomingResources, function(index,element)
+			$.each(city.getIncomingResources, function(index, element)
 			{
 				for(var resourceName in Constant.Resources)
 				{
@@ -4924,7 +4923,7 @@
 				var	growthTot = 0;
 				var	citygrowth = 0;
 				var popDiffTot = 0;
-				$.each(database.cities, function(cityId,city)
+				$.each(database.cities, function(cityId, city)
 				{
 					var $row = Utils.getClone(this.getResourceRow(city));
 					if(force)
@@ -5103,7 +5102,7 @@
 				}
 				return {};
 			},
-			loadUrl: function(ajax,mainView,params)
+			loadUrl: function(ajax, mainView, params)
 			{
 				mainView = mainView || ikariam.mainView;
 				var paramList = {cityId: ikariam.CurrentCityId};
@@ -5128,7 +5127,7 @@
 				}
 				else
 				{
-					gotoURL(ikariam.url()+'?'+$.map(paramList,function(value,key){return key+'='+value;}).join('&'));
+					gotoURL(ikariam.url()+'?'+$.map(paramList,function(value, key){return key+'='+value;}).join('&'));
 				}
 				function gotoURL(url)
 				{
@@ -5259,7 +5258,7 @@
 				var localStrings = unsafeWindow.LocalizationStrings;
 				if(!localStrings)
 				{
-					$('script').each(function(index,script)
+					$('script').each(function(index, script)
 					{
 						var match = /LocalizationStrings = JSON.parse\('(.*)'\);/.exec(script.innerHTML);
 						if(match)
@@ -14345,7 +14344,7 @@
 		{
 			return false;
 		}
-		(function init(model,data,local,ajax)
+		(function init(model, data, local, ajax)
 		{
 			var mod, dat, loc, aj;
 			mod = !!unsafeWindow.ikariam && !!unsafeWindow.ikariam.model;
@@ -14401,7 +14400,7 @@
 			else
 			{
 				var initialAjax = [];
-				$('script').each(function(index,script)
+				$('script').each(function(index, script)
 				{
 					var match = /ikariam.getClass\(ajax.Responder, (.*)\);/.exec(script.innerHTML);
 					if(match)
