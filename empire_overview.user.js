@@ -1,6 +1,6 @@
 // ==UserScript==
-// @name				Empire Overview v3
-// @author				germano / 1.17 to 1.18 by Ariston / 1.183 germano/ 1.20 thomasccm / 1.21 lokurapc / 1.22 panos78
+// @name				Empire Overview
+// @author				germano / 1.17 to 1.18 by Ariston / 1.183 germano/ 1.20 thomasccm / 1.21 lokurapc / 1.22 anonymousUser
 // @description			Script improvement for Ikariam 8.x.x, Overview tables for resources, buildings and military inspired by Ikariam Empire Board
 
 // @icon				https://gf1.geo.gfsrv.net/cdn6f/271aa7178ede3b0ab441cdcf84094d.png
@@ -155,7 +155,7 @@
 			return elementStyle;
 		},
 		escapeRegExp: function(str) { return str.replace(/[\[\]\/\{\}\(\)\-\?\$\*\+\.\\\^\|]/g, "\\$&"); },
-		format: function(inputString, replacements)
+		format: function(inputString,replacements)
 		{
 			var str = inputString;
 			var keys = Object.keys(replacements);
@@ -366,7 +366,7 @@
 			}
 			Utils.waitElem.c = c;
 		},
-		trackEvents(s)
+		trackEvents: function(s)
 		{
 			var events = [];
 			$(s).on('AlertActive AlertClose CheckboxStateChange DOMActivate DOMAttrModified DOMAttributeNameChanged DOMAutoComplete DOMCharacterDataModified DOMContentLoaded DOMElementNameChanged DOMFocusIn DOMFocusOut DOMFrameContentLoaded DOMLinkAdded DOMLinkRemoved DOMMenuItemActive DOMMenuItemInactive DOMMetaAdded DOMMetaRemoved DOMModalDialogClosed DOMMouseScroll DOMNodeInserted DOMNodeInsertedIntoDocument DOMNodeRemoved DOMNodeRemovedFromDocument DOMPopupBlocked DOMSubtreeModified DOMTitleChanged DOMWillOpenModalDialog DOMWindowClose DOMWindowCreated Firefox MSManipulationStateChanged MSPointerHover MozAfterPaint MozAudioAvailable MozBeforeResize MozEdgeUIGesture MozEnteredDomFullscreen MozGamepadButtonDown MozGamepadButtonUp MozMagnifyGesture MozMagnifyGestureStart MozMagnifyGestureUpdate MozMousePixelScroll MozOrientation MozPressTapGesture MozRotateGesture MozRotateGestureStart MozRotateGestureUpdate MozScrolledAreaChanged MozSwipeGesture MozTapGesture MozTouchDown MozTouchMove MozTouchUp OS RadioStateChange SSTabClosing SSTabRestored SSTabRestoring SSWindowClosing SSWindowStateBusy SSWindowStateReady SVGAbort SVGError SVGLoad SVGResize SVGScroll SVGUnload SVGZoom TabClose TabHide TabOpen TabPinned TabSelect TabShow TabUnpinned ValueChange abort afterprint afterscriptexecute alerting animationcancel animationend animationiteration animationstart appinstalled audioend audioprocess audiostart beforeinstallprompt beforeprint beforescriptexecute beforeunload beginEvent blocked blur boundary broadcast busy callschanged canplay canplaythrough cardstatechange cfstatechange change chargingchange chargingtimechange click close command commandupdate complete compositionend compositionstart compositionupdate connected connecting connectionInfoUpdate contextmenu copy cut datachange dataerror dblclick delivered devicechange devicemotion deviceorientation dialing disabled dischargingtimechange disconnected disconnecting drag dragdrop dragend dragenter dragexit draggesture dragleave dragover dragstart drop durationchange emptied enabled end endEvent ended error focus focusin focusout fullscreen fullscreenchange fullscreenerror gamepadconnected gamepaddisconnected gotpointercapture hashchange held holding icccardlockerror iccinfochange incoming input invalid keydown keypress keyup languagechange levelchange load loadeddata loadedmetadata loadend loadstart localized lostpointercapture mark message messageerror mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup mousewheel mozbrowseractivitydone mozbrowserasyncscroll mozbrowseraudioplaybackchange mozbrowsercaretstatechanged mozbrowserclose mozbrowsercontextmenu mozbrowserdocumentfirstpaint mozbrowsererror mozbrowserfindchange mozbrowserfirstpaint mozbrowsericonchange mozbrowserloadend mozbrowserloadstart mozbrowserlocationchange mozbrowsermanifestchange mozbrowsermetachange mozbrowseropensearch mozbrowseropentab mozbrowseropenwindow mozbrowserresize mozbrowserscroll mozbrowserscrollareachanged mozbrowserscrollviewchange mozbrowsersecuritychange mozbrowserselectionstatechanged mozbrowsershowmodalprompt mozbrowsertitlechange mozbrowserusernameandpasswordrequired mozbrowservisibilitychange moztimechange msContentZoom nomatch notificationclick offline onconnected online open orientationchange overflow pagehide pageshow paste pause play playing pointercancel pointerdown pointerenter pointerleave pointerlockchange pointerlockerror pointermove pointerout pointerover pointerup popstate popuphidden popuphiding popupshowing popupshown progress push pushsubscriptionchange ratechange readystatechange received repeatEvent reset resize resourcetimingbufferfull result resume resuming scroll seeked seeking select selectionchange selectstart sent show sizemodechange slotchange smartcard-insert smartcard-remove soundend soundstart specific speechend speechstart stalled start statechange statuschange stkcommand stksessionend storage submit success suspend textInput timeout timeupdate touchcancel touchend touchenter touchleave touchmove touchstart transitionend underflow unload upgradeneeded uploadprogress userproximity ussdreceived valueInput versionchange visibilitychange voicechange voiceschanged volumechange waiting wheel',function(e)
@@ -382,7 +382,7 @@
 				}
 			});
 		},
-		mul(p)
+		mul: function(p)
 		{
 			p = parseInt(p);
 			switch(true)
@@ -401,12 +401,12 @@
 					return 0;
 			}
 		},
-		isXYtoID(x,y)
+		isXYtoID: function(x,y)
 		{
 			if(isNaN(x) || isNaN(y)) { return false; }
 			return Utils.islandids[parseInt(x)][parseInt(y)];
 		},
-		isIDtoXY(a)
+		isIDtoXY: function(a)
 		{
 			if(isNaN(a)) { return false; }
 			var xy = {X:null,Y:null};
@@ -712,7 +712,7 @@
 						this.getUnits.addUnit(id, count);
 						changes.push(id);
 					}.bind(this));
-					if(changes.length)events(Constant.Events.MILITARY_UPDATED).pub(this.city().getId, changes);
+					if(changes.length) { events(Constant.Events.MILITARY_UPDATED).pub(this.city().getId, changes); }
 				}
 			}
 			this._startTrainingTimer();
@@ -751,7 +751,7 @@
 			return changed;
 		},
 		get totals() { return this._units; },
-		addUnit: function(unitId, count) { return this.setUnit(unitId, this.getUnit(unitId) + count); },
+		addUnit: function(unitId,count) { return this.setUnit(unitId, this.getUnit(unitId)+count); },
 		removeUnit: function(unitId,count) { return this.setUnit(unitId,Math.max(0,this.getUnit[unitId]-count)); }
 	};
 	function Building(city, pos) {
@@ -1206,7 +1206,8 @@
 			return null;
 		},
 		getBuildingFromPosition: function(position) { return this._buildings[position]; },
-		getWonder: function() {
+		getWonder: function()
+		{
 			var i = 7;
 			ikariam.wonder();
 			return i;
@@ -1298,7 +1299,11 @@
 		},
 		updateCoordinates: function(x,y)
 		{
-			this._coordinates = {x:x,y:y};
+			this._coordinates = {x:parseInt(x),y:parseInt(y)};
+			if(database.getGlobalData.getOwnIslandData.indexOf(parseInt(x)+':'+parseInt(y))==-1)
+			{
+				database.getGlobalData.getOwnIslandData.push(parseInt(x)+':'+parseInt(y));
+			}
 			return false;
 		},
 		get getIslandID() { return this._islandID; },
@@ -1345,7 +1350,7 @@
 		},
 		get getIncomingResources() { return database.getGlobalData.getResourceMovementsToCity(this.getId); },
 		get getIncomingMilitary() { return database.getGlobalData.getMilitaryMovementsToCity(this.getId); },
-		get _getMaxPopulation() { return (this.getBuildingFromName(Constant.Buildings.TOWN_HALL) ? Math.floor((10*Math.pow(this.getBuildingFromName(Constant.Buildings.TOWN_HALL).getLevel, 1.5)))*2+40 : 0)+(database.getGlobalData.getResearchTopicLevel(Constant.Research.Science.WELL_CONSTRUCTION) && (this.getBuildingFromName(Constant.Buildings.PALACE) || database.getCityCount == 1) ? 50 : 0)+(database.getGlobalData.getResearchTopicLevel(Constant.Research.Economy.UTOPIA) && this.getBuildingFromName(Constant.Buildings.PALACE) ? 200 : 0)+(database.getGlobalData.getResearchTopicLevel(Constant.Research.Economy.HOLIDAY) ? 50 : 0)+(database.getGlobalData.getResearchTopicLevel(Constant.Research.Economy.ECONOMIC_FUTURE)*20); },
+		get _getMaxPopulation() { return (this.getBuildingFromName(Constant.Buildings.TOWN_HALL) ? Math.floor((10*Math.pow(this.getBuildingFromName(Constant.Buildings.TOWN_HALL).getLevel,1.5)))*2+40 : 0)+(database.getGlobalData.getResearchTopicLevel(Constant.Research.Science.WELL_CONSTRUCTION) && (this.getBuildingFromName(Constant.Buildings.PALACE) || database.getCityCount == 1) ? 50 : 0)+(database.getGlobalData.getResearchTopicLevel(Constant.Research.Economy.UTOPIA) && this.getBuildingFromName(Constant.Buildings.PALACE) ? 200 : 0)+(database.getGlobalData.getResearchTopicLevel(Constant.Research.Economy.HOLIDAY) ? 50 : 0)+(database.getGlobalData.getResearchTopicLevel(Constant.Research.Economy.ECONOMIC_FUTURE)*20); },
 		get military() { return this._military; },
 		get getAvailableBuildings()
 		{
@@ -1565,7 +1570,7 @@
 		this.finance = {armyCost:0,armySupply:0,fleetCost:0,fleetSupply:0,currentGold:0,sigmaExpenses:0,sigmaIncome:0,lastUpdated:0};
 		this.localStrings = {};
 		this.premium = {};
-		this.islands = {};
+		this.islands = {own:[],allies:{}};
 		this.premiumFeatures = {};
 		this.tempdb = {'pot':{},'cts':{},'movs':{}};
 	}
@@ -1721,6 +1726,22 @@
 		get getMuseumTreaties() { return this._museumTreaties; },
 		get getTheaterData() { return this._theater; },
 		get getIslandData() { return this.islands; },
+		get getOwnIslandData() { return this.getIslandData.own; },
+		get getAllyIslandData() { return this.getIslandData.allies; },
+		updateOwnIslandData: function()
+		{
+			var coords = [];
+			$.each(database.cities,function(k,c)
+			{
+				if(coords.indexOf(parseInt(c.getCoordinates[0])+':'+parseInt(c.getCoordinates[1]))==-1)
+				{
+					coords.push(parseInt(c.getCoordinates[0])+':'+parseInt(c.getCoordinates[1]));
+				}
+			});
+			var changed = this.getOwnIslandData != coords;
+			this.getOwnIslandData = coords;
+			return changed;
+		},
 		get getPremiumFeatures() { return this.premiumFeatures; },
 		getLocalisedString: function(string)
 		{
@@ -1743,7 +1764,7 @@
 		get name() { return this._name; },
 		get type() { return Constant.SettingData[this._name].type; },
 		get description() { return this._name+'_description'; },
-		get value() { return (this._value!==null?this._value:Constant.SettingData[this._name].default); },
+		get value() { return (this._value!==null ? this._value : Constant.SettingData[this._name].default); },
 		get categories() { return Constant.SettingData[this._name].categories; },
 		get choices() { return Constant.SettingData[this._name].choices || false; },
 		get selection() { return Constant.SettingData[this._name].selection || false; },
@@ -2329,7 +2350,7 @@
 					var total = 0;
 					var table = '<table><thead><th colspan="3"><div align="center"><img src="{0}" style="height: 18px; float: left"></td><b>'+LD.training+'</b></div></th></thead><tbody>{1}</tbody><tfoot><tr class="big"><td><b>Σ +</b></td><td>{2}</td><td class="left">« '+LD.total_+'</td></tr></tfoot></table>';
 					var rows = '';
-					$.each(city.military.getTrainingForUnit(unit),function(index, data)
+					$.each(city.military.getTrainingForUnit(unit),function(index,data)
 					{
 						rows += Utils.format('<tr class="data"><td><img src="skin/resources/icon_time.png" style="height: 12px;float:left"><b>+</b></td><td>{0}</td><td>« {1}</td></tr>',[data.count,Utils.FormatTimeLengthToStr(data.time-$.now(),3)]);
 						total += data.count;
@@ -2793,7 +2814,7 @@
 					});
 					var r = '';
 					var finalSums = {income: 0, total: 0, day: 0, week: 0};
-					$.each(totals, function(resourceName, data)
+					$.each(totals, function(resourceName,data)
 					{
 						var day = data.total + data.income * 24;
 						var week = data.total + data.income * 168;
@@ -2910,7 +2931,7 @@
 						this.startResourceCounters();
 						break;
 					case 1:
-						events.scheduleActionAtInterval(this.updateCitiesBuildingData.bind(render),2000);
+						//events.scheduleActionAtInterval(this.updateCitiesBuildingData.bind(render),2000);
 						this.updateCitiesBuildingData();
 						break;
 					case 2:
@@ -2934,6 +2955,8 @@
 		cityChange: function(cid)
 		{
 			if(typeof(bUpinterv)!='undefined') { clearInterval(bUpinterv); }
+			if(typeof(warehouseinterv)!='undefined') { clearInterval(warehouseinterv); }
+			this.updateCitiesBuildingData();
 			var LD = Constant.LanguageData[database.settings.languageChange.value];
 			var city = database.getCityFromId(cid);
 			var pir = 0;
@@ -2977,7 +3000,501 @@
 				});
 			},100);
 		},
-		getWorldmapTable: function() { },
+		getWorldmapTable: function()
+		{
+			if(database.settings.worldmapshow.value)
+			{
+				var LD = Constant.LanguageData[database.settings.languageChange.value];
+				var servers = {'s1':'Alpha','s2':'Beta','s3':'Gamma','s4':'Delta','s5':'Epsilon','s6':'Zeta','s7':'Eta','s8':'Theta','s9':'Iota','s10':'Kappa','s11':'Lambda','s12':'My','s13':'Ny','s14':'Xi','s15':'Omikron','s16':'Pi','s17':'Rho','s18':'Sigma','s19':'Tau','s20':'Ypsilon','s21':'Phi','s22':'Chi','s23':'Psi','s24':'Omega','s25':'Apollon','s26':'Asklepios','s27':'Boreas','s28':'Charon','s29':'Demeter','s30':'Dionysos','s31':'Eirene','s32':'Eunomia','s33':'Gaia','s34':'Hades','s35':'Hephaestus','s36':'Kaikias','s37':'Lips','s38':'Notos','s39':'Pan','s40':'Poseidon','s41':'Skiron','s42':'Thanatos','s43':'Zelos','s44':'Zephyros','s45':'Herakles','s46':'Hydra','s47':'Orpheus','s48':'Acheron','s49':'Kerberos','s50':'Hera','s51':'Aeneas','s52':'Adonis','s99':'Speed1','s201':'War1','s203':'War2','s666':'Test1','s667':'Test2','s670':'Test3','s671':'Test4','s672':'Test5','s901':'Test6'};
+				var ownislands = [];
+				$.each(unsafeWindow.ikariam.model.relatedCityData,function(k,c)
+				{
+					if($(c)[0]!=undefined && ownislands.indexOf($(c)[0].coords.trim())==-1)
+					{
+						ownislands.push($(c)[0].coords.trim())
+					}
+				});
+				var map = '<table id="empire_WorldmapTab" style="border:none">';
+				$.getJSON('?action=WorldMap&function=getJSONArea&x_min=1&x_max=100&y_min=1&y_max=100',function(data)
+				{
+					var islands = data.data;
+					var cnt = 0;
+					var xs = [],ys = [];
+					$.each(islands,function(x,obj)
+					{
+						xs.push(x);
+						$.each(obj,function(y,arr)
+						{
+							ys.push(y);
+						});
+					});
+					var dims = [Math.min.apply(null,xs),Math.max.apply(null,xs),Math.min.apply(null,ys),Math.max.apply(null,ys)];
+					var t = '<table id="empire_worldmap" style="width:834px !important;height:500.4px !important;position:absolute"><tbody>';
+					var resources = [0,0,0,0];
+					var wonders = [0,0,0,0,0,0,0,0];
+					var pirates = [0,0,0];
+					var helios = [0,0,0];
+					var iblocks = [], citiesnums = [];
+					var iblkcrds = {};
+					var cities = 0, citiescrds = {};
+					var islandnames = {};
+					var XtoYcoords = {};
+					var YtoXcoords = {};
+					for(y=dims[2]-2;y<=dims[3]+2;y++)
+					{
+						t += '<tr>';
+						for(x=dims[0]-2;x<=dims[1]+2;x++)
+						{
+							if(y==dims[2]-2 || y==dims[3]+2)
+							{
+								t += '<td class="border'+(x==dims[0]||(x>0&&x%10==0)?1:0)+'"'+(x>=dims[0]&&x<=dims[1]?' title="Î£Ï…Î½Ï„ÎµÏ„Î±Î³Î¼Î­Î½Î· Î§: '+x+'"':'')+'>'+(x==dims[0]||(x>0&&x%10==0)?x:'')+'</td>';
+							}
+							else
+							{
+								switch(x)
+								{
+									case dims[0]-2:
+									case dims[1]+2:
+										t += '<td class="border'+(y==dims[2]||(y>0&&y%10==0)?1:0)+'"'+(y>=dims[2]&&y<=dims[3]?' title="Î£Ï…Î½Ï„ÎµÏ„Î±Î³Î¼Î­Î½Î· Y: '+y+'"':'')+'>'+(y==dims[2]||(y>0&&y%10==0)?y:'')+'</td>';
+										break;
+									case dims[0]-1:
+									case dims[1]+2:
+										t += '<td class="ocean"></td>';
+										break;
+									default:
+										t += '<td class="'+(y==dims[2]-1||y==dims[3]+2||!(islands[x]&&islands[x][y])?'ocean':'island')+(ownislands.indexOf('['+x+':'+y+']')!=-1?' own':'')+'"'+(islands[x]&&islands[x][y]?' title="'+(islands[x][y][1]+' ['+x+':'+y+']')+'"':'')+'></td>';
+										break;
+								}
+							}
+							cnt += islands[x]&&islands[x][y] ? 1 : 0;
+							if(islands[x]&&islands[x][y])
+							{
+								islands[x][y][12] = {};
+								resources[islands[x][y][2]-1] += 1;
+								wonders[islands[x][y][3]-1] += 1;
+								if(iblkcrds[parseInt(islands[x][y][4])]==undefined)
+								{
+									iblkcrds[parseInt(islands[x][y][4])] = x+':'+y+'|';
+								}
+								else
+								{
+									iblkcrds[parseInt(islands[x][y][4])] += x+':'+y+'|';
+								}
+								if(iblocks.indexOf(islands[x][y][4])==-1)
+								{
+									iblocks.push(islands[x][y][4]);
+								}
+								if(citiesnums.indexOf(parseInt(islands[x][y][7]))==-1)
+								{
+									citiesnums.push(parseInt(islands[x][y][7]));
+								}
+								if(citiescrds[parseInt(islands[x][y][7])]==undefined)
+								{
+									citiescrds[parseInt(islands[x][y][7])] = x+':'+y+'|';
+								}
+								else
+								{
+									citiescrds[parseInt(islands[x][y][7])] += x+':'+y+'|';
+								}
+								cities += parseInt(islands[x][y][7]);
+								pirates[islands[x][y][8]] += 1;
+								helios[islands[x][y][9]<2?islands[x][y][9]:2] += 1;
+								islandnames[x+':'+y] = islands[x][y][1];
+								XtoYcoords[x] = (XtoYcoords[x]==undefined?'':XtoYcoords[x])+y+' ';
+								YtoXcoords[y] = (YtoXcoords[y]==undefined?'':YtoXcoords[y])+x+' ';
+	//							events.scheduleAction(function()
+	//							{
+	//								$.getJSON('?view=updateGlobalData&backgroundView=island&currentIslandId='+islands[x][y][0]+'&ajax=1',function(extradata)
+	//								{
+	//									islands[x][y][12] = extradata[0][1].backgroundData;
+	//									console.log(x,y,islands[x][y][12].tradegoodLevel);
+	//								});
+	//							},3000*x);
+							}
+						}
+					}
+					var XtoYarray = {};
+					$.each(XtoYcoords,function(x,c) { XtoYarray[x] = c.trim().split(' '); });
+					var YtoXarray = {};
+					$.each(YtoXcoords,function(y,c) { YtoXarray[y] = c.trim().split(' '); });
+					var ibcs = {}, ctcs = {};
+					$.each(iblkcrds,function(k,c)
+					{
+						ibcs[k] = c.replace(/\|$/,'').split('|');
+					});
+					$.each(citiescrds,function(k,c)
+					{
+						ctcs[k] = c.replace(/\|$/,'').split('|');
+					});
+					t += '</tbody></table>';
+					var extra = '<table style="white-space:nowrap;width:201px;display:inline-block;margin:0 auto"><tr><td colspan="3">Î ÏÏŒÏƒÎ¸ÎµÏ„ÎµÏ‚ Ï€Î»Î·ÏÎ¿Ï†Î¿ÏÎ¯ÎµÏ‚ Î½Î®ÏƒÎ¿Ï…</td></tr><tr><td style="text-align:left;width:98px">Î•Ï€Î¯Ï€ÎµÎ´Î¿ <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAUCAMAAACknt2MAAABelBMVEUAAADp49mgkICxmnzVuIxMcwtciQ90pSC/tKR7aFWOfGmIdmPKr4lomxChyk/YxKjTyrzl2slrVkKBblu5ooXp0a3NwrOqm4uNeWRTMzMnGRZFQBvb0sS0p5j18OiTgW3cvpSeXF07JSSJUlLFeHY2NhZzrRKZh3XmyJwPCgl7jzSHyBXlx53EuateSje0amp0YE2Fc2FzSEeFqzfoyJftylO7l1312oXv0GzWyqzN0MH15b311WO3iy2jchyLXiuZrqtyt9uJx+bP2M789+/sz3nv2p7+5IOXZRWHVA/jxou7vquTyuS7x72MqKmEw+J/wOFdk6ylsaXsz6Xz1njKnzTBlkF6SAvhvE2TsraVzeiNyeZ8ttJ7v+EzXnXJ1M2tfiKts6S63ex2utyUw9hFhqV6ss2W0O7fvmDUrUJnnrOk0+tjq8602uzO6fbCyr7Eu6BqrM1tstS74fKbzeXS6/dvud7OrG1PlLeMwNfW7viu2e2i0ObK4OYudx14AAAAAXRSTlMAQObYZgAAAAFiS0dEAIgFHUgAAAAJcEhZcwAAAEgAAABIAEbJaz4AAAFfSURBVCgVBcFLTlNhGADQ8/29t/e/reVhChWkUDFRE0hM1IlxYiIzhy5EN+ASTNyBO3DoIpw7VBNAiga0QFKsPK7nBBARV4AiIq4ukUBWVd0bQI0OJJjPC3VcV0AVTdOGhKVot//0TEFR9pebWQ8J1d9qNjxZjhGKYV3XI7N7JLDfU+dh48HmekrKcjYab0m2Y7GeP9tb2ztCL5meT8J45UJre5KOrlZv/hr0TyeXk3p6sdBqfc96439p399GXdx2Pbxv47zTreeiGcxKAABF8aiA/tZjAZ5EfAYA0ALDFKsrB4Cn63sgwbOyVeYu4HnOL0BgJyJOFkR88jIiIiI+ouDVecfhMCIa5iLix1oEJDtnnShmZ2mcT8k5VXdzzpB20kn/8HJkcfVnw4c8V09znr5GSpsbX5qlruOvA7zZbbdXqvJWhfR799tgduzhnVY9z/vtnN9VdfvgLQAAAPgPmQZaHvndsJEAAAAASUVORK5CYII=" style="height:10px"></td><td style="width:5px">:</td><td id="empire_island_luxurylevel" style="width:98px"></td></tr><tr><td style="text-align:left">Î•Ï€Î¯Ï€ÎµÎ´Î¿ Î¼Î½Î·Î¼ÎµÎ¯Î¿Ï…</td><td>:</td><td id="empire_island_wonderlevel"></td></tr><tr><td colspan="3">ÎŸÎ»Î¿ÎºÎ»Î®ÏÏ‰ÏƒÎ· Î±Î½Î±Î²Î±Î¸Î¼Î¯ÏƒÎµÏ‰Î½</td></tr><tr><td rowspan="2" style="text-align:left">Î ÏÎ¹ÏƒÏ„Î®ÏÎ¹Î¿</td><td rowspan="2">:</td><td id="empire_island_sawmillenddate"></td></tr><tr><td id="empire_ialand_sawmillduration"></td></tr><tr><td rowspan="2" style="text-align:left">{}</td><td rowspan="2">:</td><td id="empire_island_mineenddate"></td></tr><tr><td id="empire_ialand_mineduration"></td></tr><tr><td rowspan="2" style="text-align:left">{}</td><td rowspan="2">:</td><td id="empire_island_wonderenddate"></td></tr><tr><td id="empire_ialand_wonderduration"></td></tr></table>';
+
+					$('#empire_WorldmapTab').append('<tr><td style="width:200px;vertical-align:top"></td><td style="width:503px;height:501px;vertical-align:top">'+extra+'</td><td style="width:240px;vertical-align:top"></td><td>'+t+'</td></tr>');
+					$('#empire_worldmap td.island.own').each(function()
+					{
+						var N = $('#empire_worldmap tr:eq('+($(this).parent().index()-1)+') td:eq('+($(this).index())+')');
+						var E = $('#empire_worldmap tr:eq('+($(this).parent().index())+') td:eq('+($(this).index()+1)+')');
+						var S = $('#empire_worldmap tr:eq('+($(this).parent().index()+1)+') td:eq('+($(this).index())+')');
+						var W = $('#empire_worldmap tr:eq('+($(this).parent().index())+') td:eq('+($(this).index()-1)+')');
+						var Nclr = $(N).hasClass('ocean') ? '#000000': (!$(N).hasClass('own') ? '#000000' : '#87CEEB');
+						var Eclr = $(E).hasClass('ocean') ? '#000000': (!$(E).hasClass('own') ? '#000000' : '#87CEEB');
+						var Sclr = $(S).hasClass('ocean') ? '#000000': (!$(S).hasClass('own') ? '#000000' : '#87CEEB');
+						var Wclr = $(W).hasClass('ocean') ? '#000000': (!$(W).hasClass('own') ? '#000000' : '#87CEEB');
+						$(this).css({'border-color':Nclr+' '+Eclr+' '+Sclr+' '+Wclr});
+					});
+					var res = '',wndr = '', prts = '', hls = '';
+					$.each(resources,function(k,r)
+					{
+						res += Utils.format('<li><img src="skin/resources/icon_{0}.png" style="height:14px"> {1}</li>',[Constant.Resources[Object.keys(Constant.Resources).slice(2)[k]],Utils.FormatNumToStr(r,false,0)]);
+					});
+					$.each(wonders,function(k,w)
+					{
+						wndr += Utils.format('<li><img src="skin/wonder/w{0}.png" style="height:14px"> {1}</li>',[k+1,Utils.FormatNumToStr(w,false,0)]);
+					});
+					var pirtxt = ['<div style="margin:0px auto;color:red;font-weight:bold;font-size:20pt;line-height:11px;text-align:center;width:20px;height:10px;background:url(skin/resources/capturePoints_small.png) center center">/</div>','<div style="margin:0px auto;color:red;font-weight:bold;font-size:16pt;line-height:15px;text-align:center;width:20px;height:15px;background:url(skin/world/Fahne_schwarz_L_X.png) center center / 12px auto no-repeat">/</div>','<div style="margin:0px auto;color:red;font-weight:bold;font-size:16pt;line-height:15px;text-align:center;width:20px;height:15px;background:url(skin/world/Fahne_schwarz_L_X.png) center center / 12px auto no-repeat"></div>'];
+					$.each(pirates,function(k,w)
+					{
+						prts += Utils.format('<li><b>{0}</b> Î½Î·ÏƒÎ¹Î¬ {1}</li>',[Utils.FormatNumToStr(w,false,0),pirtxt[k]]);
+					});
+					var hlstxt = ['<div style="margin:0 auto;width:25px;height:26px;background:url(skin/img/island/helios_wreckage.png) 0px 0px / 50px auto no-repeat"></div>','<img src="skin/world/heliostower.png" style="height:26px">','<div style="margin:0 auto;width:20px;height:28px;background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAcCAYAAABh2p9gAAAACXBIWXMAAAsTAAALEwEAmpwYAAAExElEQVRIx42VW4hVVRjHf9/e++xzm6tnLoqTjhOa2cV6qcwIKjIRyoKSUlDI6C2KIiKol556CCqIguqhiCAIoiCi7KGQiMgsGJvyMupo41HPzJnjzLnsc/bZe/97OBpqaX6wYC0W67e+2/ov4zwrSV1N2NEFy7MwARyNYSSGO4qwETi8Gh4ws4ArsRlp27eSjkuqJFJF0pykE4l0JJFOJlJVel2ScynGBRsuVK4X+IJZoCGoC2YEIWBAC54qi69LkXY0pbHLAgUbQmCBDqQCBEBRUBU0gJpwS3Bv0+GDY/DHgvTgv4CS0sVYr7XgSZ0FABwXCgVnAAw1BYcEzc7lpEUa8YQk9xzQA6jCVhnPFRPwDBYBUyCM0DNZFiyHJbPCrQt3EdgpYJkBxsYAPgmkP2N42yYkf5H47bCxZkhwWGCQDBrtGkRD1lZEo5Sla+iAXC8j/AicMYMckDVIA/uBDNzpDcPVdbg2IzgjGDmbtwCiAYtCoxYtpjxbwRtcbHnFEPeASVhiEAsSg1GouTDtxRGL5GKhOrmrAAXDxgxzaER1wvF+uvbmWRj2SQ+W8TgmaAt6gCUGA4K8sStjdtTJejjO2eqYA2mDFliRKNdNpbdCX/WbPxeTp3msQit7RKSKwhoGkZ091xk/A3gJnEhBkjGcrDq9FwM5Ig0yM50h+OOe/lOHCFmW+L1ElpcJ8zt9iw+4RuLADwBOL0z7MNEFdNNJcGioTqgQ/irM7xvm6K7rqLb2tQhoGolPJ9zhTiFw4TMPfgJwzCx0jY/zQH8nf+QNxbTx8A/RGjnG+MC++cKdkzGKc8CAQeGcA8aCAy+aWfxPY/fCmznj24LBUoNRi/DQqRna83hhikc3ZsX4VQ3c48sIbcQ60ByMp2F7xmzygsY2s2ZV2pY33vVhczehRaRKDYpr6DpYImgVuuifynPtnqtorfDxd2eMN7rhSzNrn//0vHOTbrMZSY+G8F2GZN1apnjvxP27gqWlvtgfOlgPiZf7pVv6SStlPOub7f0vtfHOX5hZK1a8yyNe1yKdfWbu5XUMbpyk/nMP07/3Bjc8tCTNgJMQZS8lX96/5addh0DZ+uxevj96ki9eWk4mY8xWa9lXt/4I87c7pLdL2mNmrcvKV8fiFPXpMvvfWcuGa9Ywdtck6dEyN904zydbBpn4ag+0H4fo1ivyEOJumhWHw1P7GQ5X0htsIdUQSfgLQVAhnAmgbaDaFQJTSymM9XHbU2OUxouUfp3DcyNSyyJWX9/NyttGISVILfzvFyAVc2DrAYeJz6usXL+E4EYo3dFg9OYqp6fShE0DM4hXXYGHhadhfgzVG0Tm0LCETz+EQ2GLFZsSyC7guWVRHjH89yWtMrPaZYoSPoKqDaKe07iZMo25AxgJhf4Z3FweU4Xsih8j7BdYWAzhfZcMufMvtPtI4gB05sym5ydpt8Vjm8t89FYNxxTc+0I5cHsC4U9DqwnJ2suFLPCauKkhzNy+KHfz6dWbTmZWPzzdIMp7Y3dP9TA76tD2jfYA5Grg+RcD7cKi1DdD8KmYaxnuNHhlRIuORCJLUqLZ65Dtg8E6eI+ZpX+/JLADDXdCsBOqPtSbEEVACE7c0fMuB3ocSL9iZrsvPv83Y7w8jzNUaa0AAAAASUVORK5CYII=)"></div>'];
+					$.each(helios,function(k,w)
+					{
+						hls += Utils.format('<li><b>{0}</b> Î½Î·ÏƒÎ¹Î¬ {1}</li>',[Utils.FormatNumToStr(w,false,0),hlstxt[k]]);
+					});
+					var reswnd = '<table><tr><td colspan="9">ÎšÎ±Ï„Î±Î½Î¿Î¼Î® Ï…Î»Î¹ÎºÏŽÎ½ ÎºÎ±Î¹ Î¼Î½Î·Î¼ÎµÎ¯Ï‰Î½</td></tr>';
+					for(var row=0;row<4;row++)
+					{
+						reswnd += '<tr>';
+						for(var col=0;col<9;col++)
+						{
+							reswnd += col%3==0 ? '<td><label for="empire_islands_'+(col==0?'r':'w')+(row+(col==0?1:(col==3?1:5)))+'"><input id="empire_islands_'+(col==0?'r':'w')+(row+(col==0?1:(col==3?1:5)))+'" type="checkbox"></label></td>' : '';
+							reswnd += col%3==1 ? '<td><label for="empire_islands_'+(col==1?'r':'w')+(row+(col==1?1:(col==4?1:5)))+'"><img src="skin/'+(col==1?'resources/icon_':'wonder/w')+((col==1?Constant.Resources[Object.keys(Constant.Resources).slice(2)[row]]:row+(col==4?1:5)))+'.png" style="height:14px"></label></td>' : '';
+							reswnd += col%3==2 ? '<td><label for="empire_islands_'+(col==2?'r':'w')+(row+(col==2?1:(col==5?1:5)))+'">'+Utils.FormatNumToStr((col==2?resources[row]:wonders[row+(col==5?0:4)]),false,0)+'</label></td>' : '';
+						}
+						reswnd += '</tr>';
+					}
+					reswnd += '</table>';
+					var pirhlt = '<table><tr><td colspan="9">ÎšÎ±Ï„Î±Î½Î¿Î¼Î® Ï€ÎµÎ¹ÏÎ±Ï„ÎµÎ¯Î±Ï‚<br>ÎºÎ±Î¹ Î ÏÏÎ³Ï‰Î½ Ï„Î¿Ï… Î‰Î»Î¹Î¿Ï…</td></tr>';
+					for(var row=0;row<3;row++)
+					{
+						pirhlt += '<tr>';
+						for(var col=0;col<6;col++)
+						{
+							pirhlt += col%3==0 ? '<td><label for="empire_islands_'+(col==0?'p':'h')+(row+(col==0?1:(col==3?1:5)))+'"><input id="empire_islands_'+(col==0?'p':'h')+(row+(col==0?1:(col==3?1:5)))+'" type="checkbox"></label></td>' : '';
+							pirhlt += col%3==1 ? '<td><label for="empire_islands_'+(col==1?'p':'h')+(row+(col==1?1:(col==4?1:5)))+'">'+Utils.FormatNumToStr((col==1?pirates[row]:helios[row]),false,0)+'</label></td>' : '';
+							pirhlt += col%3==2 ? '<td><label for="empire_islands_'+(col==2?'p':'h')+(row+(col==2?1:(col==5?1:5)))+'">'+(col==2?pirtxt[row]:hlstxt[row])+'</label></td>' : '';
+						}
+						pirhlt += '</tr>';
+					}
+					pirhlt += '</table>';
+					var iblkoptions = '<option value="0">----</option>';
+					$.each(iblocks.sort((a,b)=>a-b),function(k,b)
+					{
+						iblkoptions += '<option value="'+b+'">'+b+'</option>';
+					});citiesnums
+					var ctnumoptions = '<option value="-1">----</option>';
+					$.each(citiesnums.sort((a,b)=>a-b),function(k,b)
+					{
+						ctnumoptions += '<option value="'+b+'">'+b+'</option>';
+					});
+					$('#empire_WorldmapTab > tbody > tr > td:first').css({'width':'200px'}).html('Î Î»Î·ÏÎ¿Ï†Î¿ÏÎ¯ÎµÏ‚ ÎšÏŒÏƒÎ¼Î¿Ï…<span id="empire_worldmagnify" style="position:absolute;top:33px;right:743px;cursor:pointer">+<img src="skin/img/magnifySmall.png"></span><hr>ÎŸ ÎšÏŒÏƒÎ¼Î¿Ï‚ <b>'+servers[ikariam.Server()]+'</b> Î­Ï‡ÎµÎ¹:<br><b>'+Utils.FormatNumToStr(resources.reduce((a,b)=>a+b,0),false,0)+'</b> Î½Î·ÏƒÎ¹Î¬,<br><b>'+Utils.FormatNumToStr(iblocks.length,false,0)+'</b> Î½Î·ÏƒÎ¹Ï‰Ï„Î¹ÎºÎ¬ ÏƒÏ…Î¼Ï€Î»Î­Î³Î¼Î±Ï„Î± ÎºÎ±Î¹<br><b>'+Utils.FormatNumToStr(cities,false,0)+'</b> Ï€ÏŒÎ»ÎµÎ¹Ï‚.'+reswnd+pirhlt+'<label for="empire_islands_allies"><input id="empire_islands_allies" type="checkbox"> Î£Ï…Î¼Î¼Î±Ï‡Î¯Î±</label> <label for="empire_islands_friends"><input id="empire_islands_friends" type="checkbox"> Î¦Î¯Î»Î¿Î¹</label><br><label for="empire_island_blocks">Î£ÏÎ¼Ï€Î»ÎµÎ³Î¼Î±: <select id="empire_island_blocks">'+iblkoptions+'</select></label><br><label for="empire_island_citynums">Î ÏŒÎ»ÎµÎ¹Ï‚ Î±Î½Î¬ Î½Î·ÏƒÎ¯: <select id="empire_island_citynums">'+ctnumoptions+'</select></label>');
+					$('#empire_islands_allies').on('click',function()
+					{
+						$('#empire_worldmap td.island:not(.own)').css({'border-color':'#87CEEB'});
+						if(this.checked)
+						{
+							$.each(database.getGlobalData.getAllyIslandData,function(k,c)
+							{
+								var cds = c.split(':');
+								cds = [parseInt(cds[0])+1,parseInt(cds[1])+1];
+								$('#empire_worldmap tr:eq('+(cds[1])+') td:eq('+(cds[0])+')').css({'background-color':'#00FF7F'});
+							});
+						}
+						else
+						{
+							$.each(database.getGlobalData.getAllyIslandData,function(k,c)
+							{
+								var cds = c.split(':');
+								cds = [parseInt(cds[0])+1,parseInt(cds[1])+1];
+								$('#empire_worldmap tr:eq('+(cds[1])+') td:eq('+(cds[0])+')').css({'background-color':'#008000'});
+							});
+						}
+					});
+					$('#empire_island_blocks').on('change',function()
+					{
+						$('#empire_worldmap td.island:not(.own)').css({'border-color':'#87CEEB'});
+						if($(this).val()>0)
+						{
+							var crds = ibcs[$(this).val()];
+							$.each(crds,function(k,c)
+							{
+								var cds = c.split(':');
+								cds = [parseInt(cds[0])+1,parseInt(cds[1])+1];
+								var N = $('#empire_worldmap tr:eq('+(cds[1]-1)+') td:eq('+(cds[0])+')');
+								var E = $('#empire_worldmap tr:eq('+(cds[1])+') td:eq('+(cds[0]+1)+')');
+								var S = $('#empire_worldmap tr:eq('+(cds[1]+1)+') td:eq('+(cds[0])+')');
+								var W = $('#empire_worldmap tr:eq('+(cds[1])+') td:eq('+(cds[0]-1)+')');
+								var Nclr = $(N).hasClass('ocean') ? '#000000': '#87CEEB';
+								var Eclr = $(E).hasClass('ocean') ? '#000000': '#87CEEB';
+								var Sclr = $(S).hasClass('ocean') ? '#000000': '#87CEEB';
+								var Wclr = $(W).hasClass('ocean') ? '#000000': '#87CEEB';
+								$('#empire_worldmap tr:eq('+(cds[1])+') td:eq('+(cds[0])+')').css({'border-color':Nclr+' '+Eclr+' '+Sclr+' '+Wclr});
+							});
+							$('#empire_worldmap td.island.own').each(function()
+							{
+								var N = $('#empire_worldmap tr:eq('+($(this).parent().index()-1)+') td:eq('+($(this).index())+')');
+								var E = $('#empire_worldmap tr:eq('+($(this).parent().index())+') td:eq('+($(this).index()+1)+')');
+								var S = $('#empire_worldmap tr:eq('+($(this).parent().index()+1)+') td:eq('+($(this).index())+')');
+								var W = $('#empire_worldmap tr:eq('+($(this).parent().index())+') td:eq('+($(this).index()-1)+')');
+								var Nclr = $(N).hasClass('ocean') ? '#000000': (!$(N).hasClass('own') ? '#000000' : '#87CEEB');
+								var Eclr = $(E).hasClass('ocean') ? '#000000': (!$(E).hasClass('own') ? '#000000' : '#87CEEB');
+								var Sclr = $(S).hasClass('ocean') ? '#000000': (!$(S).hasClass('own') ? '#000000' : '#87CEEB');
+								var Wclr = $(W).hasClass('ocean') ? '#000000': (!$(W).hasClass('own') ? '#000000' : '#87CEEB');
+								$(this).css({'border-color':Nclr+' '+Eclr+' '+Sclr+' '+Wclr});
+							});
+						}
+					});
+					$('#empire_island_citynums').on('change',function()
+					{
+						$('#empire_worldmap td.island:not(.own)').css({'border-color':'#87CEEB'});
+						if($(this).val()>-1)
+						{
+							var crds = ctcs[$(this).val()];
+							$.each(crds,function(k,c)
+							{
+								var cds = c.split(':');
+								cds = [parseInt(cds[0])+1,parseInt(cds[1])+1];
+								$('#empire_worldmap tr:eq('+(cds[1])+') td:eq('+(cds[0])+')').css({'border-color':'#000000'});
+							});
+							$('#empire_worldmap td.island.own').each(function()
+							{
+								var N = $('#empire_worldmap tr:eq('+($(this).parent().index()-1)+') td:eq('+($(this).index())+')');
+								var E = $('#empire_worldmap tr:eq('+($(this).parent().index())+') td:eq('+($(this).index()+1)+')');
+								var S = $('#empire_worldmap tr:eq('+($(this).parent().index()+1)+') td:eq('+($(this).index())+')');
+								var W = $('#empire_worldmap tr:eq('+($(this).parent().index())+') td:eq('+($(this).index()-1)+')');
+								var Nclr = $(N).hasClass('ocean') ? '#000000': (!$(N).hasClass('own') ? '#000000' : '#87CEEB');
+								var Eclr = $(E).hasClass('ocean') ? '#000000': (!$(E).hasClass('own') ? '#000000' : '#87CEEB');
+								var Sclr = $(S).hasClass('ocean') ? '#000000': (!$(S).hasClass('own') ? '#000000' : '#87CEEB');
+								var Wclr = $(W).hasClass('ocean') ? '#000000': (!$(W).hasClass('own') ? '#000000' : '#87CEEB');
+								$(this).css({'border-color':Nclr+' '+Eclr+' '+Sclr+' '+Wclr});
+							});
+						}
+					});
+					islandnames = Object.fromEntries(Object.entries(islandnames).sort((a,b)=>a[1]>b[1]?1:((b[1]>a[1])?-1:0)));
+					var fl = [...new Set(Object.values(islandnames).map(name=>name.charAt(0)))];
+					var islXoptions = '<option value="0">0</option>', islYoptions = '<option value="0">0</option>', islnamoptions = '<option value="0:0">-------------------</option>';
+					for(var x=dims[0];x<=dims[1];x++)
+					{
+						islXoptions += '<option value="'+x+'">'+x+'</option>';
+					}
+					for(var y=dims[2];y<=dims[3];y++)
+					{
+						islYoptions += '<option value="'+y+'">'+y+'</option>';
+					}
+					var indexes = '<option value="">--</option>';
+					var names = {};
+					$.each(fl,function(k,L)
+					{
+						indexes += '<option value="'+L+'">'+L+'</option>';
+						names[L] = '<option value="0:0">-------------------</option>';
+						$.each(islandnames,function(c,n)
+						{
+							if(L==n.charAt(0))
+							{
+								names[L] += '<option value="'+c+'">'+n+'</option>';
+							}
+						});
+					});
+					$('#empire_WorldmapTab > tbody > tr > td:eq(2)').css({'width':'240px'}).html(Utils.format(Utils.format('<table><tr><td colspan="4">{0}</td></tr><tr><td colspan="3"><label for="empire_island_coordsX">{1}</label></td><td><label for="empire_island_names">{2}</label></td></tr><tr><td title="{3}"><label for="empire_island_coordsX">{4}</label></td><td title="{3}">:</td><td title="{3}"><label for="empire_island_coordsX"><select id="empire_island_coordsX" style="width:49px">{8}</select></label></td><td rowspan="2" title="{7}"><label for="empire_island_names_index"><select id="empire_island_names_index"></select></label> <label for="empire_island_names"><select id="empire_island_names" style="width:107px"><option value="0:0">-------------------</option></select></label></td></tr><tr title="{5}"><td><label for="empire_island_coordsY">{6}</label></td><td>:</td><td><label for="empire_island_coordsY"><select id="empire_island_coordsY" style="width:49px">{9}</select></label></td></tr></table>',['Î•Ï€Î¹Î»Î¿Î³Î® Î½Î®ÏƒÎ¿Ï…','Î£Ï…Î½Ï„ÎµÏ„Î±Î³Î¼Î­Î½ÎµÏ‚','ÎŸÎ½Î¿Î¼Î±ÏƒÎ¯Î± Î½Î®ÏƒÎ¿Ï…','Î£Ï…Î½Ï„ÎµÏ„Î±Î³Î¼Î­Î½Î· Î§','X','Î£Ï…Î½Ï„ÎµÏ„Î±Î³Î¼Î­Î½Î· Î¥','Y','Î¤Î¿ ÏŒÎ½Î¿Î¼Î± Ï„Î·Ï‚ Î½Î®ÏƒÎ¿Ï…',islXoptions,islYoptions])+'<table><tr><td colspan="3">{0}</td></tr><tr><td id="empire_islandshape" colspan="3" style="width:238px;height:120px"><div id="empire_islandname" style="position:absolute;top:135px;left:710px;font-weight:bold"></div><div id="empire_islandcoords" style="position:absolute;top:135px;right:5px;font-weight:bold"></div><div id="empire_islandblock" style="position:absolute;top:220px;left:710px"></div><div id="empire_islandcities" style="position:absolute;top:235px;right:5px;font-weight:bold"></div></td></tr><tr><td style="text-align:left;width:110px">{1}</td><td style="width:10px">:</td><td></td></tr><tr><td style="text-align:left">{2}</td><td>:</td><td></td></tr><tr><td style="text-align:left">{3}</td><td>:</td><td id="empire_islandresource" style="height:20px"></td></tr><tr><td style="text-align:left">{4}</td><td>:</td><td id="empire_islandwonder" style="height:100px"><div style="margin:0 auto;width:74px;height:72px;background:url(skin/wonder/wonderbutton_sprite.jpg) 0px 72px no-repeat;"></div><div></div></td></tr><tr><td style="text-align:left">{5}</td><td>:</td><td></td></tr><tr><td style="text-align:left">{6}</td><td>:</td><td id="empire_islandsawmill"></td></tr><tr><td style="text-align:left">{7}</td><td>:</td><td></td></tr><tr><td style="text-align:left">{8}</td><td>:</td><td id="empire_islandpiracy"></td></tr><tr><td style="text-align:left">{9}</td><td>:</td><td id="empire_islandhelios"></td></tr></table>',['Î Î»Î·ÏÎ¿Ï†Î¿ÏÎ¯ÎµÏ‚ Î½Î®ÏƒÎ¿Ï…','ÎŒÎ½Î¿Î¼Î±','Î£Ï…Î½Ï„ÎµÏ„Î±Î³Î¼Î­Î½ÎµÏ‚','Î¥Î»Î¹ÎºÏŒ Ï€Î¿Î»Ï…Ï„ÎµÎ»ÎµÎ¯Î±Ï‚','ÎœÎ½Î·Î¼ÎµÎ¯Î¿','Î£ÏÎ¼Ï€Î»ÎµÎ³Î¼Î± Î½Î®ÏƒÏ‰Î½','Î ÏÎ¹ÏƒÏ„Î®ÏÎ¹Î¿','Î ÏŒÎ»ÎµÎ¹Ï‚','Î ÎµÎ¹ÏÎ±Ï„ÎµÎ¯Î±','Î ÏÏÎ³Î¿Ï‚ Ï„Î¿Ï… Î‰Î»Î¹Î¿Ï…']));
+					$('select[id^="empire_island_coords"]').on('change',function()
+					{
+						if(!$('#empire_worldmap td.island').hasClass('own'))
+						{
+							$('#empire_worldmap td.island').css({'background-color':'#008000'});
+						}
+						else if($('#empire_worldmap td.island').hasClass('own'))
+						{
+							$('#empire_worldmap td.island').css({'background-color':''});
+						}
+						$('#empire_worldmap td.island:not(.own)').css({'border-color':'#87CEEB','background-color':'#008000'});
+						$('#empire_worldmap td').removeClass('hover-border hover-h hover-v');
+						$('#empire_islandshape,#empire_islandresource').css({'background':'none'});
+						$('#empire_islandwonder > div').css({'background-position':'0px 72px'}).find('+ div').empty();
+						$('#empire_islandcoords,#empire_islandname,#empire_islandblock,#empire_islandsawmill,#empire_islandcities,#empire_islandpiracy,#empire_islandhelios').empty();
+						var type = ['X','Y'];
+						var tid = type.indexOf($(this).attr('id').slice(-1));
+						var crds = [tid==0?$(this).val():$('#empire_island_coordsX option:selected').val(),tid==1?$(this).val():$('#empire_island_coordsY option:selected').val()];
+						crds = [parseInt(crds[0])+1,parseInt(crds[1])+1];
+						if(islands[crds[0]-1]&&islands[crds[0]-1][crds[1]-1])
+						{
+							var target = $('#empire_worldmap tr:eq('+(crds[1])+') td:eq('+(crds[0])+')').css({'background-color':'#FFFF00'});
+							$(target).parent().find('td:first,td:last').addClass('hover-border');
+							$(target).parent().find('td').each(function(a,td)
+							{
+								$(td).addClass('hover-h');
+							});
+							$('#empire_WorldmapTab #empire_worldmap > tbody > tr:first > td:eq('+$(target).index()+')').addClass('hover-border');
+							$('#empire_WorldmapTab #empire_worldmap > tbody > tr').each(function(b,tr)
+							{
+								$(tr).find('td:eq('+$(target).index()+')').addClass('hover-v');
+							});
+							$('#empire_WorldmapTab #empire_worldmap > tbody > tr:last > td:eq('+$(target).index()+')').addClass('hover-border');
+							$('#empire_islandshape').css({'background-image':'url(skin/world/insel_'+(islands[crds[0]-1][crds[1]-1][5]>5?islands[crds[0]-1][crds[1]-1][5]-5:islands[crds[0]-1][crds[1]-1][5])+'.png)'});
+							$('#empire_islandname').html(islands[crds[0]-1][crds[1]-1][1]);
+							$('#empire_islandcoords').html('['+(crds[0]-1)+':'+(crds[1]-1)+']');
+							$('#empire_islandresource').css({'height':'20px','background':'url(skin/resources/icon_'+(Constant.Resources[Object.keys(Constant.Resources).slice(2)[islands[crds[0]-1][crds[1]-1][2]-1]])+'.png) no-repeat center'});
+							$('#empire_islandwonder > div').css({'background-position':-(wdrpos[islands[crds[0]-1][crds[1]-1][3]-1])+'px -72px'}).find('+ div').html(LD.wonders[islands[crds[0]-1][crds[1]-1][3]]);
+							$('#empire_islandblock').html('Î£ÏÎ¼Ï€Î»ÎµÎ³Î¼Î±<br><b>'+islands[crds[0]-1][crds[1]-1][4]+'</b>');
+							$('#empire_islandsawmill').html(islands[crds[0]-1][crds[1]-1][6]);
+							$('#empire_islandcities').html(parseInt(islands[crds[0]-1][crds[1]-1][7])==0 ? 'ÎšÎ±Î¼Î¹Î¬ Ï€ÏŒÎ»Î·': islands[crds[0]-1][crds[1]-1][7]+' '+(parseInt(islands[crds[0]-1][crds[1]-1][7])==1 ? 'Ï€ÏŒÎ»Î·' : 'Ï€ÏŒÎ»ÎµÎ¹Ï‚'));
+							$('#empire_islandpiracy').html(pirtxt[islands[crds[0]-1][crds[1]-1][8]]);
+							$('#empire_islandhelios').html(hlstxt[islands[crds[0]-1][crds[1]-1][9]<2?islands[crds[0]-1][crds[1]-1][9]:2]);
+						}
+	//					var Yoptions = '';
+	//					var selected = $('#empire_island_coordsY option:selected').val();
+	//					if(XtoYarray[$(this).val()]!=undefined)
+	//					{
+	//						$.each(XtoYarray[$(this).val()],function(k,y)
+	//						{
+	//							Yoptions += '<option value="'+y+'"'+(y==selected?' selected':'')+'>'+y+'</option>';
+	//						});
+	//					}
+	//					else
+	//					{
+	//						Yoptions = islXoptions;
+	//					}
+	//					$('#empire_island_coordsY').html(Yoptions);
+					});
+					$('#empire_island_names_index').html(indexes).on('change',function()
+					{
+						$('#empire_island_names').html(names[$(this).val()]!=undefined?names[$(this).val()]:'<option value="0:0">-------------------</option>');
+						$('#empire_worldmap td.island:not(.own)').css({'border-color':'#87CEEB'});
+						$('#empire_worldmap td.island:not(.own)').css({'background-color':'#008000'});
+						$('#empire_worldmap td').removeClass('hover-border hover-h hover-v');
+						$('#empire_islandshape,#empire_islandresource').css({'background':'none'});
+						$('#empire_islandwonder > div').css({'background-position':'0px 72px'}).find('+ div').empty();
+						$('#empire_islandcoords,#empire_islandname,#empire_islandblock,#empire_islandsawmill,#empire_islandcities,#empire_islandpiracy,#empire_islandhelios').empty();
+					});
+					$('#empire_island_names').on('change',function()
+					{
+						$('#empire_worldmap td.island:not(.own)').css({'border-color':'#87CEEB'});
+						var cds = $(this).val().split(':');
+						cds = [parseInt(cds[0])+1,parseInt(cds[1])+1];
+						if(!$('#empire_worldmap td.island').hasClass('own'))
+						{
+							$('#empire_worldmap td.island').css({'background-color':'#008000'});
+						}
+						else if($('#empire_worldmap td.island').hasClass('own'))
+						{
+							$('#empire_worldmap td.island').css({'background-color':''});
+						}
+						$('#empire_worldmap td').removeClass('hover-border hover-h hover-v');
+						if($(this).val()!='0:0')
+						{
+							$('#empire_islandshape,#empire_islandresource').css({'background':'none'});
+							$('#empire_islandwonder > div').css({'background-position':'0px 72px'}).find('+ div').empty();
+							$('#empire_islandcoords,#empire_islandname,#empire_islandblock,#empire_islandsawmill,#empire_islandcities,#empire_islandpiracy,#empire_islandhelios').empty();
+							var target = $('#empire_worldmap tr:eq('+(cds[1])+') td:eq('+(cds[0])+')').css({'background-color':'#FFFF00'});
+							var crds = [$(target).index(),$(target).parent().index()];
+							$(target).parent().find('td:first,td:last').addClass('hover-border');
+							$(target).parent().find('td').each(function(a,td)
+							{
+								$(td).addClass('hover-h');
+							});
+							$('#empire_WorldmapTab #empire_worldmap > tbody > tr:first > td:eq('+$(target).index()+')').addClass('hover-border');
+							$('#empire_WorldmapTab #empire_worldmap > tbody > tr').each(function(b,tr)
+							{
+								$(tr).find('td:eq('+$(target).index()+')').addClass('hover-v');
+							});
+							$('#empire_WorldmapTab #empire_worldmap > tbody > tr:last > td:eq('+$(target).index()+')').addClass('hover-border');
+							$('#empire_islandshape').css({'background-image':'url(skin/world/insel_'+(islands[crds[0]-1][crds[1]-1][5]>5?islands[crds[0]-1][crds[1]-1][5]-5:islands[crds[0]-1][crds[1]-1][5])+'.png)'});
+							$('#empire_islandname').html(islands[crds[0]-1][crds[1]-1][1]);
+							$('#empire_islandcoords').html('['+(crds[0]-1)+':'+(crds[1]-1)+']');
+							$('#empire_islandresource').css({'height':'20px','background':'url(skin/resources/icon_'+(Constant.Resources[Object.keys(Constant.Resources).slice(2)[islands[crds[0]-1][crds[1]-1][2]-1]])+'.png) no-repeat center'});
+							$('#empire_islandwonder > div').css({'background-position':-(wdrpos[islands[crds[0]-1][crds[1]-1][3]-1])+'px -72px'}).find('+ div').html(LD.wonders[islands[crds[0]-1][crds[1]-1][3]]);
+							$('#empire_islandblock').html('Î£ÏÎ¼Ï€Î»ÎµÎ³Î¼Î±<br><b>'+islands[crds[0]-1][crds[1]-1][4]+'</b>');
+							$('#empire_islandsawmill').html(islands[crds[0]-1][crds[1]-1][6]);
+							$('#empire_islandcities').html(parseInt(islands[crds[0]-1][crds[1]-1][7])==0 ? 'ÎšÎ±Î¼Î¹Î¬ Ï€ÏŒÎ»Î·': islands[crds[0]-1][crds[1]-1][7]+' '+(parseInt(islands[crds[0]-1][crds[1]-1][7])==1 ? 'Ï€ÏŒÎ»Î·' : 'Ï€ÏŒÎ»ÎµÎ¹Ï‚'));
+							$('#empire_islandpiracy').html(pirtxt[islands[crds[0]-1][crds[1]-1][8]]);
+							$('#empire_islandhelios').html(hlstxt[islands[crds[0]-1][crds[1]-1][9]<2?islands[crds[0]-1][crds[1]-1][9]:2]);
+						}
+					});
+					var wdrpos = [0,76,151,226,300,375,450,525];
+					$('#empire_WorldmapTab #empire_worldmap td.island').hover(function(e)
+					{
+						$('#empire_island_names_index option:first,#empire_island_names option:first').prop('selected',true);
+						$('#empire_worldmap td.island:not(.own)').css({'background-color':'#008000'});
+						$('#empire_worldmap td').removeClass('hover-border hover-h hover-v');
+						var target = e.target;
+						var crds = [$(this).index(),$(this).parent().index()];
+						$(this).css({'background-color':'#FFFF00'});
+						$(target).parent().find('td:first,td:last').addClass('hover-border');
+						$(target).parent().find('td').each(function(a,td)
+						{
+							$(td).addClass('hover-h');
+						});
+						$('#empire_WorldmapTab #empire_worldmap > tbody > tr:first > td:eq('+$(target).index()+')').addClass('hover-border');
+						$('#empire_WorldmapTab #empire_worldmap > tbody > tr').each(function(b,tr)
+						{
+							$(tr).find('td:eq('+$(target).index()+')').addClass('hover-v');
+						});
+						$('#empire_WorldmapTab #empire_worldmap > tbody > tr:last > td:eq('+$(target).index()+')').addClass('hover-border');
+						$('#empire_islandshape').css({'background-image':'url(skin/world/insel_'+(islands[crds[0]-1][crds[1]-1][5]>5?islands[crds[0]-1][crds[1]-1][5]-5:islands[crds[0]-1][crds[1]-1][5])+'.png)'});
+						$('#empire_islandname').html(islands[crds[0]-1][crds[1]-1][1]);
+						$('#empire_islandcoords').html('['+(crds[0]-1)+':'+(crds[1]-1)+']');
+						$('#empire_islandresource').css({'height':'20px','background':'url(skin/resources/icon_'+(Constant.Resources[Object.keys(Constant.Resources).slice(2)[islands[crds[0]-1][crds[1]-1][2]-1]])+'.png) no-repeat center'});
+						$('#empire_islandwonder > div').css({'background-position':-(wdrpos[islands[crds[0]-1][crds[1]-1][3]-1])+'px -72px'}).find('+ div').html(LD.wonders[islands[crds[0]-1][crds[1]-1][3]]);
+						$('#empire_islandblock').html('Î£ÏÎ¼Ï€Î»ÎµÎ³Î¼Î±<br><b>'+islands[crds[0]-1][crds[1]-1][4]+'</b>');
+						$('#empire_islandsawmill').html(islands[crds[0]-1][crds[1]-1][6]);
+						$('#empire_islandcities').html(parseInt(islands[crds[0]-1][crds[1]-1][7])==0 ? 'ÎšÎ±Î¼Î¹Î¬ Ï€ÏŒÎ»Î·': islands[crds[0]-1][crds[1]-1][7]+' '+(parseInt(islands[crds[0]-1][crds[1]-1][7])==1 ? 'Ï€ÏŒÎ»Î·' : 'Ï€ÏŒÎ»ÎµÎ¹Ï‚'));
+						$('#empire_islandpiracy').html(pirtxt[islands[crds[0]-1][crds[1]-1][8]]);
+						$('#empire_islandhelios').html(hlstxt[islands[crds[0]-1][crds[1]-1][9]<2?islands[crds[0]-1][crds[1]-1][9]:2]);
+					},function(e)
+					{
+						var target = e.target;
+						if(!$(this).hasClass('own'))
+						{
+							$(this).css({'background-color':'#008000'});
+						}
+						else if($(this).hasClass('own'))
+						{
+							$(this).css({'background-color':''});
+						}
+						$(target).parent().find('td:first,td:last').removeClass('hover-border');
+						$(target).parent().find('td').each(function(a,td)
+						{
+							$(td).removeClass('hover-h');
+						});
+						$('#empire_WorldmapTab #empire_worldmap > tbody > tr:first > td:eq('+$(target).index()+')').removeClass('hover-border');
+						$('#empire_WorldmapTab #empire_worldmap > tbody > tr').each(function(b,tr)
+						{
+							$(tr).find('td:eq('+$(target).index()+')').removeClass('hover-v');
+						});
+						$('#empire_WorldmapTab #empire_worldmap > tbody > tr:last > td:eq('+$(target).index()+')').removeClass('hover-border');
+						$('#empire_islandshape,#empire_islandresource').css({'background':'none'});
+						$('#empire_islandwonder > div').css({'background-position':'0px 72px'}).find('+ div').empty();
+						$('#empire_islandcoords,#empire_islandname,#empire_islandblock,#empire_islandsawmill,#empire_islandcities,#empire_islandpiracy,#empire_islandhelios').empty();
+					});
+					map += '</table>';
+				}).fail(function(data)
+				{
+					console.log(map+' | Î‘Î½ÎµÏ€Î¹Ï„Ï…Ï‡Î®Ï‚ Î· Ï€ÏÎ¿ÏƒÏ€Î¬Î¸ÎµÎ¹Î±');
+				});
+				$('#WorldmapTab').html(map);
+				var worldmagnifyinterv = setInterval(function()
+				{
+					if($('#WorldmapTab > table#empire_WorldmapTab > tbody > tr > td:first > span').length==1)
+					{
+						$('#WorldmapTab > table#empire_WorldmapTab > tbody > tr > td:first > span').on('click',function()
+						{
+							$('#empire_worldmap').toggleClass('magnify');
+							$(this).html(($(this).text()=='+'?'-':'+')+'<img src="skin/img/magnifySmall.png">');
+						});
+						clearInterval(worldmagnifyinterv);
+					}
+				},500);
+			}
+		},
 		getHelpTable: function()
 		{
 			var LD = Constant.LanguageData[database.settings.languageChange.value];
@@ -3006,10 +3523,11 @@
 			}
 			var elems = '<div id="SettingsTab"><div>';
 			var order = 0;
-			var inits = '<div class="options" style="clear:right"><span class="categories">'+LD.building_category+'</span> <span><label for="empire_defaultBuildingList"><input type="radio" name="BuildingList" id="empire_defaultBuildingList" '+(database.settings.defaultBuildingList.value || (!database.settings.alternativeBuildingList.value && !database.settings.compressedBuildingList.value) ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.defaultBuildingList_description+'"> '+LD.defaultBuildingList+'</nobr></label></span> <span><label for="empire_alternativeBuildingList"><input type="radio" name="BuildingList" id="empire_alternativeBuildingList" '+(database.settings.alternativeBuildingList.value || (!database.settings.defaultBuildingList.value && !database.settings.compressedBuildingList.value) ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.alternativeBuildingList_description+'"> '+LD.alternativeBuildingList+'</nobr></label></span> <span><label for="empire_compressedBuildingList"><input type="radio" name="BuildingList" id="empire_compressedBuildingList" '+(database.settings.compressedBuildingList.value || (!database.settings.alternativeBuildingList.value && !database.settings.defaultBuildingList.value) ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.compressedBuildingList_description+'"> '+LD.compressedBuildingList+'</nobr></label></span><hr style="margin-top:5px;margin-bottom:5px"><span class="categories">'+LD.resource_category+'</span> <span><label for="empire_hourlyRess"><input type="checkbox" id="empire_hourlyRess" '+(database.settings.hourlyRess.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.hourlyRes_description+'"> '+LD.hourlyRes+'</nobr></label></span> '+wineOut+' <span><label for="empire_dailyBonus"><input type="checkbox" id="empire_dailyBonus" '+(database.settings.dailyBonus.value ? 'checked="checked"' : '')+(database.settings.logInPopup.value ? 'disabled="disabled"' : '')+'/><nobr data-tooltip="'+LD.dailyBonus_description+'"> '+LD.dailyBonus+'</nobr></label></span> <span><label for="empire_wineWarning"><input type="checkbox" id="empire_wineWarning" '+(database.settings.wineWarning.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.wineWarning_description+'"> '+LD.wineWarning+'</nobr></label></span> <span><label for="empire_wineWarningTime"><select id="empire_wineWarningTime"><option value="0"'+(database.settings.wineWarningTime.value === 0 ? 'selected=selected' : '' )+'> '+LD.off+'</option><option value="12"'+(database.settings.wineWarningTime.value == 12 ? 'selected=selected' : '' )+'> 12'+LD.hour+'</option><option value="24"'+(database.settings.wineWarningTime.value== 24 ? 'selected=selected' : '' )+'> 24'+LD.hour+'</option><option value="36"' + (database.settings.wineWarningTime.value== 36 ? 'selected=selected' : '' )+'> 36'+LD.hour+'</option><option value="48"'+(database.settings.wineWarningTime.value== 48 ? 'selected=selected' : '' )+'> 48'+LD.hour+'</option><option value="96"'+(database.settings.wineWarningTime.value== 96 ? 'selected=selected' : '' )+'> 96'+LD.hour+'</option></select><nobr data-tooltip="'+LD.wineWarningTime_description+'"> '+LD.wineWarningTime+'</nobr></label></span><hr style="margin-top:5px;margin-bottom:5px"><span class="categories">'+LD.language_category+'</span> <span><label for="empire_languageChange"><select id="empire_languageChange"><option value="en"'+(database.settings.languageChange.value == 'en' ? 'selected=selected' : '' )+'> '+LD.en+'</option><option value="es"'+(database.settings.languageChange.value == 'es' ? 'selected=selected' : '' )+'> '+LD.es+'</option><option value="el"'+(database.settings.languageChange.value == 'el' ? 'selected=selected' : '' )+'> '+LD.el+'</option></select><nobr data-tooltip="'+LD.languageChange_description+'"> '+LD.languageChange+'</nobr></label></span></div>';
+			var inits = '<div class="options" style="clear:right"><span class="categories">'+LD.building_category+'</span> <span><label for="empire_defaultBuildingList"><input type="radio" name="BuildingList" id="empire_defaultBuildingList" '+(database.settings.defaultBuildingList.value || (!database.settings.alternativeBuildingList.value && !database.settings.compressedBuildingList.value) ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.defaultBuildingList_description+'"> '+LD.defaultBuildingList+'</nobr></label></span> <span><label for="empire_alternativeBuildingList"><input type="radio" name="BuildingList" id="empire_alternativeBuildingList" '+(database.settings.alternativeBuildingList.value || (!database.settings.defaultBuildingList.value && !database.settings.compressedBuildingList.value) ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.alternativeBuildingList_description+'"> '+LD.alternativeBuildingList+'</nobr></label></span> <span><label for="empire_compressedBuildingList"><input type="radio" name="BuildingList" id="empire_compressedBuildingList" '+(database.settings.compressedBuildingList.value || (!database.settings.alternativeBuildingList.value && !database.settings.defaultBuildingList.value) ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.compressedBuildingList_description+'"> '+LD.compressedBuildingList+'</nobr></label></span><hr style="margin-top:5px;margin-bottom:5px"><span class="categories">'+LD.resource_category+'</span> <span><label for="empire_hourlyRess"><input type="checkbox" id="empire_hourlyRess" '+(database.settings.hourlyRess.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.hourlyRes_description+'"> '+LD.hourlyRes+'</nobr></label></span> '+wineOut+' <span><label for="empire_dailyBonus"><input type="checkbox" id="empire_dailyBonus" '+(database.settings.dailyBonus.value ? 'checked="checked"' : '')+(database.settings.logInPopup.value ? 'disabled="disabled"' : '')+'/><nobr data-tooltip="'+LD.dailyBonus_description+'"> '+LD.dailyBonus+'</nobr></label></span> <span><label for="empire_wineWarning"><input type="checkbox" id="empire_wineWarning" '+(database.settings.wineWarning.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.wineWarning_description+'"> '+LD.wineWarning+'</nobr></label></span> <span><label for="empire_wineWarningTime"><select id="empire_wineWarningTime"><option value="0"'+(database.settings.wineWarningTime.value === 0 ? 'selected=selected' : '' )+'> '+LD.off+'</option><option value="12"'+(database.settings.wineWarningTime.value == 12 ? 'selected=selected' : '' )+'> 12'+LD.hour+'</option><option value="24"'+(database.settings.wineWarningTime.value== 24 ? 'selected=selected' : '' )+'> 24'+LD.hour+'</option><option value="36"' + (database.settings.wineWarningTime.value== 36 ? 'selected=selected' : '' )+'> 36'+LD.hour+'</option><option value="48"'+(database.settings.wineWarningTime.value== 48 ? 'selected=selected' : '' )+'> 48'+LD.hour+'</option><option value="96"'+(database.settings.wineWarningTime.value== 96 ? 'selected=selected' : '' )+'> 96'+LD.hour+'</option></select><nobr data-tooltip="'+LD.wineWarningTime_description+'"> '+LD.wineWarningTime+'</nobr></label></span><hr style="margin-top:5px;margin-bottom:5px"><span class="categories">'+LD.language_category+'</span> <span><label for="empire_languageChange"><select id="empire_languageChange"><option value="en"'+(database.settings.languageChange.value == 'en' ? 'selected=selected' : '' )+'> '+LD.en+'</option><option value="el"'+(database.settings.languageChange.value == 'el' ? 'selected=selected' : '' )+'> '+LD.el+'</option><option value="es"'+(database.settings.languageChange.value == 'es' ? 'selected=selected' : '' )+'> '+LD.es+'</option></select><nobr data-tooltip="'+LD.languageChange_description+'"> '+LD.languageChange+'</nobr></label></span></div>';
 			var features = '<div class="options"> <span class="categories">'+LD.visibility_category+'</span> <span><label for="empire_hideOnWorldView"><input type="checkbox" id="empire_hideOnWorldView" '+(database.settings.hideOnWorldView.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.hideOnWorldView_description+'"> '+LD.hideOnWorldView+'</nobr></label></span> <span><label for="empire_hideOnIslandView"><input type="checkbox" id="empire_hideOnIslandView" '+(database.settings.hideOnIslandView.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.hideOnIslandView_description+'"> '+LD.hideOnIslandView+'</nobr></label></span> <span><label for="empire_hideOnCityView"><input type="checkbox" id="empire_hideOnCityView" '+(database.settings.hideOnCityView.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.hideOnCityView_description+'"> '+LD.hideOnCityView+'</nobr></label></span><hr style="margin-top:5px;margin-bottom:5px"><span class="categories">'+LD.army_category+'</span> <span><label for="empire_fullArmyTable"><input type="checkbox" id="empire_fullArmyTable" '+(database.settings.fullArmyTable.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.fullArmyTable_description+'"> '+LD.fullArmyTable+'</nobr></span>'+
 			//+' <span><label for="empire_playerInfo"><input type="checkbox" id="empire_playerInfo" '+(database.settings.playerInfo.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.playerInfo_description+'"> '+LD.playerInfo+'</nobr></label></span>+
-			'<hr style="margin-top:5px;margin-bottom:5px"><span class="categories">'+LD.global_category+'</span> <span><label for="empire_autoUpdates"><input type="checkbox" id="empire_autoUpdates" '+(database.settings.autoUpdates.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.autoUpdates_description+'"> '+LD.autoUpdates+'</nobr></label></span><hr style="margin-top:5px;margin-bottom:5px"><span class="categories">'+LD.tweaks_category+'</span> <span><label for="empire_donationButtons"><input type="checkbox" id="empire_donationButtons" '+(database.settings.donationButtons.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.donationButtons_description+'"> '+LD.donationButtons+'</nobr></label></span> <span><label for="empire_ctfinder"><input type="checkbox" id="empire_ctfinder" '+(database.settings.ctfinder.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.ctfinder_description+'"> '+LD.ctfinder+'</nobr></label></span> <span><label for="empire_ΧΥshow"><input type="checkbox" id="empire_ΧΥshow" '+(database.settings.ΧΥshow.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.ΧΥshow_description+'"> '+LD.ΧΥshow+'</nobr></label></span></div>';
+			'<hr style="margin-top:5px;margin-bottom:5px"><span class="categories">'+LD.global_category+'</span> <span><label for="empire_autoUpdates"><input type="checkbox" id="empire_autoUpdates" '+(database.settings.autoUpdates.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.autoUpdates_description+'"> '+LD.autoUpdates+'</nobr></label></span><hr style="margin-top:5px;margin-bottom:5px"><span class="categories">'+LD.tweaks_category+'</span> <span><label for="empire_donationButtons"><input type="checkbox" id="empire_donationButtons" '+(database.settings.donationButtons.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.donationButtons_description+'"> '+LD.donationButtons+'</nobr></label></span> <span><label for="empire_ctfinder"><input type="checkbox" id="empire_ctfinder" '+(database.settings.ctfinder.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.ctfinder_description+'"> '+LD.ctfinder+'</nobr></label></span> <span><label for="empire_XYshow"><input type="checkbox" id="empire_XYshow" '+(database.settings.XYshow.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.XYshow_description+'"> '+LD.XYshow+'</nobr></label></span>'+
+			'<span><label for="empire_worldmapshow"><input type="checkbox" id="empire_worldmapshow" '+(database.settings.worldmapshow.value?'checked="checked"':'')+'/><nobr data-tooltip="'+LD.worldmapshow_description+'"> '+LD.worldmapshow+'</nobr></label></span> </div>';
 			var display = '<div class="options"> <span class="categories">'+LD.display_category+'</span> <span><label for="empire_onTop"><input type="checkbox" id="empire_onTop" ' + (database.settings.onTop.value ? 'checked="checked"' : '') + '/><nobr data-tooltip="'+LD.onTop_description+'"> '+LD.onTop+'</nobr></label></span> <span><label for="empire_windowTennis"><input type="checkbox" id="empire_windowTennis" ' + (database.settings.windowTennis.value ? 'checked="checked"' : '') + '/><nobr data-tooltip="'+LD.windowTennis_description+'"> '+LD.windowTennis+'</nobr></label></span> <span><label for="empire_quantityLoads"><input type="checkbox" id="empire_quantityLoads" ' + (database.settings.quantityLoads.value ? 'checked="checked"' : '') + '/><nobr data-tooltip="'+LD.quantityLoads_description+'"> '+LD.quantityLoads+'</nobr></label></span> <span><label for="empire_smallFont"><input type="checkbox" id="empire_smallFont" ' + (database.settings.smallFont.value ? 'checked="checked"' : '') + '/><nobr data-tooltip="'+LD.smallFont_description+'"> '+LD.smallFont+'</nobr></label></span> <span><label for="empire_GoldShort"><input type="checkbox" id="empire_GoldShort" ' + (database.settings.GoldShort.value ? 'checked="checked"' : '') + '/><nobr data-tooltip="'+LD.goldShort_description+'"> '+LD.goldShort+'</nobr></label></span> <span><label for="empire_newsTicker"><input type="checkbox" id="empire_newsTicker" ' + (database.settings.newsTicker.value ? 'checked="checked"' : '') + '/><nobr data-tooltip="'+LD.newsticker_description+'"> '+LD.newsticker+'</nobr></label></span> <span><label for="empire_event"><input type="checkbox" id="empire_event" ' + (database.settings.event.value ? 'checked="checked"' : '') + '/><nobr data-tooltip="'+LD.event_description+'"> '+LD.event+'</nobr></label></span> <span><label for="empire_logInPopup"><input type="checkbox" id="empire_logInPopup" ' + (database.settings.logInPopup.value ? 'checked="checked"' : '') + ' onchange="document.getElementById(\'empire_dailyBonus\').checked = this.checked ? true : document.getElementById(\'empire_dailyBonus\').checked;document.getElementById(\'empire_dailyBonus\').disabled = this.checked ? true : false"/><nobr data-tooltip="'+LD.logInPopup_description+'"> '+LD.logInPopup+'</nobr></label></span> <span><label for="empire_birdSwarm"><input type="checkbox" id="empire_birdSwarm" ' + (database.settings.birdSwarm.value ? 'checked="checked"' : '') + '/><nobr data-tooltip="'+LD.birdswarm_description+'"> '+LD.birdswarm+'</nobr></label></span> <span><label for="empire_walkers"><input type="checkbox" id="empire_walkers" ' + (database.settings.walkers.value ? 'checked="checked"' : '') + '/><nobr data-tooltip="'+LD.walkers_description+'"> '+LD.walkers+'</nobr></label></span> '+piracy+' <span><label for="empire_noTheater"><input type="checkbox" id="empire_noTheater" '+(database.settings.noTheater.value ? 'checked="checked"' : '')+'/><nobr data-tooltip="'+LD.noTheater_description+'"> '+LD.noTheater +'</nobr></label></span> <span><label for="empire_controlCenter"><input type="checkbox" id="empire_controlCenter" ' + (database.settings.controlCenter.value ? 'checked="checked"' : '') + '/><nobr data-tooltip="'+LD.control_description+'"> '+LD.control+'</nobr></label></span> <span><label for="empire_withoutFable"><input type="checkbox" id="empire_withoutFable" ' + (database.settings.withoutFable.value ? 'checked="checked"' : '') + '/><nobr data-tooltip="'+LD.unnecessaryTexts_description+'"> '+LD.unnecessaryTexts+'</nobr></span> <span><label for="empire_ambrosiaPay"><input type="checkbox" id="empire_ambrosiaPay" ' + (database.settings.ambrosiaPay.value ? 'checked="checked"' : '') + '/><nobr data-tooltip="'+LD.ambrosiaPay_description+'"> '+LD.ambrosiaPay+'</nobr></label></span></div>';
 			elems += features+inits+display+'<div style="clear:left"><hr style="margin-top:5px;margin-bottom:5px"><p>&nbsp; '+LD.current_Version+' <b>'+empire.version+'</b></p><p>&nbsp; '+LD.ikariam_Version+' <b style="cursor:pointer" onclick="ajaxHandlerCall(\'?view=version\')">'+ikariam.GameVersion()+'</b></p></div><div class="buttons"><button data-tooltip="'+LD.reset+'" id="empire_Reset_Button">'+LD.resetbtn+'</button><button data-tooltip="'+LD.goto_website+'" id="empire_Website_Button">'+LD.website+'</button><button data-tooltip="'+LD.Check_for_updates+'" id="empire_Update_Button">'+LD.check+'</button><button data-tooltip="'+LD.Report_bug+'" id="empire_Bug_Button">'+LD.report+'</button><button data-tooltip="'+LD.save_settings+'" id="empire_Save_Button" onclick="ajaxHandlerCall(\'?view=city&oldBackgroundView\')">'+LD.save+'</button>';
 			return elems;
@@ -3068,7 +3586,8 @@
 			.on("change", "#empire_playerInfo", function(){database.settings.playerInfo.value = this.checked;})
 			.on("change", "#empire_donationButtons", function(){database.settings.donationButtons.value = this.checked;})
 			.on("change", "#empire_ctfinder", function(){database.settings.ctfinder.value = this.checked;})
-			.on("change", "#empire_ΧΥshow", function() { database.settings.ΧΥshow.value = this.checked; })
+			.on("change", "#empire_XYshow", function() {database.settings.XYshow.value = this.checked;})
+			.on("change", "#empire_worldmapshow", function() {database.settings.worldmapshow.value = this.checked;})
 			.on("change", "#empire_controlCenter", function(){database.settings.controlCenter.value = this.checked;})
 			.on("change", "#empire_withoutFable", function(){database.settings.withoutFable.value = this.checked;})
 			.on("change", "#empire_ambrosiaPay", function(){database.settings.ambrosiaPay.value = this.checked;})
@@ -3102,7 +3621,7 @@
 					$("#empire_dailyBonus").attr("disabled", this.checked ? true : false);
 				}
 			})
-			.on("change", "#empire_defaultBuildingList", function()
+			.on("change","#empire_defaultBuildingList", function()
 			{
 				database.settings.defaultBuildingList.value = this.checked;
 				database.settings.alternativeBuildingList.value = false;
@@ -3110,17 +3629,17 @@
 				render.cityRows.building = {};
 				$('table.buildings').html(render.getBuildingTable());
 				render.updateCitiesBuildingData();
-				$.each(database.cities, function(cityId, city)
+				$.each(database.cities, function(cityId,city)
 				{
 					render.setCityName(city);
 					render.setActionPoints(city);
-					$.each(database.settings[Constant.Settings.CITY_ORDER].value, function(idx,val)
+					$.each(database.settings[Constant.Settings.CITY_ORDER].value,function(idx,val)
 					{
-						$('#' + 'building' + '_' + val).appendTo($('#' + 'building' + '_' + val).parent());
+						$('#building_'+val).appendTo($('#building_'+val).parent());
 					});
 				});
 			})
-			.on("change", "#empire_alternativeBuildingList", function()
+			.on("change","#empire_alternativeBuildingList", function()
 			{
 				database.settings.alternativeBuildingList.value = this.checked;
 				database.settings.defaultBuildingList.value = false;
@@ -3128,17 +3647,17 @@
 				render.cityRows.building = {};
 				$('table.buildings').html(render.getBuildingTable());
 				render.updateCitiesBuildingData();
-				$.each(database.cities, function(cityId, city)
+				$.each(database.cities, function(cityId,city)
 				{
 					render.setCityName(city);
 					render.setActionPoints(city);
 					$.each(database.settings[Constant.Settings.CITY_ORDER].value, function(idx,val)
 					{
-						$('#' + 'building' + '_' + val).appendTo($('#' + 'building' + '_' + val).parent());
+						$('#building_'+val).appendTo($('#building_'+val).parent());
 					});
 				});
 			})
-			.on("change", "#empire_compressedBuildingList", function()
+			.on("change","#empire_compressedBuildingList", function()
 			{
 				database.settings.compressedBuildingList.value = this.checked;
 				database.settings.defaultBuildingList.value = false;
@@ -3146,23 +3665,23 @@
 				render.cityRows.building = {};
 				$('table.buildings').html(render.getBuildingTable());
 				render.updateCitiesBuildingData();
-				$.each(database.cities, function(cityId, city)
+				$.each(database.cities, function(cityId,city)
 				{
 					render.setCityName(city);
 					render.setActionPoints(city);
 					$.each(database.settings[Constant.Settings.CITY_ORDER].value, function(idx,val)
 					{
-						$('#' + 'building' + '_' + val).appendTo($('#' + 'building' + '_' + val).parent());
+						$('#building_'+val).appendTo($('#building_'+val).parent());
 					});
 				});
 			})
 			.on('change',"#empire_wineWarningTime", function(){database.settings.wineWarningTime.value = this.value;})
 			.on('change',"#empire_languageChange", function(){database.settings.languageChange.value = this.value;})
-			.on("click", "#empire_Website_Button", function(){GM_openInTab('https://greasyfork.org/scripts/764-empire-overview');})
-			.on("click", "#empire_Reset_Button",function(){empire.HardReset();})
+			.on("click","#empire_Website_Button", function(){GM_openInTab('https://greasyfork.org/scripts/764-empire-overview');})
+			.on("click","#empire_Reset_Button", function(){empire.HardReset();})
 			.on("click","#empire_Update_Button", function(){empire.CheckForUpdates.call(empire, true);})
 			.on("click","#empire_Bug_Button", function(){GM_openInTab('https://greasyfork.org/scripts/764-empire-overview/feedback');})
-			.on("change", "input[type='checkbox']", function(){this.blur();});
+			.on("change","input[type='checkbox']", function(){this.blur();});
 			$(document).ready(function()
 			{ //todo
 				if($('#empire_dailyBonus').attr('checked') && $('#dailyActivityBonus form'))
@@ -3266,74 +3785,76 @@
 				{
 					var keycodes = '';
 					var codeTyp = ikariam.Nationality();
-                    switch(codeTyp){
-                        case 'en':
-                        case 'gr':
-                        case 'ro':
-                        case 'ru':
-                        case 'pl':
-                        case 'ir':
-                        case 'ae':
-                        case 'au':
-                        case 'br':
-                        case 'hk':
-                        case 'hu': // code 0,0 ü ó
-                        case 'il':
-                        case 'lt':
-                        case 'nl':
-                        case 'tw':
-                        case 'us':
-                            keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 173, 61]; //EN - =
-                            if (isChrome)
-                                keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 189, 187]; //US - =
-                            break;
-                        case 'de':
-                            keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 63, 192]; //DE ß ´
-                            if (isChrome)
-                                keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 219, 221]; //DE ß ´
-                            break;
-                        case 'it':
-                            keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 222, 160]; //IT + \
-                            break;
-                        case 'es':
-                        case 'rs':
-                        case 'si':
-                            keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 219, 171];// 222, 171]; //ES, RS, SI ' +
-                            break;
-                        case 'ar':
-                        case 'cl':
-                        case 'co':
-                        case 'mx':
-                        case 'pe':
-                        case 'pt':
-                        case 've':
-                            keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 222, 0]; //AR, CL, CO, MX, VE, PE ' ¿  PT ' «
-                            break;
-                        case 'fr':
-                            keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 169, 61]; //FR ) =
-                            break;
-                        case 'cz':
-                            keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 61, 169]; //CZ = )
-                            break;
-                        case 'bg':
-                            keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 173, 190]; //BG - .
-                            break;
-                        case 'dk':
-                        case 'fi':
-                        case 'ee':
-                        case 'se':
-                            keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 171, 192]; //DK, FI, EE, SE + ´
-                            break;
-                        case 'no':
-                            keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 171, 222]; //NO + \
-                            break;
-                        case 'tr':
-                            keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 170, 173]; //TR * -
-                            break;
-                        case 'sk':
-                            keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 61, 0]; //SK = ´
-                            break;
-                    }
+					switch(codeTyp)
+					{
+						case 'en':
+						case 'gr':
+						case 'ro':
+						case 'ru':
+						case 'pl':
+						case 'ir':
+						case 'ae':
+						case 'au':
+						case 'br':
+						case 'hk':
+						case 'hu': // code 0,0 ü ó
+						case 'il':
+						case 'lt':
+						case 'nl':
+						case 'tw':
+						case 'us':
+							keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 173, 61]; //EN - =
+							if(isChrome)
+								keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 189, 187]; //US - =
+							break;
+						case 'de':
+							keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 63, 192]; //DE ß ´
+							if (isChrome)
+								keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 219, 221]; //DE ß ´
+							break;
+						case 'it':
+							keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 222, 160]; //IT
+							break;
+						case 'es':
+							keycodes = [49,50,51,52,53,54,55,56,57,48,219,171];
+						case 'rs':
+						case 'si':
+							keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 219, 171];// 222, 171]; //ES, RS, SI ' +
+							break;
+						case 'ar':
+						case 'cl':
+						case 'co':
+						case 'mx':
+						case 'pe':
+						case 'pt':
+						case 've':
+							keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 222, 0]; //AR, CL, CO, MX, VE, PE, PT
+							break;
+						case 'fr':
+							keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 169, 61]; //FR ) =
+							break;
+						case 'cz':
+							keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 61, 169]; //CZ = )
+							break;
+						case 'bg':
+							keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 173, 190]; //BG - .
+							break;
+						case 'dk':
+						case 'fi':
+						case 'ee':
+						case 'se':
+							keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 171, 192]; //DK, FI, EE, SE + ´
+							break;
+						case 'no':
+							keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 171, 222]; //NO +
+							break;
+						case 'tr':
+							keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 170, 173]; //TR * -
+							break;
+						case 'sk':
+							keycodes = [49, 50, 51, 52, 53, 54, 55, 56, 57, 48, 61, 0]; //SK = ´
+							break;
+					}
 					index = keycodes.indexOf(event.which);
 					if(index !== -1)
 					{
@@ -3380,7 +3901,7 @@
 				this.DrawSettings();
 				this.DrawHelp();
 				this.toolTip.init();
-				$('#ResTab, #BuildTab, #ArmyTab').each(function()
+				$('#ResTab,#BuildTab,#ArmyTab').each(function()
 				{
 					$(this).sortable({
 						helper: function(e,ui)
@@ -3398,7 +3919,7 @@
 							return ui;
 						},
 						handle: '.city_name .icon',
-						cursor: "move",
+						cursor: 'move',
 						axis: 'y',
 						items: 'tbody tr',
 						container: 'tbody',
@@ -3413,14 +3934,14 @@
 							});
 							$.each(['building','resource','army'], function(idx,type)
 							{
-								if($(this).parents('.ui-sortable').attr('id') !== type)
+								if($(this).parents('.ui-sortable').attr('id')!==type)
 								{
 									$.each(database.settings[Constant.Settings.CITY_ORDER].value,function(idx,val)
 									{
 										$(document).ready(function()
 										{
 											$('#'+type+'_'+val+' .city_name .clickable').text((idx+1)+' '+database.cities[val].getName);
-											$('#' + type + '_' + val).appendTo($('#' + type + '_' + val).parent());
+											$('#'+type+'_'+val).appendTo($('#'+type+'_'+val).parent());
 										});
 									});
 								}
@@ -3435,7 +3956,7 @@
 						$(document).ready(function()
 						{
 							$('#'+type+'_'+val+' .city_name .clickable').text((idx+1)+' '+database.cities[val].getName);
-							$('#'+type+'_'+val+' .city_name .coords').css('display',database.settings.ΧΥshow.value?'inline':'none').text('['+database.cities[val].getCoordinates.join(':')+']');
+							$('#'+type+'_'+val+' .city_name .coords').css('display',database.settings.XYshow.value?'inline':'none').text('['+database.cities[val].getCoordinates.join(':')+']');
 							$('#' + type + '_' + val).appendTo($('#' + type + '_' + val).parent());
 						});
 					});
@@ -3516,7 +4037,7 @@
 			function getBody()
 			{
 				var body = '';
-				$.each(database.cities,function(cityId, city)
+				$.each(database.cities,function(cityId,city)
 				{
 					var rowCells = '';
 					var a = [LD[city.isCapital ? 'capital' : 'colony'],city._name];
@@ -3713,11 +4234,11 @@
 			}
 			for(var armyId in Constant.UnitData)
 			{
-				this.updateCityArmyCell(cityId, armyId, $node);
+				this.updateCityArmyCell(cityId,armyId,$node);
 			}
 			if(rowLevel)
 			{
-				Utils.setClone($row, $node);
+				Utils.setClone($row,$node);
 				this.setArmyTotals();
 				delete this.cityRows.army[cityId];
 			}
@@ -3728,17 +4249,17 @@
 			var $clone = Utils.getClone($node);
 			for(var cityId in database.cities)
 			{
-				empire.time(this.updateCityArmyRow.bind(this, cityId, $clone.find('#army_' + cityId)), 'updateArmyRow');
+				empire.time(this.updateCityArmyRow.bind(this,cityId,$clone.find('#army_' + cityId)),'updateArmyRow');
 			}
 			this.setArmyTotals($clone);
 			Utils.setClone($node, $clone);
 			this.cityRows.army = {};
 		},
-		updateChangesForCityMilitary: function(cityId, changes)
+		updateChangesForCityMilitary: function(cityId,changes)
 		{
 			if(changes && changes.length < 5)
 			{
-				$.each(changes, function(index, unit)
+				$.each(changes, function(index,unit)
 				{
 					this.updateCityArmyCell(cityId,unit);
 				}.bind(render));
@@ -3768,7 +4289,7 @@
 				}.bind(render));
 			}
 		},
-		updateResourcesForCity: function(cityId, changes)
+		updateResourcesForCity: function(cityId,changes)
 		{
 			var city = database.getCityFromId(cityId);
 			if(city)
@@ -3776,7 +4297,7 @@
 				events.scheduleAction(this.updateResourceCounters.bind(render,true));
 			}
 		},
-		updateCityDataForCity: function(cityId, changes)
+		updateCityDataForCity: function(cityId,changes)
 		{
 			var city = database.getCityFromId(cityId);
 			if(city)
@@ -3830,7 +4351,7 @@
 				}
 			}
 		},
-		setArmyTotals: function($node, unitId)
+		setArmyTotals: function($node,unitId)
 		{
 			var data = database.getArmyTotals;
 			if(!$node)
@@ -3851,7 +4372,7 @@
 			}
 			else
 			{
-				$.each(Constant.UnitData, function(unit, info)
+				$.each(Constant.UnitData, function(unit,info)
 				{
 					$node.find('td.total.' + unit).eq(0).text(Utils.FormatNumToStr(data[unit].total,false) ||'' ).next().children('span').eq(0).text(Utils.FormatNumToStr(data[unit].incoming,true) ||'' ).next().text(Utils.FormatNumToStr(data[unit].training,true) || '' );
 					if(data[unit].training || data[unit].incoming || data[unit].total || database.settings.fullArmyTable.value)
@@ -3865,7 +4386,7 @@
 				});
 			}
 		},
-		updateChangesForCityBuilding: function(cityID, changes)
+		updateChangesForCityBuilding: function(cityID,changes)
 		{
 			try
 			{
@@ -3879,7 +4400,7 @@
 							var building = city.getBuildingFromPosition(data.position);
 							if(building.getName === data.name)
 							{
-								this.updateCityBuildingPosition(city, data.position);
+								this.updateCityBuildingPosition(city,data.position);
 							}
 							else
 							{
@@ -3889,7 +4410,7 @@
 						}.bind(render));
 					}
 				}
-			} catch(e) { empire.error('updateChangesForCityBuilding', e);
+			} catch(e) { empire.error('updateChangesForCityBuilding',e);
 			} finally { }
 		},
 		updateCityBuildingPosition: function(city,position,$node)
@@ -3910,11 +4431,11 @@
 			if(cellOnly)
 			{
 				$node = render.getBuildingsRow(city);
-				cell = $node.find('td.building.' + building.getName + idx);
+				cell = $node.find('td.building.'+building.getName+idx);
 			}
 			else
 			{
-				cell = $node.find('td.building.' + building.getName + idx);
+				cell = $node.find('td.building.'+building.getName+idx);
 			}
 			if(!building.isEmpty)
 			{
@@ -3959,7 +4480,7 @@
 			}
 			return true;
 		},
-		updateCityBuildingRow: function(city, $node)
+		updateCityBuildingRow: function(city,$node)
 		{
 			try
 			{
@@ -3971,9 +4492,9 @@
 					$node = Utils.getClone($row);
 				}
 				var success = true;
-				$.each(city.getBuildings, function(position, building)
+				$.each(city.getBuildings, function(position,building)
 				{
-					success = this.updateCityBuildingPosition(city, position, $node);
+					success = this.updateCityBuildingPosition(city,position,$node);
 					return success;
 				}.bind(render));
 				if(cellLevel)
@@ -3994,7 +4515,7 @@
 					Utils.setClone($row, $node);
 				}
 				return success;
-			} catch(e) { empire.error('updateCityBuildingRow', e);
+			} catch(e) { empire.error('updateCityBuildingRow',e);
 			} finally { }
 		},
 		updateCitiesBuildingData: function($redraw)
@@ -4005,9 +4526,9 @@
 				var i = 0;
 				var $node = $('#BuildTab').find('table.buildings');
 				var $clone = $redraw || Utils.getClone($node);
-				$.each(database.cities, function(cityId, city)
+				$.each(database.cities, function(cityId,city)
 				{
-					success = empire.time(this.updateCityBuildingRow.bind(this, city, $clone.find('#building_' + city.getId)), 'updateBuildingRow');
+					success = empire.time(this.updateCityBuildingRow.bind(this,city, $clone.find('#building_' + city.getId)),'updateBuildingRow');
 					return success;
 				}.bind(render));
 				if(!success)
@@ -4032,7 +4553,7 @@
 						//render.setSpies(city);
 					});
 				}
-			} catch(e) { empire.error('updateCitiesBuildingData', e);
+			} catch(e) { empire.error('updateCitiesBuildingData',e);
 			} finally { }
 		},
 		redrawSettings: function()
@@ -4053,7 +4574,7 @@
 				var inAlliance = unsafeWindow.hasAlly;
 				var Allyicons = '<div style="text-align:right;margin:0 auto">';
 				var Icons = ['mayor_premium','mayor','general_premium','diplomat_premium'];
-				for(let r=0;r<4;r++)
+				for(var r=0;r<4;r++)
 				{
 					var s;
 					switch(database.getGlobalData.getEmbassyData.ranks[r].status)
@@ -4075,8 +4596,13 @@
 				Allyicons += '</div>';
 				Allyicons = inAlliance ? Allyicons : '';
 				var pir = 0, capital = 0;
-				$.each(database.cities,function(k,c){pir+=c.isPirateFortress?1:0;capital+=c.getBuildingFromName(Constant.Buildings.PALACE)!==null?1:0;});
-				$("#container").after('<div id="empireBoard" class="ui-widget" style="display:none;z-index:'+(database.settings.onTop.value?65112:61)+';position:absolute; left:70px;top:180px"><div id="empire_Tabs"><ul><li><a href="#ResTab"><img src="skin/layout/crown.png" style="height: 16px; margin-top:-1px; float: left">&nbsp;&nbsp;'+LD.economy+'</a></li><li><a href="#BuildTab"><img src="skin/icons/city_30x30.png" style="height: 18px; margin-top:-3px; float: left">&nbsp;&nbsp;'+LD.buildings+'</a></li><li><a href="#ArmyTab"><img src="skin/layout/shield-icon1.png" style="height: 12px; float: right"><img src="skin/layout/sword-icon1.png" style="height: 12px; float: left">&nbsp;&nbsp;'+LD.military+'&nbsp;&nbsp;</a></li><li><a href="#SettingsTab" data-tooltip="'+LD.options+'"><span class="ui-icon ui-icon-gear"/></a></li><li><a href="#HelpTab" data-tooltip="'+LD.help+'"><span class="ui-icon ui-icon-help"/></a></li>'+(database.settings.noPiracy.value==false && database.getGlobalData.getResearchTopicLevel(Constant.Research.Seafaring.PIRACY)==1 ? '<div class="pirates" style="display:'+(pir>0?'inline-block':'none')+';float:right;cursor:pointer;font-size:14pt;opacity:'+(city.isPirateFortress?'1.0':'0.5')+'" data-tooltip="dynamic">☠</div>':'')+(database.settings.noTheater.value==false?'<div id="cinelink" class="cinetheater icon '+$('#cityCinema').attr('class')+'cineIcon" style="width:25px;height:25px;display:inline-block;float:right;cursor:pointer" data-tooltip="dynamic"></div>':'')+(capital>0?'<div class="dailytasks" style="width:24px;height:22px;float:right;background: url(\'skin/resources/favour.png\') no-repeat center / 25px 20px;cursor:pointer" data-tooltip="dynamic"></div>':'')+(inAlliance?'<div style="width:25px;height:25px;float:right;background:url(\'skin/board/schriftrolle_offen2.png\') no-repeat center / auto 19px;cursor:pointer" data-tooltip="'+LD.member+'" onclick="ajaxHandlerCall(\'?view=diplomacyAllyMemberlist\')"></div>':'')+'<div style="width:'+(inAlliance?205:104)+'px;height:24px;display:table;margin:auto;background: url(\'//gf3.geo.gfsrv.net/cdnb0/894886c1294a01514b9e1b31abe197.png\') no-repeat left / 104px 18px;">'+Allyicons+'</div>'+'</ul><div id="ResTab"></div><div id="BuildTab"></div><div id="ArmyTab"></div><div id="WorldmapTab"></div><div id="SettingsTab"></div><div id="HelpTab"></div></div></div>');
+				$.each(database.cities,function(k,c)
+				{
+					pir+=c.isPirateFortress?1:0;
+					capital+=c.getBuildingFromName(Constant.Buildings.PALACE)!==null?1:0;
+				});
+				console.log(ikariam.CurrentCityId,city,unsafeWindow.ikariam); // To check where is the problem!!!!
+				$("#container").after('<div id="empireBoard" class="ui-widget" style="display:none;z-index:'+(database.settings.onTop.value?65112:61)+';position:absolute; left:70px;top:180px"><div id="empire_Tabs"><ul><li><a href="#ResTab"><img src="skin/layout/crown.png" style="height: 16px; margin-top:-1px; float: left">&nbsp;&nbsp;'+LD.economy+'</a></li><li><a href="#BuildTab"><img src="skin/icons/city_30x30.png" style="height: 18px; margin-top:-3px; float: left">&nbsp;&nbsp;'+LD.buildings+'</a></li><li><a href="#ArmyTab"><img src="skin/layout/shield-icon1.png" style="height: 12px; float: right"><img src="skin/layout/sword-icon1.png" style="height: 12px; float: left">&nbsp;&nbsp;'+LD.military+'&nbsp;&nbsp;</a></li>'+(database.settings.worldmapshow.value?'<li><a href="#WorldmapTab"><img src="skin/layout/icon-world.png" style="height: 16px; margin-top:-1px; float: left">&nbsp;&nbsp;'+LD.worldmap+'</a></li>':'')+'<li><a href="#SettingsTab" data-tooltip="'+LD.options+'"><span class="ui-icon ui-icon-gear"/></a></li><li><a href="#HelpTab" data-tooltip="'+LD.help+'"><span class="ui-icon ui-icon-help"/></a></li>'+(database.settings.noPiracy.value==false && database.getGlobalData.getResearchTopicLevel(Constant.Research.Seafaring.PIRACY)==1 ? '<div class="pirates" style="display:'+(pir>0?'inline-block':'none')+';float:right;cursor:pointer;font-size:14pt;opacity:'+(city.isPirateFortress?'1.0':'0.5')+'" data-tooltip="dynamic">☠</div>':'')+(database.settings.noTheater.value==false?'<div id="cinelink" class="cinetheater icon '+$('#cityCinema').attr('class')+'cineIcon" style="width:25px;height:25px;display:inline-block;float:right;cursor:pointer" data-tooltip="dynamic"></div>':'')+(capital>0?'<div class="dailytasks" style="width:24px;height:22px;float:right;background: url(\'skin/resources/favour.png\') no-repeat center / 25px 20px;cursor:pointer" data-tooltip="dynamic"></div>':'')+(inAlliance?'<div style="width:25px;height:25px;float:right;background:url(\'skin/board/schriftrolle_offen2.png\') no-repeat center / auto 19px;cursor:pointer" data-tooltip="<span style=&quot;white-space:nowrap&quot;>'+LD.member+'</span>" onclick="ajaxHandlerCall(\'?view=diplomacyAllyMemberlist\')"></div>':'')+'<div style="width:'+(inAlliance?205:104)+'px;height:24px;display:table;margin:auto;background: url(\'//gf3.geo.gfsrv.net/cdnb0/894886c1294a01514b9e1b31abe197.png\') no-repeat left / 104px 18px;">'+Allyicons+'</div>'+'</ul><div id="ResTab"></div><div id="BuildTab"></div><div id="ArmyTab"></div><div id="WorldmapTab"></div><div id="SettingsTab"></div><div id="HelpTab"></div></div></div>');
 				setInterval(function()
 				{
 					database._globalData._theater.status = $('#cityCinema').attr('class')!==undefined ? $('#cityCinema').attr('class') : database._globalData._theater.status;
@@ -4166,6 +4692,7 @@
 									render.updateChangesForCityBuilding(p.cityId || ikariam.getCurrentCity, []);
 								}
 								events('ajaxResponse').unsub(upgradeSuccessCheck);
+								render.updateCitiesBuildingData();
 							};
 						})();
 					}
@@ -4407,20 +4934,22 @@
 			{
 				var target = $(event.target);
 				var city = database.getCityFromId(target.parents('tr').attr('id').split('_').pop());
-				var className = target.parents('td').attr('class').split(' ').pop();
+				//var className = target.parents('td').attr('class').split(' ').pop();
 				var building = city.getBuildingFromName(Constant.Buildings.BARRACKS);
-				var params = building.getUrlParams;
-				ikariam.loadUrl(true, 'city', params);
-				if(unsafeWindow.ikariam.templateView)unsafeWindow.ikariam.templateView.id = null;
+				//var params = building.getUrlParams;
+				//ikariam.loadUrl(true, 'city', params);
+				//if(unsafeWindow.ikariam.templateView)unsafeWindow.ikariam.templateView.id = null;
 				if(building)
 				{
-					ikariam.loadUrl(true,'city',params);
+					var params = building.getUrlParams;
+					if(unsafeWindow.ikariam.templateView)unsafeWindow.ikariam.templateView.id = null;
+					if(ikariam.viewIsIsland)
+					{
+						params.currentIslandId = ikariam.getCurrentCity.getIslandID;
+					}
+					ikariam.loadUrl(true, ikariam.mainView, params);
 				}
-				else if(ikariam.viewIsIsland)
-				{
-					params.currentIslandId = ikariam.getCurrentCity.getIslandID;
-				}
-				ikariam.loadUrl(true, ikariam.mainView, params);
+				//ikariam.loadUrl(true, ikariam.mainView, params);
 				render.AddCityCSS();
 				return false;
 			})
@@ -4428,20 +4957,22 @@
 			{
 				var target = $(event.target);
 				var city = database.getCityFromId(target.parents('tr').attr('id').split('_').pop());
-				var className = target.parents('td').attr('class').split(' ').pop();
+				//var className = target.parents('td').attr('class').split(' ').pop();
 				var building = city.getBuildingFromName(Constant.Buildings.SHIPYARD);
-				var params = building.getUrlParams;
-				ikariam.loadUrl(true, 'city', params);
-				if(unsafeWindow.ikariam.templateView)unsafeWindow.ikariam.templateView.id = null;
+				//var params = building.getUrlParams;
+				//ikariam.loadUrl(true, 'city', params);
+				//if(unsafeWindow.ikariam.templateView)unsafeWindow.ikariam.templateView.id = null;
 				if(building)
 				{
-					ikariam.loadUrl(true,'city',params);
+					var params = building.getUrlParams;
+					if(unsafeWindow.ikariam.templateView)unsafeWindow.ikariam.templateView.id = null;
+					if(ikariam.viewIsIsland)
+					{
+						params.currentIslandId = ikariam.getCurrentCity.getIslandID;
+					}
+					ikariam.loadUrl(true, ikariam.mainView, params);
 				}
-				else if(ikariam.viewIsIsland)
-				{
-					params.currentIslandId = ikariam.getCurrentCity.getIslandID;
-				}
-				ikariam.loadUrl(true, ikariam.mainView, params);
+				//ikariam.loadUrl(true, ikariam.mainView, params);
 				render.AddCityCSS();
 				return false;
 			})
@@ -4451,17 +4982,19 @@
 				var city = database.getCityFromId(target.parents('tr').attr('id').split('_').pop());
 				var className = target.parents('td').attr('class').split(' ').pop();
 				var building = city.getBuildingFromName(Constant.Buildings.TEMPLE) || false;
-				var params = building.getUrlParams;
-				if(unsafeWindow.ikariam.templateView)unsafeWindow.ikariam.templateView.id = null;
+				//var params = building.getUrlParams;
+				//if(unsafeWindow.ikariam.templateView)unsafeWindow.ikariam.templateView.id = null;
 				if(building)
 				{
-					ikariam.loadUrl(true,'city',params);
+					var params = building.getUrlParams;
+					if(unsafeWindow.ikariam.templateView)unsafeWindow.ikariam.templateView.id = null;
+					if(ikariam.viewIsIsland)
+					{
+						params.currentIslandId = ikariam.getCurrentCity.getIslandID;
+					}
+					ikariam.loadUrl(true, ikariam.mainView, params);
 				}
-				else if(ikariam.viewIsIsland)
-				{
-					params.currentIslandId = ikariam.getCurrentCity.getIslandID;
-				}
-				ikariam.loadUrl(true, ikariam.mainView, params);
+				//ikariam.loadUrl(true, ikariam.mainView, params);
 				render.AddCityCSS();
 				return false;
 			})
@@ -4584,7 +5117,10 @@
 				else if(ikariam.viewIsIsland)
 				{
 					params.templateView = resource == Constant.Resources.WOOD ? 'resource' : 'tradegood';
-					if(unsafeWindow.ikariam.templateView) unsafeWindow.ikariam.templateView.id = null;
+					if(unsafeWindow.ikariam.templateView)
+					{
+						unsafeWindow.ikariam.templateView.id = null;
+					}
 				}
 				if(ikariam.viewIsIsland)
 				{
@@ -4797,7 +5333,7 @@
 			return this.cityRows[type][city.getId];
 		},
 		getAllRowsForCity: function(city) { return this.getResourceRow(city).add(this.getBuildingsRow(city)).add(this.getArmyRow(city)); },
-		setCityName: function(city, rows)
+		setCityName: function(city,rows)
 		{
 			if(!rows)
 			{
@@ -4812,7 +5348,7 @@
 				$(elem).eq(2).attr('data-tooltip',LD.free_ground).text(' '+(city.getAvailableBuildings||'')+' ');
 			});
 		},
-		setActionPoints: function(city, rows)
+		setActionPoints: function(city,rows)
 		{
 			if(!rows)
 			{
@@ -4821,14 +5357,14 @@
 			rows.find('span.ap').text(city.getAvailableActions + '/' + city.maxAP);
 			rows.find('span.garrisonlimit img').attr('src', 'skin/advisors/military/bang_soldier.png');
 		},
-		setFinanceData: function(city, row)
+		setFinanceData: function(city,row)
 		{
 			if(!row)
 			{
 				row = this.getResourceRow(city);
 			}
 		},
-		setPopulationData: function(city, row)
+		setPopulationData: function(city,row)
 		{
 			if(!row)
 			{
@@ -4879,14 +5415,14 @@
 			var fillperc = (100 * researchData.scientists) / city.maxSci;
 			row.find('td.research div.progressbarSci').find('div.ui-progressbar-value').width(fillperc + "%").removeClass('normal, full').addClass(researchData.scientists === 0 ? '' : city.maxSci - researchData.scientists > 0 ? 'normal' : 'full' );
 		},
-		setMovementDataForCity: function(city, row)
+		setMovementDataForCity: function(city,row)
 		{
 			if(!row)
 			{
 				row = this.getResourceRow(city);
 			}
 			var totalIncoming = {wood:0,wine:0,marble:0,glass:0,sulfur:0,gold:0};
-			$.each(city.getIncomingResources, function(index, element)
+			$.each(city.getIncomingResources, function(index,element)
 			{
 				for(var resourceName in Constant.Resources)
 				{
@@ -4923,7 +5459,7 @@
 				var	growthTot = 0;
 				var	citygrowth = 0;
 				var popDiffTot = 0;
-				$.each(database.cities, function(cityId, city)
+				$.each(database.cities, function(cityId,city)
 				{
 					var $row = Utils.getClone(this.getResourceRow(city));
 					if(force)
@@ -5058,7 +5594,7 @@
 	}
 	render.LoadCSS = function()
 	{
-		GM_addStyle('/* Global board styles */ #js_GlobalMenu_wood, #js_GlobalMenu_wine, #js_GlobalMenu_marble, #js_GlobalMenu_crystal, #js_GlobalMenu_sulfur {font-size:100%; position:absolute; top:-15px; left:40px} span.resourceProduction {font-size:86%;position:absolute;right:5px;top:-3px} #empireBoard .clickable { color: #542c0f; font-weight: 650; }#empireBoard .clickable:hover, #empireBoard .clickbar:hover { cursor: pointer; text-decoration: underline; }#empireBoard span.happy:hover {cursor: pointer;}#empireBoard .Bold, #empireBoard .Red, #empireBoard .Blue, #empireBoard .Green { font-weight: bold; }#empireBoard .Green { color: green !important; }#empireBoard .Red { color: red !important; }#empireBoard .Blue { color: blue !important; }#empireBoard .icon { background-clip: border-box; background-repeat: no-repeat; background-position: center; background-color: transparent; background-size: auto 14px; }#empireBoard .safeImage { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAJCAYAAAD+WDajAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAEFJREFUeNpi/P//PwMIhOrzQhhAsPriZ0YQzYQugcxnQhaE6YABxhA9HhRdyICJAQ/AayzxOtFdzYRuFLIVAAEGANwqFwuukYKqAAAAAElFTkSuQmCC"); background-size: auto auto !important; }#empireBoard .transportImage { background-image: url(skin/actions/transport.jpg); }#empireBoard .tradeImage { background-image: url(skin/actions/trade.jpg); }#empireBoard .plunderImage { background-image: url(skin/actions/plunder.jpg); }#empireBoard .merchantImage { background-image: url(skin/minimized/merchantNavy.png); background-position: 0 -5px; }#empireBoard .woodImage { background-image: url(skin/resources/icon_wood.png) ;}#empireBoard .wineImage { background-image: url(skin/resources/icon_wine.png); }#empireBoard .marbleImage { background-image: url(skin/resources/icon_marble.png); }#empireBoard .sulfurImage { background-image: url(skin/resources/icon_sulfur.png); }#empireBoard .goldImage { background-image: url(skin/resources/icon_gold.png); }#empireBoard .glassImage { background-image: url(skin/resources/icon_glass.png); }#empireBoard .sawMillImage { background-image: url(skin/characters/y100_worker_wood_faceleft.png); }#empireBoard .mineImage { background-image: url(skin/characters/y100_worker_tradegood_faceleft.png); }#empireBoard .researchImage { background-image: url(skin/resources/icon_research_time.png); }#empireBoard .populationImage { background-image: url(skin/resources/icon_population.png); }#empireBoard .goldImage { background-image: url(skin/resources/icon_gold.png); }#empireBoard #empire_Tabs table thead tr th.empireactions div.trapart { background-image:url(skin/layout/icon-kiste.png);background-size:auto 14px;background-repeat:no-repeat;background-position:center center;float:left;}#empireBoard #empire_Tabs table thead tr th.empireactions div.ilios { background-image: url(skin/world/heliostower.png); background-size: auto 40px; background-repeat: no-repeat; background-position: center center; float: left; cursor: pointer;}#empireBoard #empire_Tabs table thead tr th.empireactions div.spot { background-image: url(skin/img/city/flag_red.png); background-size: auto 16px; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard #empire_Tabs table thead tr th.empireactions .spio { background-image: url("skin/characters/military/120x100/spy_120x100.png"); background-size: auto 25px; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard #empire_Tabs table thead tr th.empireactions .generalEdit { background-image: url("skin/minimized/militaryAdvisor.png"); background-size: auto 27px; background-repeat: no-repeat; background-position: center +2px; float: left;}#empireBoard #empire_Tabs table thead tr th.empireactions .general { background-image: url("skin/minimized/citymilitary.png"); background-size: auto 30px; background-repeat: no-repeat; background-position: center -1px; float: right;}#empireBoard #empire_Tabs table thead tr th.empireactions .generalee { background-image: url("skin/img/island/noobschutz.png"); background-size: auto 26px; background-repeat: no-repeat; background-position: center -1px; float: left;}#empireBoard #empire_Tabs table thead tr th.empireactions .combat { background-image: url("skin/unitdesc/unit_attack.png"); background-size: 25px 23px; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard .expensesImage { background-image: url(skin/resources/icon_upkeep.png); }#empireBoard .happyImage { background-image: url(skin/smilies/happy.png); }#empireBoard .actionpointImage { background-image: url(skin/resources/icon_actionpoints.png); }#empireBoard .actionpointImage3 { background-image: url(skin/resources/icon_actionpoints.png); }#empireBoard .spotImage { background-image: url(skin/img/city/flag_red.png);}#empireBoard .wonderImage { background-image: url(skin/achievements/IK_Achievements_wunder_ausloesen.png); background-position: center; background-repeat: no-repeat; background-size: 45px 41px; }#empireBoard .naosImage { background-image: url(skin/achievements/IK_Achievements_Gebaeude_tempel.png); background-position: center; background-repeat: no-repeat; background-size: 44px 39px; }#empireBoard .growthImage { background-image: url(skin/icons/growth_positive.png); }#empireBoard .scientistImage { background-image: url(skin/characters/40h/scientist_r.png); }#empireBoard .activecineIcon { background: url(skin/img/city/Kino_aktiv_no_anim.png) no-repeat center / 25px 25px; }#empireBoard .inactivecineIcon { background: url(skin/img/city/Kino_inaktiv.png) no-repeat center / 25px 25px; }#empireBoard .evnoiaIcon { background: url(skin/img/city/IK_stadt_daily_level5_glow.jpg) no-repeat center / 15px 15px; }#empireBoard .priestIcon { background: url(skin/characters/40h/templer_r.png) no-repeat center / 16px 25px; }#empireBoard .citizenIcon { background-image: url(skin/characters/40h/citizen_r.png); }#empireBoard .cityIcon { background-image: url(skin/icons/city_30x30.png); }#empireBoard .researchIcon { background-image: url(skin/icons/researchbonus_30x30.png); }#empireBoard .tavernIcon { background-image: url(skin/buildings/tavern_30x30.png); }#empireBoard .culturalIcon { background-image: url(skin/interface/icon_message_write.png); }#empireBoard .museumIcon { background-image: url(skin/buildings/museum_30x30.png); }#empireBoard .governmentIcon { background-image: url(skin/government/zepter_20.png); }#empireBoard .incomeIcon { background-image: url(skin/icons/income_positive.png); }#empireBoard .outcomeIcon { background-image: url(skin/icons/income_negative.png); }#empireBoard .crownIcon { background-image: url(skin/layout/crown.png); }#empireBoard .corruptionIcon { background-image: url(skin/icons/corruption_24x24.png); }#empireBoard #empireTip { display: none; position: absolute; top: 0; left: 0; z-index: 99999999; }#empireBoard #empireTip .icon { background-clip: border-box; background-repeat: no-repeat; background-position: 0; background-color: transparent; background-attachment: scroll; background-size: 16px auto; height: 17px; min-width: 34px; width: 34px; }#empireBoard #empireTip .icon2 { background-clip: border-box; background-repeat: no-repeat; background-position: 0; background-color: transparent; background-attachment: scroll; background-size: 24px auto; height: 17px; min-width: 24px; width: 24px; }#empireBoard #empireTip .content, .tooltip-div, .info-div { background-color: #fae0ae; border: 1px solid #e4b873; position: relative; overflow: hidden; text-align: left; word-wrap: break-word; }#empireBoard #empireTip .content table, .tooltip-div table, .info-div table { width: 100%; }#empireBoard #empireTip .content table tr.data, .tooltip-div table tr.data, .info-div table tr.data { background-color: 	#FFFAF0; }#empireBoard #empireTip .content table tr.total, .tooltip-div table tr.total, .info-div table tr.total { background: #E7C680 url(skin/input/button.png) repeat-x scroll 0 0; }#empireBoard #empireTip .content table td, .tooltip-div table td, .info-div table td { padding: 2px; height: auto !important; text-align: right; }#empireBoard #empireTip .content table th, .tooltip-div table th, .info-div table th { padding: 2px; height: auto !important; text-align: right; font-weight: bold; background: #F8E7B3 url(skin/input/button.png) repeat-x scroll 0 bottom;}#empireBoard #empireTip .content table tbody td, .tooltip-div table tbody td, .info-div table tbody td { background-color: #fdfdfd;}#empireBoard #empireTip .content table tbody td:last-child, .tooltip-div table tbody td:last-child, .info-div table tbody td:last-child { text-align: left; white-space: nowrap; font-style: italic; }#empireBoard #empireTip .content table tfoot, .tooltip-div table tfoot, .info-div table tfoot { line-height: 15px !important; border-top: 3px solid #fdf7dd; }#empireBoard #empireTip .content table tfoot td:last-child, .tooltip-div table tfoot td:last-child, .info-div table tfoot td:last-child { text-align: left; white-space: nowrap; font-style: italic; }#empireBoard #empireTip .content table thead, .tooltip-div table thead { background: #F8E7B3 url(skin/input/button.png) repeat-x scroll 0 bottom;}#empireBoard #empireTip .content table thead th.lf, .tooltip-div table thead th.lf, .info-div table thead th.lf { border-left: 2px solid #e4b873; }#empireBoard #empireTip .content table tbody td.lf, .tooltip-div table tbody td.lf, .info-div table tbody td.lf { border-left: 2px solid #e4b873; }#empireBoard #empireTip .content table th.nolf, .tooltip-div table th.nolf, .info-div table th.nolf, #empireBoard #empireTip .content table td.nolf, .tooltip-div table td.nolf, .info-div table td.nolf { border-left: none; }#empireBoard #empireTip .content th.lfdash, .tooltip-div th.lfdash, .info-div th.lfdash, #empireBoard #empireTip .content td.lfdash, .tooltip-div td.lfdash, .info-div td.lfdash { border-left: 1px dashed #e4b873; }#empireBoard #empireTip .content table tr.small td, .tooltip-div table tr.small td, .info-div table tr.small td { height: auto !important; padding-top: 1px; font-size: 10px !important; line-height: 15px !important; }#empireBoard #empire_Tabs table { width: 100% !important; text-align: center; border: 1.1px solid #fff1e5; }#empireBoard #empire_Tabs table colgroup { border-left: 1.4px solid #e4b873; }#empireBoard #empire_Tabs table colgroup:first-child { border: none !important; }#empireBoard #empire_Tabs table colgroup col { border-left: 1px dashed #e4b873; }#empireBoard #empire_Tabs table thead { background: #f8e7b3 url(skin/input/button.png) repeat-x scroll 0 bottom; }#empireBoard #empire_Tabs table thead tr { height: 30px; }#empireBoard #empire_Tabs table thead tr th { text-align: center; font-weight: bold; overflow: hidden; white-space: nowrap; }#empireBoard #ArmyTab table thead tr th.empireactions { min-width: 77px; width: 77px; height: 29px;}#empireBoard #empire_Tabs table thead tr th.icon { min-width: 29px; background-size: auto 18px; }#empireBoard #empire_Tabs table tbody tr { border-top: 1.1px solid #e4b873;}#empireBoard #empire_Tabs table tbody tr:nth-child(even) { background-color: #FDF1D4; }#empireBoard #empire_Tabs table tbody tr.selected { background-color: #f7d6ac; box-shadow: 0 0 1em #CB9B6A inset; }#empireBoard #empire_Tabs table tbody tr:hover { background-color: #fff; box-shadow: 0 0 1em #CB9B6A; }#empireBoard #empire_Tabs table tbody tr td.city_name { min-width: 140px; max-width: 165px; padding-left: 0px; text-align: left; padding-right: 0px; }#empireBoard #empire_Tabs table tbody tr td.city_name span.icon { background-repeat: no-repeat; float: left; width: 20px; background-size: 15px auto; margin: 0 2px 0 -1px; height: 16px; cursor: move; } #empireBoard #empire_Tabs table tbody tr td.action_points { text-align: center;} #empireBoard #empire_Tabs table tbody tr td.spy_points { text-align: center;} #empireBoard #empire_Tabs table tbody tr td.population { text-align: center;}#empireBoard #empire_Tabs table tbody tr td.sawmill { border-left: 1.5px solid #e4b873; } #empireBoard #empire_Tabs table tbody tr td.sawmillprog { text-align: center;} #empireBoard #empire_Tabs table tbody tr td.mineprog { text-align: center;} #empireBoard #empire_Tabs table tbody tr td.empireactions div { background-clip: border-box; background: transparent repeat scroll 0 0; background-size: 25px auto; height: 16px; min-width: 25px; width: 25px;} #empireBoard #empire_Tabs table tbody tr td.wonder div { background-clip: border-box; background: transparent repeat scroll 0 0; background-size: auto 40px; height: 36px; min-width: 30px; width: 30px; }	#empireBoard #empire_Tabs table tbody tr td.temple div { background-clip: border-box; background: transparent repeat scroll 0 0; background-size: auto 40px; height: 36px; min-width: 30px; width: 30px; } #empireBoard #empire_Tabs table thead tr th.empireactions div { background-clip: border-box; background: transparent repeat scroll 0 0; background-size: 25px auto; height: 25px; min-width: 25px; width: 25px; }#empireBoard #empire_Tabs table tbody tr td.empireactions div.eroute { background-image: url("skin/interface/mission_trade.png"); height: 16px; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.varvaroi { background-image: url("skin/actions/frieden_schliessen_button_sprite.jpg"); height: 16px; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.spypointImage { background-image: url(skin/layout/icon-status-small.png); height: 18px; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.transport { background-image: url("skin/actions/transport.jpg"); background-position: 0 -17px; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.worldmap { background-image: url("skin/layout/icon-world.png"); background-size: 18px 18px; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.island { background-image: url("skin/layout/icon-island.png"); background-size: 23px 20px; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.islandwood { background-image: url("skin/resources/icon_wood.png"); background-size: 17px auto; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.islandgood { float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.city { background-image: url("skin/img/city/townhall_l.png"); background-size: auto 23px; background-repeat: no-repeat; background-position: center center; float: right;}#empireBoard #empire_Tabs table thead tr th.empireactions div.member { background-image: url("skin/friends/player_icon_blue_20.png"); background-size: auto 22px; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard #empire_Tabs table thead tr th.empireactions div.agora { background-image: url("skin/img/island/agora.png"); background-size: 34px 26px; background-repeat: no-repeat; background-position: center center; float: right;}#empireBoard #empire_Tabs table thead tr th.empireactions div.trading2 { background-image: url("skin/achievements/IK_Achievements_Forschungen_abgeschlossen.png"); background-position: center; background-repeat: no-repeat; background-size: 35px 30px; float: left;}#empireBoard #empire_Tabs table thead tr th.empireactions div.trading { background-image: url("skin/characters/fleet/40x40/ship_transport_r_40x40.png"); background-size: 23px 21px; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard #empire_Tabs table thead tr th.empireactions div.contracts { background-image: url("skin/museum/icon32_culturalgood.png"); background-size: auto 22px; background-repeat: no-repeat; background-position: center center; float:right;margin-right:0px;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.garrisonEdita{ background-image: url("skin/minimized/garrisonEdit.png"); background-size: 25px 17px; background-position: center center; float: left; background-repeat: no-repeat;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.garrisonEditb { background-image: url("skin/pirateFortress/2012-11-09_IK_Kaperfahrt_Diplomatenschiff_inaktiv.png"); background-size: 21px 13px; background-position: center center; background-repeat: no-repeat;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.barracks { background-image: url("skin/buildings/y50/y50_barracks.png"); background-size: 27px 16px; background-position: center center; float: left; background-repeat: no-repeat;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.shipyard { background-image: url("skin/buildings/y50/y50_shipyard.png"); background-size: 26px 15px; background-position: center center; background-repeat: no-repeat;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.deploymentarmy { background-image: url("skin/actions/move_army.jpg"); height: 16px; background-position: 0 -17px; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.deploymentfleet { background-image: url("skin/actions/move_fleet.jpg"); height: 16px; background-position: 0 -17px;}#empireBoard #empire_WorldmapTab table tbody tr td.worldmap div.worldmap{ width:829px; height:829px; background-image: url("skin/actions/move_fleet.jpg"); float: left; }#empireBoard #empire_Tabs table tbody tr:not(.selected) td.empireactions div.transport:hover { background-position: 0 -17px;cursor:pointer }#empireBoard #empire_Tabs table tbody tr td.empireactions div.deploymentfleet:hover { background-position: 0 -17px; }#empireBoard #empire_Tabs table tbody tr td.empireactions div.deploymentarmy:hover { background-position: 0 -17px; }#empireBoard #empire_Tabs table tbody tr.selected .empireactions div.transport, #empireBoard #empire_Tabs table tbody tr.selected .empireactions div.deploymentarmy, #empireBoard #empire_Tabs table tbody tr.selected .empireactions div.deploymentfleet{ background-position: 0 17px; }#empireBoard #empire_Tabs table tbody tr.current .empireactions div.transport { background-position: 0 px;cursor:default }#empireBoard #empire_Tabs table tfoot { background: #fae0ae; background: #e7c680 url(skin/input/button.png) repeat-x scroll 0 0; border-top: 2px solid #e4b873; }#empireBoard #empire_Tabs table tfoot tr td { text-align: center; font-weight: bold;}#empireBoard #empire_Tabs table tfoot tr #t_researchpoints.total { text-align: center; }#empireBoard #empire_Tabs table tfoot tr #t_growth.total { text-align: center; }#empireBoard #empire_Tabs table tfoot tr td.total span { line-height: 1em; height: 1em; font-size: 0.8em; display: block; }#empireBoard #empire_Tabs table tfoot tr td#t_sigma, #empireBoard #empire_Tabs table tfoot tr td.sigma { font-weight: 800; text-align: center; }#empireBoard #ResTab div.progressbar .normal { background: #73443E; }#empireBoard #ResTab div.progressbar .warning { background: #8F1D1A; }#empireBoard #ResTab div.progressbar .almostfull { background: #B42521; }#empireBoard #ResTab div.progressbar .full { background: #ff0000; }#empireBoard #ResTab div.progressbar .fullGold { background: #185A39; }#empireBoard #ResTab div.progressbarPop .normal { background: #73443E; }#empireBoard #ResTab div.progressbarPop .warning { background: #CC3300; }#empireBoard #ResTab div.progressbarPop .full { background: #185A39; }#empireBoard #ResTab div.progressbarSci .normal { background: #73443E; }#empireBoard #ResTab div.progressbarSci .full { background: #185A39; }#empireBoard #ResTab table tr td.gold_income, #empireBoard #ResTab table tr td.resource, #empireBoard #ResTab table tr td.army:nth-child(even) { text-align: center; }#empireBoard #ResTab table tr td.gold_income span.incoming, #empireBoard #ResTab table tr td.resource span.incoming { color: blue; }#empireBoard #ResTab table tr td.gold_unkeep span, #empireBoard #ResTab table tr td.resource span, #empireBoard #ResTab table tr td.army:nth-child(even) span { line-height: 1em; height: 1em; font-size: 0.8em; display: block; }#empireBoard #ResTab table tr td.gold_income span.icon, #empireBoard #ResTab table tr td.resource span.icon, #empireBoard #ResTab table tr td.army:nth-child(even) span.icon { background-repeat: no-repeat; float: left; width: 25px; height: 9px; padding: 5px 4px 0 0; }#empireBoard #ResTab table tr td.gold_income span.current, #empireBoard #ResTab table tr td.resource span.current, #empireBoard #ResTab table tr td.army:nth-child(even) span.current { font-size: 1em; display: inline; }#empireBoard #ResTab table tr td.population { text-align: center; }#empireBoard #ResTab table tr td.gold_income span:nth-child(2), #empireBoard #ResTab table tr td.population span:nth-child(2) { line-height: 1em; height: 1em; font-size: 0.8em; display: block; }#empireBoard #BuildTab table tbody tr td { background-clip: border-box; background-repeat: no-repeat; background-position: center; background-color: transparent; background-size: auto 20px; }#empireBoard #BuildTab table tbody tr td span.maxLevel { color: rgba(0, 0, 0, 0.29); }#empireBoard #BuildTab table tbody tr td span.upgradableSoon { color: #4169e1; font-style: italic; }#empireBoard #BuildTab table tbody tr td span.upgradableSoon:after { content: "+"; }#empireBoard #BuildTab table tbody tr td span.upgradable { color: green; font-style: italic; }#empireBoard #BuildTab table tbody tr td span.upgradable:after { content: "+"; }#empireBoard #BuildTab table tbody tr td span.upgrading { background: url("/skin/icons/arrow_upgrade.png") no-repeat scroll 1px 1px transparent; border-radius: 4px 4px 4px 4px; box-shadow: 0 0 3px rgba(0, 0, 0, 0.8); display: inline-block; padding: 1px 1px 1px 15px; margin: 2px; }#empireBoard #ArmyTab table colgroup col:nth-child(even) { border-left: none; }#empireBoard #SettingsTab .options, #empireBoard #HelpTab .options { float: left; padding: 10px; }#empireBoard #SettingsTab .options span.categories, #empireBoard #HelpTab .options span.categories { margin-left: -3px; font-weight: 500; }#empireBoard #SettingsTab .options span.categories:not(:first-child), #empireBoard #HelpTab .options span.categories:not(:first-child) { margin-top: 5px; }#empireBoard #SettingsTab .options span:not(.clickable), #empireBoard #HelpTab .options span:not(.clickable) { display: block; }#empireBoard #SettingsTab .options span label, #empireBoard #HelpTab .options span label { vertical-align: top; padding-left: 5px; }#empireBoard #SettingsTab .buttons, #empireBoard #HelpTab .buttons { clear: left; padding: 3px; }#empireBoard #SettingsTab .buttons button, #empireBoard #HelpTab .buttons button { margin-left: 3px; }.toast, .toastAlert { display: none; position: fixed; z-index: 99999; width: 100%; text-align: center; top: 11em; }.toast .message, .toastAlert .message { display: inline-block; color: #4C3000; padding: 5px; border-radius: 5px; box-shadow: 3px 0px 15px 0 #542C0F; -webkit-box-shadow: 3px 0px 15px 0 #542C0F; font-family: Arial, Helvetica, sans-serif; font-size: 11px; background: #faf3d7; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #faf3d7), color-stop(1, #e1b06d)); }div.prog:after { -webkit-animation: move 2s linear infinite; -moz-animation: move 2s linear infinite; }.prog { display: block; width: 100%; height: 100%; background: #fcf938 -moz-linear-gradient(center bottom, #fcf938 37%, #fcf938 69%); position: relative; overflow: hidden; }.prog:after { content: ""; position: absolute; top: 0; left: 0; bottom: 0; right: 0; background: -moz-linear-gradient(-45deg, rgba(10, 10, 10, 0.6) 25%, transparent 25%, transparent 50%, rgba(10, 10, 10, 0.6) 50%, rgba(10, 10, 10, 0.6) 75%, transparent 75%, transparent); z-index: 1; -webkit-background-size: 50px 50px; -moz-background-size: 50px 50px; background-size: 50px 50px; -webkit-animation: move 5s linear infinite; -moz-animation: move 5s linear infinite; overflow: hidden; }.animate > .prog:after { display: none; }@-webkit-keyframes move { 0% { background-position: 0 0; } 100% { background-position: 50px 50px; } }@-moz-keyframes move { 0% { background-position: 0 0; } 100% { background-position: 50px 50px; } }[id^="registrationGiftDay"]{display:none}.speedup:hover{background-position:0px -14px !important}.speedup:active{background-position:0px -28px !important}#city #cityRegistrationGifts {z-index:310;}.empiretooltip {position:static} .empiretooltip div.tooltip-div {display:none !important}.empiretooltip:hover div.tooltip-div {position:fixed !important;z-index:2147483647;display:block !important;white-space:nowrap;}.pirateHighscoreNextCalc .indicator {cursor: pointer;display:inline-block;width:18px;height:16px;background:url(skin/interface/window_control_sprite.png) no-repeat scroll transparent;position:relative;background-position:-72px -1px}.pirateHighscoreNextCalc .indicator:hover {background-position:-72px -20px}.pirateHighscoreNextCalc.active .indicator {background-position:-54px -1px}.pirateHighscoreNextCalc.active .indicator:hover {background-position:-54px -20px}#city #cityRegistrationGifts {z-index:310;}');
+		GM_addStyle('/* Global board styles */ #js_GlobalMenu_wood, #js_GlobalMenu_wine, #js_GlobalMenu_marble, #js_GlobalMenu_crystal, #js_GlobalMenu_sulfur {font-size:100%; position:absolute; top:-15px; left:40px} span.resourceProduction {font-size:86%;position:absolute;right:5px;top:-3px} #empireBoard .clickable { color: #542c0f; font-weight: 650; }#empireBoard .clickable:hover, #empireBoard .clickbar:hover { cursor: pointer; text-decoration: underline; }#empireBoard span.happy:hover {cursor: pointer;}#empireBoard .Bold, #empireBoard .Red, #empireBoard .Blue, #empireBoard .Green { font-weight: bold; }#empireBoard .Green { color: green !important; }#empireBoard .Red { color: red !important; }#empireBoard .Blue { color: blue !important; }#empireBoard .icon { background-clip: border-box; background-repeat: no-repeat; background-position: center; background-color: transparent; background-size: auto 14px; }#empireBoard .safeImage { background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAJCAYAAAD+WDajAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAEFJREFUeNpi/P//PwMIhOrzQhhAsPriZ0YQzYQugcxnQhaE6YABxhA9HhRdyICJAQ/AayzxOtFdzYRuFLIVAAEGANwqFwuukYKqAAAAAElFTkSuQmCC"); background-size: auto auto !important; }#empireBoard .transportImage { background-image: url(skin/actions/transport.jpg); }#empireBoard .tradeImage { background-image: url(skin/actions/trade.jpg); }#empireBoard .plunderImage { background-image: url(skin/actions/plunder.jpg); }#empireBoard .merchantImage { background-image: url(skin/minimized/merchantNavy.png); background-position: 0 -5px; }#empireBoard .woodImage { background-image: url(skin/resources/icon_wood.png) ;}#empireBoard .wineImage { background-image: url(skin/resources/icon_wine.png); }#empireBoard .marbleImage { background-image: url(skin/resources/icon_marble.png); }#empireBoard .sulfurImage { background-image: url(skin/resources/icon_sulfur.png); }#empireBoard .goldImage { background-image: url(skin/resources/icon_gold.png); }#empireBoard .glassImage { background-image: url(skin/resources/icon_glass.png); }#empireBoard .sawMillImage { background-image: url(skin/characters/y100_worker_wood_faceleft.png); }#empireBoard .mineImage { background-image: url(skin/characters/y100_worker_tradegood_faceleft.png); }#empireBoard .researchImage { background-image: url(skin/resources/icon_research_time.png); }#empireBoard .populationImage { background-image: url(skin/resources/icon_population.png); }#empireBoard .goldImage { background-image: url(skin/resources/icon_gold.png); }#empireBoard #empire_Tabs table thead tr th.empireactions div.trapart { background-image:url(skin/layout/icon-kiste.png);background-size:auto 14px;background-repeat:no-repeat;background-position:center center;float:left;}#empireBoard #empire_Tabs table thead tr th.empireactions div.ilios { background-image: url(skin/world/heliostower.png); background-size: auto 40px; background-repeat: no-repeat; background-position: center center; float: left; cursor: pointer;}#empireBoard #empire_Tabs table thead tr th.empireactions div.spot { background-image: url(skin/img/city/flag_red.png); background-size: auto 16px; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard #empire_Tabs table thead tr th.empireactions .spio { background-image: url("skin/characters/military/120x100/spy_120x100.png"); background-size: auto 25px; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard #empire_Tabs table thead tr th.empireactions .generalEdit { background-image: url("skin/minimized/militaryAdvisor.png"); background-size: auto 27px; background-repeat: no-repeat; background-position: center +2px; float: left;}#empireBoard #empire_Tabs table thead tr th.empireactions .general { background-image: url("skin/minimized/citymilitary.png"); background-size: auto 30px; background-repeat: no-repeat; background-position: center -1px; float: right;}#empireBoard #empire_Tabs table thead tr th.empireactions .generalee { background-image: url("skin/img/island/noobschutz.png"); background-size: auto 26px; background-repeat: no-repeat; background-position: center -1px; float: left;}#empireBoard #empire_Tabs table thead tr th.empireactions .combat { background-image: url("skin/unitdesc/unit_attack.png"); background-size: 25px 23px; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard .expensesImage { background-image: url(skin/resources/icon_upkeep.png); }#empireBoard .happyImage { background-image: url(skin/smilies/happy.png); }#empireBoard .actionpointImage { background-image: url(skin/resources/icon_actionpoints.png); }#empireBoard .actionpointImage3 { background-image: url(skin/resources/icon_actionpoints.png); }#empireBoard .spotImage { background-image: url(skin/img/city/flag_red.png);}#empireBoard .wonderImage { background-image: url(skin/achievements/IK_Achievements_wunder_ausloesen.png); background-position: center; background-repeat: no-repeat; background-size: 45px 41px; }#empireBoard .naosImage { background-image: url(skin/achievements/IK_Achievements_Gebaeude_tempel.png); background-position: center; background-repeat: no-repeat; background-size: 44px 39px; }#empireBoard .growthImage { background-image: url(skin/icons/growth_positive.png); }#empireBoard .scientistImage { background-image: url(skin/characters/40h/scientist_r.png); }#empireBoard .activecineIcon { background: url(skin/img/city/Kino_aktiv_no_anim.png) no-repeat center / 25px 25px; }#empireBoard .inactivecineIcon { background: url(skin/img/city/Kino_inaktiv.png) no-repeat center / 25px 25px; }#empireBoard .evnoiaIcon { background: url(skin/img/city/IK_stadt_daily_level5_glow.jpg) no-repeat center / 15px 15px; }#empireBoard .priestIcon { background: url(skin/characters/40h/templer_r.png) no-repeat center / 16px 25px; }#empireBoard .citizenIcon { background-image: url(skin/characters/40h/citizen_r.png); }#empireBoard .cityIcon { background-image: url(skin/icons/city_30x30.png); }#empireBoard .researchIcon { background-image: url(skin/icons/researchbonus_30x30.png); }#empireBoard .tavernIcon { background-image: url(skin/buildings/tavern_30x30.png); }#empireBoard .culturalIcon { background-image: url(skin/interface/icon_message_write.png); }#empireBoard .museumIcon { background-image: url(skin/buildings/museum_30x30.png); }#empireBoard .governmentIcon { background-image: url(skin/government/zepter_20.png); }#empireBoard .incomeIcon { background-image: url(skin/icons/income_positive.png); }#empireBoard .outcomeIcon { background-image: url(skin/icons/income_negative.png); }#empireBoard .crownIcon { background-image: url(skin/layout/crown.png); }#empireBoard .corruptionIcon { background-image: url(skin/icons/corruption_24x24.png); }#empireBoard #empireTip { display: none; position: absolute; top: 0; left: 0; z-index: 99999999; }#empireBoard #empireTip .icon { background-clip: border-box; background-repeat: no-repeat; background-position: 0; background-color: transparent; background-attachment: scroll; background-size: 16px auto; height: 17px; min-width: 34px; width: 34px; }#empireBoard #empireTip .icon2 { background-clip: border-box; background-repeat: no-repeat; background-position: 0; background-color: transparent; background-attachment: scroll; background-size: 24px auto; height: 17px; min-width: 24px; width: 24px; }#empireBoard #empireTip .content, .tooltip-div, .info-div { background-color: #fae0ae; border: 1px solid #e4b873; position: relative; overflow: hidden; text-align: left; word-wrap: break-word; }#empireBoard #empireTip .content table, .tooltip-div table, .info-div table { width: 100%; }#empireBoard #empireTip .content table tr.data, .tooltip-div table tr.data, .info-div table tr.data { background-color: 	#FFFAF0; }#empireBoard #empireTip .content table tr.total, .tooltip-div table tr.total, .info-div table tr.total { background: #E7C680 url(skin/input/button.png) repeat-x scroll 0 0; }#empireBoard #empireTip .content table td, .tooltip-div table td, .info-div table td { padding: 2px; height: auto !important; text-align: right; }#empireBoard #empireTip .content table th, .tooltip-div table th, .info-div table th { padding: 2px; height: auto !important; text-align: right; font-weight: bold; background: #F8E7B3 url(skin/input/button.png) repeat-x scroll 0 bottom;}#empireBoard #empireTip .content table tbody td, .tooltip-div table tbody td, .info-div table tbody td { background-color: #fdfdfd;}#empireBoard #empireTip .content table tbody td:last-child, .tooltip-div table tbody td:last-child, .info-div table tbody td:last-child { text-align: left; white-space: nowrap; font-style: italic; }#empireBoard #empireTip .content table tfoot, .tooltip-div table tfoot, .info-div table tfoot { line-height: 15px !important; border-top: 3px solid #fdf7dd; }#empireBoard #empireTip .content table tfoot td:last-child, .tooltip-div table tfoot td:last-child, .info-div table tfoot td:last-child { text-align: left; white-space: nowrap; font-style: italic; }#empireBoard #empireTip .content table thead, .tooltip-div table thead { background: #F8E7B3 url(skin/input/button.png) repeat-x scroll 0 bottom;}#empireBoard #empireTip .content table thead th.lf, .tooltip-div table thead th.lf, .info-div table thead th.lf { border-left: 2px solid #e4b873; }#empireBoard #empireTip .content table tbody td.lf, .tooltip-div table tbody td.lf, .info-div table tbody td.lf { border-left: 2px solid #e4b873; }#empireBoard #empireTip .content table th.nolf, .tooltip-div table th.nolf, .info-div table th.nolf, #empireBoard #empireTip .content table td.nolf, .tooltip-div table td.nolf, .info-div table td.nolf { border-left: none; }#empireBoard #empireTip .content th.lfdash, .tooltip-div th.lfdash, .info-div th.lfdash, #empireBoard #empireTip .content td.lfdash, .tooltip-div td.lfdash, .info-div td.lfdash { border-left: 1px dashed #e4b873; }#empireBoard #empireTip .content table tr.small td, .tooltip-div table tr.small td, .info-div table tr.small td { height: auto !important; padding-top: 1px; font-size: 10px !important; line-height: 15px !important; }#empireBoard #empire_Tabs table { width: 100% !important; text-align: center; border: 1.1px solid #fff1e5; }#empireBoard #empire_Tabs table colgroup { border-left: 1.4px solid #e4b873; }#empireBoard #empire_Tabs table colgroup:first-child { border: none !important; }#empireBoard #empire_Tabs table colgroup col { border-left: 1px dashed #e4b873; }#empireBoard #empire_Tabs table thead { background: #f8e7b3 url(skin/input/button.png) repeat-x scroll 0 bottom; }#empireBoard #empire_Tabs table thead tr { height: 30px; }#empireBoard #empire_Tabs table thead tr th { text-align: center; font-weight: bold; overflow: hidden; white-space: nowrap; }#empireBoard #ArmyTab table thead tr th.empireactions { min-width: 77px; width: 77px; height: 29px;}#empireBoard #empire_Tabs table thead tr th.icon { min-width: 29px; background-size: auto 18px; }#empireBoard #empire_Tabs table tbody tr { border-top: 1.1px solid #e4b873;}#empireBoard #empire_Tabs table tbody tr:nth-child(even) { background-color: #FDF1D4; }#empireBoard #empire_Tabs table tbody tr.selected { background-color: #f7d6ac; box-shadow: 0 0 1em #CB9B6A inset; }#empireBoard #empire_Tabs table:not(#empire_WorldmapTab) tbody tr:hover { background-color: #fff; box-shadow: 0 0 1em #CB9B6A; }#empireBoard #empire_Tabs table tbody tr td.city_name { min-width: 140px; max-width: 165px; padding-left: 0px; text-align: left; padding-right: 0px; }#empireBoard #empire_Tabs table tbody tr td.city_name span.icon { background-repeat: no-repeat; float: left; width: 20px; background-size: 15px auto; margin: 0 2px 0 -1px; height: 16px; cursor: move; } #empireBoard #empire_Tabs table tbody tr td.action_points { text-align: center;} #empireBoard #empire_Tabs table tbody tr td.spy_points { text-align: center;} #empireBoard #empire_Tabs table tbody tr td.population { text-align: center;}#empireBoard #empire_Tabs table tbody tr td.sawmill { border-left: 1.5px solid #e4b873; } #empireBoard #empire_Tabs table tbody tr td.sawmillprog { text-align: center;} #empireBoard #empire_Tabs table tbody tr td.mineprog { text-align: center;} #empireBoard #empire_Tabs table tbody tr td.empireactions div { background-clip: border-box; background: transparent repeat scroll 0 0; background-size: 25px auto; height: 16px; min-width: 25px; width: 25px;} #empireBoard #empire_Tabs table tbody tr td.wonder div { background-clip: border-box; background: transparent repeat scroll 0 0; background-size: auto 40px; height: 36px; min-width: 30px; width: 30px; }	#empireBoard #empire_Tabs table tbody tr td.temple div { background-clip: border-box; background: transparent repeat scroll 0 0; background-size: auto 40px; height: 36px; min-width: 30px; width: 30px; } #empireBoard #empire_Tabs table thead tr th.empireactions div { background-clip: border-box; background: transparent repeat scroll 0 0; background-size: 25px auto; height: 25px; min-width: 25px; width: 25px; }#empireBoard #empire_Tabs table tbody tr td.empireactions div.eroute { background-image: url("skin/interface/mission_trade.png"); height: 16px; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.varvaroi { background-image: url("skin/actions/frieden_schliessen_button_sprite.jpg"); height: 16px; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.spypointImage { background-image: url(skin/layout/icon-status-small.png); height: 18px; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.transport { background-image: url("skin/actions/transport.jpg"); background-position: 0 -17px; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.worldmap { background-image: url("skin/layout/icon-world.png"); background-size: 18px 18px; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.island { background-image: url("skin/layout/icon-island.png"); background-size: 23px 20px; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.islandwood { background-image: url("skin/resources/icon_wood.png"); background-size: 17px auto; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.islandgood { float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.city { background-image: url("skin/img/city/townhall_l.png"); background-size: auto 23px; background-repeat: no-repeat; background-position: center center; float: right;}#empireBoard #empire_Tabs table thead tr th.empireactions div.member { background-image: url("skin/friends/player_icon_blue_20.png"); background-size: auto 22px; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard #empire_Tabs table thead tr th.empireactions div.agora { background-image: url("skin/img/island/agora.png"); background-size: 34px 26px; background-repeat: no-repeat; background-position: center center; float: right;}#empireBoard #empire_Tabs table thead tr th.empireactions div.trading2 { background-image: url("skin/achievements/IK_Achievements_Forschungen_abgeschlossen.png"); background-position: center; background-repeat: no-repeat; background-size: 35px 30px; float: left;}#empireBoard #empire_Tabs table thead tr th.empireactions div.trading { background-image: url("skin/characters/fleet/40x40/ship_transport_r_40x40.png"); background-size: 23px 21px; background-repeat: no-repeat; background-position: center center; float: left;}#empireBoard #empire_Tabs table thead tr th.empireactions div.contracts { background-image: url("skin/museum/icon32_culturalgood.png"); background-size: auto 22px; background-repeat: no-repeat; background-position: center center; float:right;margin-right:0px;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.garrisonEdita{ background-image: url("skin/minimized/garrisonEdit.png"); background-size: 25px 17px; background-position: center center; float: left; background-repeat: no-repeat;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.garrisonEditb { background-image: url("skin/pirateFortress/2012-11-09_IK_Kaperfahrt_Diplomatenschiff_inaktiv.png"); background-size: 21px 13px; background-position: center center; background-repeat: no-repeat;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.barracks { background-image: url("skin/buildings/y50/y50_barracks.png"); background-size: 27px 16px; background-position: center center; float: left; background-repeat: no-repeat;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.shipyard { background-image: url("skin/buildings/y50/y50_shipyard.png"); background-size: 26px 15px; background-position: center center; background-repeat: no-repeat;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.deploymentarmy { background-image: url("skin/actions/move_army.jpg"); height: 16px; background-position: 0 -17px; float: left;}#empireBoard #empire_Tabs table tbody tr td.empireactions div.deploymentfleet { background-image: url("skin/actions/move_fleet.jpg"); height: 16px; background-position: 0 -17px;}#empireBoard #empire_WorldmapTab table tbody tr td.worldmap div.worldmap{ width:2000px; height:829px; background-image: url("skin/actions/move_fleet.jpg"); float: left; }#empireBoard #empire_WorldmapTab #empire_worldmap{border-collapse:separate;border-spacing:0;margin:0px auto;transform:matrix(0.6,0,0,0.6,0,0);top:-136px;left:36px}#empireBoard #empire_WorldmapTab #empire_worldmap.magnify{border-collapse:separate;border-spacing:0;margin:0px auto;transform:matrix(0.9,0,0,0.9,0,0);top:-250px;left:910px}#empireBoard #empire_WorldmapTab #empire_worldmap td{width:auto;height:6px;font-size:0;margin:0;padding:0;line-height:0;text-align:center;vertical-align:middle}#empireBoard #empire_WorldmapTab #empire_worldmap td:not(.island,.ocean){border:1px solid #000}#empireBoard #empire_WorldmapTab #empire_worldmap td.border0{background-color:#000}#empireBoard #empire_WorldmapTab #empire_worldmap td.border1{background-color:#fff}#empireBoard #empire_WorldmapTab #empire_worldmap td.island{background-color:#008000;border:1px solid #87ceeb}#empireBoard #empire_WorldmapTab #empire_worldmap td.island.own{background-color:#FFFFFF}#empireBoard #empire_WorldmapTab #empire_worldmap td.ocean{background-color:#87ceeb;border:1px solid #87ceeb}#empireBoard #empire_WorldmapTab #empire_worldmap td.island:hover{background-color:yellow;border:1px solid red!important}#empireBoard #empire_WorldmapTab #empire_worldmap td.hover-border{background-color:yellow}#empireBoard #empire_WorldmapTab #empire_worldmap td.hover-v{border-left:1px solid red!important;border-right:1px solid red!important}#empireBoard #empire_WorldmapTab #empire_worldmap td.hover-h{border-top:1px solid red!important;border-bottom:1px solid red!important}#empireBoard #empire_Tabs table tbody tr:not(.selected) td.empireactions div.transport:hover { background-position: 0 -17px;cursor:pointer }#empireBoard #empire_Tabs table tbody tr td.empireactions div.deploymentfleet:hover { background-position: 0 -17px; }#empireBoard #empire_Tabs table tbody tr td.empireactions div.deploymentarmy:hover { background-position: 0 -17px; }#empireBoard #empire_Tabs table tbody tr.selected .empireactions div.transport, #empireBoard #empire_Tabs table tbody tr.selected .empireactions div.deploymentarmy, #empireBoard #empire_Tabs table tbody tr.selected .empireactions div.deploymentfleet{ background-position: 0 17px; }#empireBoard #empire_Tabs table tbody tr.current .empireactions div.transport { background-position: 0 px;cursor:default }#empireBoard #empire_Tabs table tfoot { background: #fae0ae; background: #e7c680 url(skin/input/button.png) repeat-x scroll 0 0; border-top: 2px solid #e4b873; }#empireBoard #empire_Tabs table tfoot tr td { text-align: center; font-weight: bold;}#empireBoard #empire_Tabs table tfoot tr #t_researchpoints.total { text-align: center; }#empireBoard #empire_Tabs table tfoot tr #t_growth.total { text-align: center; }#empireBoard #empire_Tabs table tfoot tr td.total span { line-height: 1em; height: 1em; font-size: 0.8em; display: block; }#empireBoard #empire_Tabs table tfoot tr td#t_sigma, #empireBoard #empire_Tabs table tfoot tr td.sigma { font-weight: 800; text-align: center; }#empireBoard #ResTab div.progressbar .normal { background: #73443E; }#empireBoard #ResTab div.progressbar .warning { background: #8F1D1A; }#empireBoard #ResTab div.progressbar .almostfull { background: #B42521; }#empireBoard #ResTab div.progressbar .full { background: #ff0000; }#empireBoard #ResTab div.progressbar .fullGold { background: #185A39; }#empireBoard #ResTab div.progressbarPop .normal { background: #73443E; }#empireBoard #ResTab div.progressbarPop .warning { background: #CC3300; }#empireBoard #ResTab div.progressbarPop .full { background: #185A39; }#empireBoard #ResTab div.progressbarSci .normal { background: #73443E; }#empireBoard #ResTab div.progressbarSci .full { background: #185A39; }#empireBoard #ResTab table tr td.gold_income, #empireBoard #ResTab table tr td.resource, #empireBoard #ResTab table tr td.army:nth-child(even) { text-align: center; }#empireBoard #ResTab table tr td.gold_income span.incoming, #empireBoard #ResTab table tr td.resource span.incoming { color: blue; }#empireBoard #ResTab table tr td.gold_unkeep span, #empireBoard #ResTab table tr td.resource span, #empireBoard #ResTab table tr td.army:nth-child(even) span { line-height: 1em; height: 1em; font-size: 0.8em; display: block; }#empireBoard #ResTab table tr td.gold_income span.icon, #empireBoard #ResTab table tr td.resource span.icon, #empireBoard #ResTab table tr td.army:nth-child(even) span.icon { background-repeat: no-repeat; float: left; width: 25px; height: 9px; padding: 5px 4px 0 0; }#empireBoard #ResTab table tr td.gold_income span.current, #empireBoard #ResTab table tr td.resource span.current, #empireBoard #ResTab table tr td.army:nth-child(even) span.current { font-size: 1em; display: inline; }#empireBoard #ResTab table tr td.population { text-align: center; }#empireBoard #ResTab table tr td.gold_income span:nth-child(2), #empireBoard #ResTab table tr td.population span:nth-child(2) { line-height: 1em; height: 1em; font-size: 0.8em; display: block; }#empireBoard #BuildTab table tbody tr td { background-clip: border-box; background-repeat: no-repeat; background-position: center; background-color: transparent; background-size: auto 20px; }#empireBoard #BuildTab table tbody tr td span.maxLevel { color: rgba(0, 0, 0, 0.29); }#empireBoard #BuildTab table tbody tr td span.upgradableSoon { color: #4169e1; font-style: italic; }#empireBoard #BuildTab table tbody tr td span.upgradableSoon:after { content: "+"; }#empireBoard #BuildTab table tbody tr td span.upgradable { color: green; font-style: italic; }#empireBoard #BuildTab table tbody tr td span.upgradable:after { content: "+"; }#empireBoard #BuildTab table tbody tr td span.upgrading { background: url("/skin/icons/arrow_upgrade.png") no-repeat scroll 1px 1px transparent; border-radius: 4px 4px 4px 4px; box-shadow: 0 0 3px rgba(0, 0, 0, 0.8); display: inline-block; padding: 1px 1px 1px 15px; margin: 2px; }#empireBoard #ArmyTab table colgroup col:nth-child(even) { border-left: none; }#empireBoard #SettingsTab .options, #empireBoard #HelpTab .options { float: left; padding: 10px; }#empireBoard #SettingsTab .options span.categories, #empireBoard #HelpTab .options span.categories { margin-left: -3px; font-weight: 500; }#empireBoard #SettingsTab .options span.categories:not(:first-child), #empireBoard #HelpTab .options span.categories:not(:first-child) { margin-top: 5px; }#empireBoard #SettingsTab .options span:not(.clickable), #empireBoard #HelpTab .options span:not(.clickable) { display: block; }#empireBoard #SettingsTab .options span label, #empireBoard #HelpTab .options span label { vertical-align: top; padding-left: 5px; }#empireBoard #SettingsTab .buttons, #empireBoard #HelpTab .buttons { clear: left; padding: 3px; }#empireBoard #SettingsTab .buttons button, #empireBoard #HelpTab .buttons button { margin-left: 3px; }.toast, .toastAlert { display: none; position: fixed; z-index: 99999; width: 100%; text-align: center; top: 11em; }.toast .message, .toastAlert .message { display: inline-block; color: #4C3000; padding: 5px; border-radius: 5px; box-shadow: 3px 0px 15px 0 #542C0F; -webkit-box-shadow: 3px 0px 15px 0 #542C0F; font-family: Arial, Helvetica, sans-serif; font-size: 11px; background: #faf3d7; background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #faf3d7), color-stop(1, #e1b06d)); }div.prog:after { -webkit-animation: move 2s linear infinite; -moz-animation: move 2s linear infinite; }.prog { display: block; width: 100%; height: 100%; background: #fcf938 -moz-linear-gradient(center bottom, #fcf938 37%, #fcf938 69%); position: relative; overflow: hidden; }.prog:after { content: ""; position: absolute; top: 0; left: 0; bottom: 0; right: 0; background: -moz-linear-gradient(-45deg, rgba(10, 10, 10, 0.6) 25%, transparent 25%, transparent 50%, rgba(10, 10, 10, 0.6) 50%, rgba(10, 10, 10, 0.6) 75%, transparent 75%, transparent); z-index: 1; -webkit-background-size: 50px 50px; -moz-background-size: 50px 50px; background-size: 50px 50px; -webkit-animation: move 5s linear infinite; -moz-animation: move 5s linear infinite; overflow: hidden; }.animate > .prog:after { display: none; }@-webkit-keyframes move { 0% { background-position: 0 0; } 100% { background-position: 50px 50px; } }@-moz-keyframes move { 0% { background-position: 0 0; } 100% { background-position: 50px 50px; } }[id^="registrationGiftDay"]{display:none}.speedup:hover{background-position:0px -14px !important}.speedup:active{background-position:0px -28px !important}#city #cityRegistrationGifts {z-index:310;}.empiretooltip {position:static} .empiretooltip div.tooltip-div {display:none !important}.empiretooltip:hover div.tooltip-div {position:fixed !important;z-index:2147483647;display:block !important;white-space:nowrap;}.pirateHighscoreNextCalc .indicator {cursor: pointer;display:inline-block;width:18px;height:16px;background:url(skin/interface/window_control_sprite.png) no-repeat scroll transparent;position:relative;background-position:-72px -1px}.pirateHighscoreNextCalc .indicator:hover {background-position:-72px -20px}.pirateHighscoreNextCalc.active .indicator {background-position:-54px -1px}.pirateHighscoreNextCalc.active .indicator:hover {background-position:-54px -20px}#city #cityRegistrationGifts {z-index:310;}');
 		if(database.settings.compressedBuildingList.value) GM_addStyle('#empireBoard #BuildTab table tbody tr td.building.forester0:not(:empty) {background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAUCAMAAABPqWaPAAAKN2lDQ1BzUkdCIElFQzYxOTY2LTIuMQAAeJydlndUU9kWh8+9N71QkhCKlNBraFICSA29SJEuKjEJEErAkAAiNkRUcERRkaYIMijggKNDkbEiioUBUbHrBBlE1HFwFBuWSWStGd+8ee/Nm98f935rn73P3Wfvfda6AJD8gwXCTFgJgAyhWBTh58WIjYtnYAcBDPAAA2wA4HCzs0IW+EYCmQJ82IxsmRP4F726DiD5+yrTP4zBAP+flLlZIjEAUJiM5/L42VwZF8k4PVecJbdPyZi2NE3OMErOIlmCMlaTc/IsW3z2mWUPOfMyhDwZy3PO4mXw5Nwn4405Er6MkWAZF+cI+LkyviZjg3RJhkDGb+SxGXxONgAoktwu5nNTZGwtY5IoMoIt43kA4EjJX/DSL1jMzxPLD8XOzFouEiSniBkmXFOGjZMTi+HPz03ni8XMMA43jSPiMdiZGVkc4XIAZs/8WRR5bRmyIjvYODk4MG0tbb4o1H9d/JuS93aWXoR/7hlEH/jD9ld+mQ0AsKZltdn6h21pFQBd6wFQu/2HzWAvAIqyvnUOfXEeunxeUsTiLGcrq9zcXEsBn2spL+jv+p8Of0NffM9Svt3v5WF485M4knQxQ143bmZ6pkTEyM7icPkM5p+H+B8H/nUeFhH8JL6IL5RFRMumTCBMlrVbyBOIBZlChkD4n5r4D8P+pNm5lona+BHQllgCpSEaQH4eACgqESAJe2Qr0O99C8ZHA/nNi9GZmJ37z4L+fVe4TP7IFiR/jmNHRDK4ElHO7Jr8WgI0IABFQAPqQBvoAxPABLbAEbgAD+ADAkEoiARxYDHgghSQAUQgFxSAtaAYlIKtYCeoBnWgETSDNnAYdIFj4DQ4By6By2AE3AFSMA6egCnwCsxAEISFyBAVUod0IEPIHLKFWJAb5AMFQxFQHJQIJUNCSAIVQOugUqgcqobqoWboW+godBq6AA1Dt6BRaBL6FXoHIzAJpsFasBFsBbNgTzgIjoQXwcnwMjgfLoK3wJVwA3wQ7oRPw5fgEVgKP4GnEYAQETqiizARFsJGQpF4JAkRIauQEqQCaUDakB6kH7mKSJGnyFsUBkVFMVBMlAvKHxWF4qKWoVahNqOqUQdQnag+1FXUKGoK9RFNRmuizdHO6AB0LDoZnYsuRlegm9Ad6LPoEfQ4+hUGg6FjjDGOGH9MHCYVswKzGbMb0445hRnGjGGmsVisOtYc64oNxXKwYmwxtgp7EHsSewU7jn2DI+J0cLY4X1w8TogrxFXgWnAncFdwE7gZvBLeEO+MD8Xz8MvxZfhGfA9+CD+OnyEoE4wJroRIQiphLaGS0EY4S7hLeEEkEvWITsRwooC4hlhJPEQ8TxwlviVRSGYkNimBJCFtIe0nnSLdIr0gk8lGZA9yPFlM3kJuJp8h3ye/UaAqWCoEKPAUVivUKHQqXFF4pohXNFT0VFysmK9YoXhEcUjxqRJeyUiJrcRRWqVUo3RU6YbStDJV2UY5VDlDebNyi/IF5UcULMWI4kPhUYoo+yhnKGNUhKpPZVO51HXURupZ6jgNQzOmBdBSaaW0b2iDtCkVioqdSrRKnkqNynEVKR2hG9ED6On0Mvph+nX6O1UtVU9Vvuom1TbVK6qv1eaoeajx1UrU2tVG1N6pM9R91NPUt6l3qd/TQGmYaYRr5Grs0Tir8XQObY7LHO6ckjmH59zWhDXNNCM0V2ju0xzQnNbS1vLTytKq0jqj9VSbru2hnaq9Q/uE9qQOVcdNR6CzQ+ekzmOGCsOTkc6oZPQxpnQ1df11Jbr1uoO6M3rGelF6hXrtevf0Cfos/ST9Hfq9+lMGOgYhBgUGrQa3DfGGLMMUw12G/YavjYyNYow2GHUZPTJWMw4wzjduNb5rQjZxN1lm0mByzRRjyjJNM91tetkMNrM3SzGrMRsyh80dzAXmu82HLdAWThZCiwaLG0wS05OZw2xljlrSLYMtCy27LJ9ZGVjFW22z6rf6aG1vnW7daH3HhmITaFNo02Pzq62ZLde2xvbaXPJc37mr53bPfW5nbse322N3055qH2K/wb7X/oODo4PIoc1h0tHAMdGx1vEGi8YKY21mnXdCO3k5rXY65vTW2cFZ7HzY+RcXpkuaS4vLo3nG8/jzGueNueq5clzrXaVuDLdEt71uUnddd457g/sDD30PnkeTx4SnqWeq50HPZ17WXiKvDq/XbGf2SvYpb8Tbz7vEe9CH4hPlU+1z31fPN9m31XfKz95vhd8pf7R/kP82/xsBWgHcgOaAqUDHwJWBfUGkoAVB1UEPgs2CRcE9IXBIYMj2kLvzDecL53eFgtCA0O2h98KMw5aFfR+OCQ8Lrwl/GGETURDRv4C6YMmClgWvIr0iyyLvRJlESaJ6oxWjE6Kbo1/HeMeUx0hjrWJXxl6K04gTxHXHY+Oj45vipxf6LNy5cDzBPqE44foi40V5iy4s1licvvj4EsUlnCVHEtGJMYktie85oZwGzvTSgKW1S6e4bO4u7hOeB28Hb5Lvyi/nTyS5JpUnPUp2Td6ePJninlKR8lTAFlQLnqf6p9alvk4LTduf9ik9Jr09A5eRmHFUSBGmCfsytTPzMoezzLOKs6TLnJftXDYlChI1ZUPZi7K7xTTZz9SAxESyXjKa45ZTk/MmNzr3SJ5ynjBvYLnZ8k3LJ/J9879egVrBXdFboFuwtmB0pefK+lXQqqWrelfrry5aPb7Gb82BtYS1aWt/KLQuLC98uS5mXU+RVtGaorH1futbixWKRcU3NrhsqNuI2ijYOLhp7qaqTR9LeCUXS61LK0rfb+ZuvviVzVeVX33akrRlsMyhbM9WzFbh1uvb3LcdKFcuzy8f2x6yvXMHY0fJjpc7l+y8UGFXUbeLsEuyS1oZXNldZVC1tep9dUr1SI1XTXutZu2m2te7ebuv7PHY01anVVda926vYO/Ner/6zgajhop9mH05+x42Rjf2f836urlJo6m06cN+4X7pgYgDfc2Ozc0tmi1lrXCrpHXyYMLBy994f9Pdxmyrb6e3lx4ChySHHn+b+O31w0GHe4+wjrR9Z/hdbQe1o6QT6lzeOdWV0iXtjusePhp4tLfHpafje8vv9x/TPVZzXOV42QnCiaITn07mn5w+lXXq6enk02O9S3rvnIk9c60vvG/wbNDZ8+d8z53p9+w/ed71/LELzheOXmRd7LrkcKlzwH6g4wf7HzoGHQY7hxyHui87Xe4Znjd84or7ldNXva+euxZw7dLI/JHh61HXb95IuCG9ybv56Fb6ree3c27P3FlzF3235J7SvYr7mvcbfjT9sV3qID0+6j068GDBgztj3LEnP2X/9H686CH5YcWEzkTzI9tHxyZ9Jy8/Xvh4/EnWk5mnxT8r/1z7zOTZd794/DIwFTs1/lz0/NOvm1+ov9j/0u5l73TY9P1XGa9mXpe8UX9z4C3rbf+7mHcTM7nvse8rP5h+6PkY9PHup4xPn34D94Tz+49wZioAAABjUExURf////fetffelO/Wre/WjN7OpebOhN7OhN7Oe97Fe9a9hNa9c9athM61a8WtjNacWsWca86UWrWUa72UUs6MSrWEUq17UqV7Wox7a5xzUoxrUnNra3NrWntjUmNaUlJKSgAAAIa/w40AAAAhdFJOU///////////////////////////////////////////AJ/B0CEAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAEsSURBVHicXZDNjtswDISHP4ost8Ve9lYYu+//VoGxtwDtJfU6EsnSCdCmJQTw8IkzQ+o7jjozNbn6gr+lj8YRe53t/PY/WSPQZWJ9QneyyiB2QCrW5R8SXnd2Dyo6Pr4/E348IR2lXF6fiJjCWFWCHHLZlj9EbTC7SP6IEVO5K97JrTAckwyAeId+O3IkOYNnmDT6vBWizOf65ZhZ0QQ4KfvPK9eJnDTk4UMGGin2a0MqtW7KdCe5fTib37bWRcYoCGPODMqZGX4ij714wE41Ri8vl01RXPhYlHyvluvAp921saabAS7axXpRMerz1zh8alft2ctgdStpk5PSlfU6HTeeWXse24uapMaIDL+sldrMoJcf4NZIc4/Usq5YPhoGG3H9hOynkkmTbP4beIqL5HGYwHAAAAAASUVORK5CYII=);text-shadow: -1px -1px 0 #FDF1D4, 1px -1px 0 #FDF1D4, -1px 1px 0 #FDF1D4, 1px 1px 0 #FDF1D4; background-size: 21px 18px}#empireBoard #BuildTab table tbody tr td.building.winegrower0:not(:empty) {background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAUCAYAAAB4d5a9AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAASAAAAEgARslrPgAABQRJREFUOMuV1MuOHFcBxvH/OXWqurqqu6vdM56LZ3wZC5w4G8OCBSAQCCkSEjs2bBBSFlGMxIKd90hIvACWeAUktjwCQjFJhBNMhtie8fSkZ3r6Xvc6dc5hwYaFjcj3AP/f7lO8YcX8BZ7qPFxMP//9p+MPeTb7J23jcyMZcf/GPRbFnLTc8M2b32V3/8EvTVs97m4dvbal3oQ4Y0E6yqJgPJ+xTgvAMtMNx7mmcRW+ryhNhjY1ranelHo9orMrVJiE6fLkrXU9Z1VO0brGU4Lalqz0DOEbnIpZBjOGXkrj8q+GGF2CtT/J8vEHJ/VTTKdE1gLnBNZYdFPTESFeENDQoJ1Gu+arIQAOZz3p235vSCeaUBYtrXaUmcE5h0g0XQFN5jAJtJr/H6mzKSAinIkDf+c0zPbfDuRzgm6FaR1VZslmDnEA/X5Ar7NF38Tf34v2F222+rNzduP3R/8bsbpEeP6Pi+X4D+cnZ+EXH51xpS11CBZBMQe77lBHIVVkSasLzk7/9rNef/jT/tbtx73B4W+yzXTWG+y8HtHVHNXph+V8/L3F+UX49Mkzzk5mrCtBGA8JE0FgHG3XIFSJ2mk4LRd8/I9P2D3o+/f51q9uCRcn/VuP/htSALZZAiK2unq3Xpz/oLw4f3/xfMrkyyV5VXM9HvLO3j7KF1hhSW3Gy3RMXhSEMZioJfVrxuavgjnvHToYJbceZel01uvvoNpq0W/q8kdllv8wnZ+/v766CrPTBek8w5eSuNNh1OshBMSqg5CS5TKnsgIuQOxCnChMBWmz5ovqL8K04j3hBMng8FG6uZypJlv9bjOb/OL5i9Po2dPPOT27gFbwnaO7PDg4YFmWSCkpm5rxZkleN8yKDYO3fAZJRKsrZGCoU0e2dqhww8v6Q6E8+Z7viYvR8P5vVXH16uHl30/47NNjpqsNurZEgU/aVCRxxG6SsCoK5nXDvyaXTLOMOFHc3tlChYa8AuEE0RZIKTCNI+/MuXRPxG69++uoGh4rXaaIquXta9e5k4xY1TWx73OZbfjo7BWDTkimNfM0RbcGTwqGOz7Jnseq0hhjUYCnBEKAaaCtHZldMTHHUccd7KvWWPKmBiEY9npsDQbgHKuy4HhxSVZVaGsZdEMOt0cYYQj2S9pgTZs34AALtgYZgghA55AWFavehEqsUFmRc3w55eJqxXaSsNfr4Xsem7phWZZsioLtfp+v7e1xmAzRXsM8uSTfrDDWISRY45BW4EmwgBeAtQ6DxmJQSsO1KOKlvuLldEpRlgSeR9223EgSpIDr/T5HW1sMOiHnm5qrVxXCaKItiW4N64VjuC/oh5JaO6x1oAVSd5BOobJXOZFQxN0O803KYZIw6vWojUGbluPZlHVecjKf0REeZ4slxD637t4gcHA5zsgmGVHcIg8EnudopcOrQ5LikG4zQk1WCybrDUXdUOmWQmv2g4BICBZ5ThxGSF8hQ8WqLImSLl8/usm9u4coKZisJnySPcepKZ7X0lUS3Vh8EXBNbhOLHurmN45IP3vOnue4di1Gh4JxmaK0wzhLMuryzt277OxsIX0fKSRR3C97w93HUgj6vd2Hnduj7lg8xbhzrKyRQhJ4IUr6CCFQRw++TRh1qPP1fw4SwXxZMXkxI4ljbt4bsXPrwA227/wxCKMngOfgS+EFf0IIBt3ux3eS7Z+7sXl3nBeY3hQhwPdCpJDg4N+FYbSjpEdluAAAAABJRU5ErkJggg==);text-shadow: -1px -1px 0 #FDF1D4, 1px -1px 0 #FDF1D4, -1px 1px 0 #FDF1D4, 1px 1px 0 #FDF1D4; background-size: 20px 20px}#empireBoard #BuildTab table tbody tr td.building.stonemason0:not(:empty) {background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAUCAMAAABPqWaPAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAGBQTFRFAAAA8d/I6N/WzcS26NG27Nq68ezjv7Gotq2fyLqk1s3EqJqRraSWsaSW2sit0c2/pJaIrZ+Rn5GDqJqN49bE39rR7Ojaloh639bIxLqtsZ+R+vXxsaia39HEjX9xsaSaTMajHAAAAAF0Uk5TAEDm2GYAAAAJcEhZcwAAAEgAAABIAEbJaz4AAADqSURBVChTpdDRboMwDAVQcBoTEqgDrkMAk/7/XzZM2tpufdt99NGVZTfNf9OCudhPYBE6138g69GHYeyvf4AAKYYhTL/Mkgf0M08hcnijmxFJZolVIvevlUwisHKc47u0IpT9Skhb7cSntAAnGNxFtdpTEmTyhiTtnlXHsb+8islIaTfzKcrXH/EkCCbt3aLOOVX9llSPSfkA1BLU6aTuHNsWs5cE4gXwXnjbmL86FjA7t66GThnKzMxx2yrcAKXuHIPr/ClLpfqgxh6ShOKkyjG6nO6lLHwe2xz1J55inIYwL+EALqXMNcsD5M0SNKvkKqsAAAAASUVORK5CYII=);text-shadow: -1px -1px 0 #FDF1D4, 1px -1px 0 #FDF1D4, -1px 1px 0 #FDF1D4, 1px 1px 0 #FDF1D4; background-size: 21px 20px}#empireBoard #BuildTab table tbody tr td.building.glassblowing0:not(:empty) {background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAUCAYAAAB4d5a9AAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAASAAAAEgARslrPgAABJxJREFUOBG9wcuKZGcBwPH/dz3n1DlVXdXVPe3ETHomMQaSjYLEUYgv4CZP4VpGwQjZZOvChxDyFBJcBATNQjfiIgbNMEmc7uq6nfv5bjJCgwxMsvP3g/8DwTdw3RYQ8zg1b4cQTKMqTIrkTE4Z+2egttUdvo7ma4Rui9Sm7Jvtz7tm9+s2SH1QkozAWg1jWc7fTYmP+AaaF/DtBill2da7R9vD7v0ntbNHc8EkC3IZiJnUImXvrBYnH3ddPc1mc15E8wLj2CGFfLg97N77y5Wz2zTHFBmZkURheDJpoTr/y0Ttk+8/6XZPfGbzTxIcdXnG/9KuvTlxU/+DPkg7qgxFYiGGKa+qP17dHO0XjTePW4nMFGVISJmAQKsE/x5U2Q37D1y7Cy/Nzbhart+NKX3Ec7Sfuneaev/h08kUo52jCTgx+NLzGyPiaYjJxCiwUqGVJCZwISGFZDvBv652srm5kt9/sNb5ib4/jAPP04Pz+VXrsn8MpRG5RYrERmhzMbXvr0SDjgNSFCgh0BLGEEhSEBP0XcfjL27wfct07zTFRJsQPE8HNXurS40dMcgoUVJQY5icVrUuaBNEEiklIhGXIkSQDrabaw6HIzPpyYUXWRrfPFuflq69aU255paMQp4GlMiNpLAKKUAIGDHsYklnzojSMsXI6CISiUqCpm7Yba4JbsLmOcJkwo3tr/p2/0gIWU7NNbfkFCWNlygSF5Uh15KU+K+QQNkCYwuUtrgUiSnhXGCz3dLUNcUs5/LBJdXFA3pV2rE7vueG+mGYOm7JTPjrLA3ppm5IMbDMNTEmfIj4GBl8ososhVaYFOndwM1+R725QmnNnW/f4+TsLk6XRDsnRm9SnGwKjlvSCv+301x2wnV8frVDi0hhBD4mXEgMPoFULHPNMtcI5/BDQzXLeOXykrOLu3zZeD7bdAwBktQkNFFobslqNv/9+uTkt/fnKe0Oe77at5RWIgU4nxh9oO5HpFLkNsM7h02OV1/5Fm+9dsnd1YIgYNP1NF7Sy4UOMvtxWVala655Ro79oVnl+g+vLnV7nk082R459hMzq4gkfIhMIbDvHTElTnLNd++/zJuv3eflszmnpeW8LMi0YoySYzCia/ePur7/0Tj2PCONLRYIOV/Ol399YynB9zzd1xQ6oUWiGXq0jLTTQDNFLs9P+d7lXc4XM5QUOB+5t8z4zqpi8oLHTeTLLszGwE/L+bKcmg3ST/1PDofN7z7ftw8HNWc+K+nHkWPbU1lJZiTCGJQ1LErLS+uKKCW9S8gkaKeA1ZJ1Zeh85HpM1Mky9Yefjc3+h37qkM45u+/H/NMa/dlYYYqKRVVQT5HCaF6/s+SsynnjbMHr64Jn/rkdeFo7YoRMSVICAeQK+gBfdZpt54suqreL1T2ljbXjIjNTVTfZ3w+JrFqwynMW1rAqDOvS0IWc89wiBXx6M+JCZF1KaufZ947cS0QUrGaa4iA4tp62sKJP5heyH/4k89ni46xaf5iJhNtfMY0Dwzgx+QEjA1oLVoWhMBJSYpo8uRIYJRhcwihBTInBB6wSnGWK09JgZwsm7NxHsfoPqKt+g05SC1UAAAAASUVORK5CYII=);text-shadow: -1px -1px 0 #FDF1D4, 1px -1px 0 #FDF1D4, -1px 1px 0 #FDF1D4, 1px 1px 0 #FDF1D4; background-size: 22px 18px}#empireBoard #BuildTab table tbody tr td.building.alchemist0:not(:empty) {background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAUCAMAAABPqWaPAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAGBQTFRFAAAA8d+/9d+W1rZ638Sa8dq29ei69dqD48h60baN9eOf+uzR+uio7NatupZs8d+f+uOR6NGRza1sv5pfrY1oyKRj7Naa//G6/+yftpFa//r1/+yopH9RrYhW2rpx7NGDIqezSAAAAAF0Uk5TAEDm2GYAAAAJcEhZcwAAAEgAAABIAEbJaz4AAAD4SURBVCiRpY/ZcsMwCEUdLQZL3iQZO8RC+v+/jJpMm2mat/IGZw4Xuu6fdVHafAS2BxzsJ9IrcGawf5kfQVllBvOGrPdKTQa1nt82Wr+svQ8xprTRr7Muu3L+uGLiVvPLutz8ovrjvCrizFG26Sf9tjt3nOsKJYkUnTfzrUzVja42gJozVcr5MW+vVKeqrg4JMQqXwvICheoJkUvFJETCTxDGE1N0KxLrClqYRJ7GeASKu6uFOCJUlsRfOX1Qrn1Yr7XExKkAlCwtx/chBB0jroCRmFNbB5R57pYQzDCYHdaHwk0GQMlzZ+00Tda61upE0exmV4CUtztm+xM5HuXJowAAAABJRU5ErkJggg==);text-shadow: -1px -1px 0 #FDF1D4, 1px -1px 0 #FDF1D4, -1px 1px 0 #FDF1D4, 1px 1px 0 #FDF1D4; background-size: 22px 19px}#empireBoard #BuildTab table tbody tr td.building.palace0:not(:empty) {background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAABGdBTUEAALGPC/xhBQAAAAFzUkdCAK7OHOkAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAASAAAAEgARslrPgAAA2BJREFUOBEFwU1rXVUUgOF3rb3P1725yU3TWJWohEJxUJ1aOlBQiujQiQNnIo6c+gsExwqCv8BB/0HFoQNxoKK2tIJtKNUYaz5u7kfuOWefvZbPw4M7n/rRwY9/zufnbw/u4u5yPjt55+jJL48e3r3tR38/OJ7N5u9fXKzicrHg8PHPzM/Pbx49+f23+z994wd//JDPTo8/12ZjjuV/r1ruvhra7mbq2tdy7r/ou9P9jY0Gd3bykL4U93erKk6fffH6xOz8s747fGU6XrPVLDVo+kQWhx+6FLcg3nDr7VhD9lDqZfessaxxxljGh3Z1lrI+kEJ/jfHoA8nHm1EL8ICWLyEHd95zqZ/HR9dwNmmaRF2tqEYVcWMPimdoVwOr0wUXXcBCJPhDtptjoOFiLkx2XiW2s4RUh3jbos0lRhFUM+Rt3LbAJoRYE8uBsHhEoSvq8pjg0KVMu4QYz4giEBgIPiNKopKGGDYgNECJSCQUI4oyoN0B2ClVdKJMGcTAhdSuiQioOJGBJhplFQgFuGTAgICIEDwj7SmpOyYVNbFsEHrcA9kyigACIGgo0FihwRDJOAEn4gQEJ4ihPmBpwIeMqCFqSFAigAiIAAhgCAkk41IAEQccQzAcMHfAUUkEBRHQdQd5ANxx67HUkrPiFgFFUBRDLGPmZAN3MAfLjpARG4iHJ7CbYVOcInV4rsm2jdAQyIgouIKDO5hBGpzVGlJf0vZCEyGC899caLOjVSZURgiBUAZ8GNAwYK503cC6c1Zr6DGiDEgTaXulrJW4u1Ox7hLuznIlSOWU0qG0xGGFlHOMmvVizcnS6NewWQujQiE4rSgSIlruvMxkc8JkLNS1EgslFIbIgHuHWwIMCU4ZYdzAqFY8G4uTGX2XCGVF1MuvM+gYWd4je09OiZg6irKlKnukMnJOWDCq6LQ9LBaZfrai65Vm+hyxHhF3965/N2/Gb3G+pXn9F4MM5LZFfU4rJdovsWTkQdDRCKxlnXaRsMX0yh7TK/uMp1eQ+XK1N3SLj3SYXfXh4qkW+aZz94bqE0S3Qd4AuwQ+x/P35PyYlG89tbR9Oyj36o2tF8qqOhJ3BxDA2y69ebE8/Xpxdv/aOM4QE8ymuAfAwM/I3tGynyY7+99uTLY+tpz/GY8b/geGd+pmTCUDLQAAAABJRU5ErkJggg==);text-shadow: -1px -1px 0 #FDF1D4, 1px -1px 0 #FDF1D4, -1px 1px 0 #FDF1D4, 1px 1px 0 #FDF1D4; background-size: 19px 19px}');
 		if(database.settings.smallFont.value) GM_addStyle('#empireBoard {font-size:11px}');
 		if(database.settings.hourlyRess.value) GM_addStyle('span.resourceProduction {display: none;} #js_GlobalMenu_wood, #js_GlobalMenu_wine, #js_GlobalMenu_marble, #js_GlobalMenu_crystal, #js_GlobalMenu_sulfur {position:absolute; top:0px; left:31px}');
@@ -5091,7 +5627,17 @@
 			_GameVersion: null,
 			_TemplateView: null,
 			_currentCity: null,
-			closePopup: function(c) { if(c!==undefined&&c!==null&&c!=='popupMessage') { $('#'+c).remove(); } else { $('#popupMessage').children().remove(); } },
+			closePopup: function(c)
+			{
+				if(c!==undefined&&c!==null&&c!=='popupMessage')
+				{
+					$('#'+c).remove();
+				}
+				else
+				{
+					$('#popupMessage').children().remove();
+				}
+			},
 			url: function() { return 'http://' + this.Host() + '/index.php'; },
 			get mainView() { return unsafeWindow.ikariam.backgroundView.id; },
 			get boxViewParams()
@@ -5102,7 +5648,7 @@
 				}
 				return {};
 			},
-			loadUrl: function(ajax, mainView, params)
+			loadUrl: function(ajax,mainView,params)
 			{
 				mainView = mainView || ikariam.mainView;
 				var paramList = {cityId: ikariam.CurrentCityId};
@@ -5120,7 +5666,7 @@
 					paramList.backgroundView = mainView;
 					ajax = false;
 				}
-				$.extend(paramList, params);
+				$.extend(paramList,params);
 				if(ajax)
 				{
 					gotoAjaxURL('?'+$.map(paramList,function(value,key){return key+'='+value;}).join('&'));
@@ -5199,7 +5745,18 @@
 				}
 				return this._GameVersion;
 			},
-			get CurrentCityId() { return unsafeWindow.ikariam.backgroundView && unsafeWindow.ikariam.backgroundView.id === 'city' ? ikariam._currentCity || unsafeWindow.ikariam.model.relatedCityData[unsafeWindow.ikariam.model.relatedCityData.selectedCity].id : unsafeWindow.ikariam.model.relatedCityData[unsafeWindow.ikariam.model.relatedCityData.selectedCity].id; },
+			get CurrentCityId()
+			{
+				// if(unsafeWindow.ikariam.backgroundView && unsafeWindow.ikariam.backgroundView.id === 'city')
+				// {
+					// return ikariam._currentCity || unsafeWindow.ikariam.model!=null ? unsafeWindow.ikariam.model.relatedCityData[unsafeWindow.ikariam.model.relatedCityData.selectedCity].id : false;
+				// }
+				// else
+				// {
+					// return unsafeWindow.ikariam.model!=null ? unsafeWindow.ikariam.model.relatedCityData[unsafeWindow.ikariam.model.relatedCityData.selectedCity].id : false;
+				// }
+				return unsafeWindow.ikariam.backgroundView && unsafeWindow.ikariam.backgroundView.id === 'city' ? ikariam._currentCity || unsafeWindow.ikariam.model.relatedCityData[unsafeWindow.ikariam.model.relatedCityData.selectedCity].id : unsafeWindow.ikariam.model.relatedCityData[unsafeWindow.ikariam.model.relatedCityData.selectedCity].id;
+			},
 			get viewIsCity() { return unsafeWindow.ikariam.backgroundView && unsafeWindow.ikariam.backgroundView.id==='city';},
 			get viewIsIsland() { return unsafeWindow.ikariam.backgroundView && unsafeWindow.ikariam.backgroundView.id==='island';},
 			get viewIsWorld() {return unsafeWindow.ikariam.backgroundView && unsafeWindow.ikariam.backgroundView.id==='worldmap_iso';},
@@ -5258,7 +5815,7 @@
 				var localStrings = unsafeWindow.LocalizationStrings;
 				if(!localStrings)
 				{
-					$('script').each(function(index, script)
+					$('script').each(function(index,script)
 					{
 						var match = /LocalizationStrings = JSON.parse\('(.*)'\);/.exec(script.innerHTML);
 						if(match)
@@ -5280,30 +5837,30 @@
 			{
 				events('ajaxResponse').sub(function(response)
 				{
-/*					clearInterval(autocpinterv);
-					clearInterval(bUpinterv);
-					clearInterval(conversionTimer);
-					clearInterval(coolinterv);
-					clearInterval(durinterv);
-					clearInterval(evtinterv);
-					clearInterval(expinterv);
-					clearInterval(exptxts);
-					clearInterval(foresterinterv);
-					clearInterval(foundationinterv);
-					clearInterval(giftsinterv);
-					clearInterval(interv);
-					clearInterval(missionTimer);
-					clearInterval(palaceinterv);
-					clearInterval(piratesTimer);
-					clearInterval(rPointTimer);
-					clearInterval(theaterinterv);
-					clearInterval(toolinterv);
-					clearInterval(upgradeinterv);
-					clearInterval(warehouseinterv);
-					clearInterval(wonderinterv);
-					clearInterval(workshopinterv);
-					clearInterval(ytplayerinterv);
-*/
+					// clearInterval(autocpinterv);
+					// clearInterval(bUpinterv);
+					// clearInterval(conversionTimer);
+					// clearInterval(coolinterv);
+					// clearInterval(durinterv);
+					// clearInterval(evtinterv);
+					// clearInterval(expinterv);
+					// clearInterval(exptxts);
+					// clearInterval(foresterinterv);
+					// clearInterval(foundationinterv);
+					// clearInterval(giftsinterv);
+					// clearInterval(interv);
+					// clearInterval(missionTimer);
+					// clearInterval(palaceinterv);
+					// clearInterval(piratesTimer);
+					// clearInterval(rPointTimer);
+					// clearInterval(theaterinterv);
+					// clearInterval(toolinterv);
+					// clearInterval(upgradeinterv);
+					if(typeof(warehouseinterv)!='undefined') { clearInterval(warehouseinterv); }
+					// clearInterval(wonderinterv);
+					// clearInterval(workshopinterv);
+					// clearInterval(ytplayerinterv);
+
 //					console.log(response);
 					$('#js_MilitaryMovementsFleetMovementsTable > table > tbody > tr').each(function(k,tr)
 					{
@@ -5346,6 +5903,7 @@
 								events('updateBuildingData').pub(this.CurrentCityId, cityData.position);
 								break;
 							case 'changeView':
+								if(typeof warehouseinterv !== 'undefined') { clearInterval(warehouseinterv); }
 								view = response[len][1][0];
 								html = response[len][1][1];
 								break;
@@ -5402,6 +5960,58 @@
 			Init: function() { this.setupEventHandlers(); },
 			parseViewData: function(view,html,tData)
 			{
+				// setInterval(function()
+				// {
+					// if(tData.barbarianCityCooldownTimer!=undefined)
+					// {
+						// console.log(Utils.FormatTimeLengthToStr(tData.barbarianCityCooldownTimer.countdown.enddate*1000-moment()),Utils.FormatFullTimeToDateString(tData.barbarianCityCooldownTimer.countdown.enddate*1000));
+					// }
+				// },100);
+//				console.log(view,html,tData);
+				// console.log(unsafeWindow);
+				// console.log(unsafeWindow.ikariam);
+//				console.log(unsafeWindow.ownIslandJS);
+//				console.log(unsafeWindow.occupiedIslandJS);
+//				console.log(unsafeWindow.allyIslandJS);
+//				console.log(unsafeWindow.occupiedIslandAllyJS);
+//				console.log(unsafeWindow.militaryIslandsJS);
+//				console.log(unsafeWindow.barbarianIslandsJS);
+//				console.log(unsafeWindow.warIslandsJS);
+//				console.log(JSON.parse(unsafeWindow.jsonData));
+//				console.log(unsafeWindow.worldmap);
+//				console.log(unsafeWindow.worldmap.tile);
+//				?view=resource&type=resource&islandId=392&oldBackgroundView=city&containerWidth=1920px&containerHeight=937px&worldviewWidth=1920px&worldviewHeight=891px&cityTop=-478px&cityLeft=-1884px&cityWorldviewScale=0.55&backgroundView=island&currentIslandId=392&actionRequest=c40b0a7144f196988c2d5d13fa8ca93a&ajax=1
+//				?view=updateGlobalData&backgroundView=island&currentIslandId=392&ajax=1
+				// $.getJSON('?action=WorldMap&function=getJSONArea&x_min=1&x_max=100&y_min=1&y_max=100',function(data)
+				// {
+					// var islands = data.data;
+					// var xs = [],ys = [];
+					// $.each(islands,function(x,obj)
+					// {
+						// xs.push(x);
+						// $.each(obj,function(y,arr)
+						// {
+							// ys.push(y);
+						// });
+					// });
+					// var dims = [Math.min.apply(null,xs),Math.max.apply(null,xs),Math.min.apply(null,ys),Math.max.apply(null,ys)];
+					// for(y=dims[2];y<=dims[3];y++)
+					// {
+						// for(x=dims[0];x<=dims[1];x++)
+						// {
+							// if(islands[x]&&islands[x][y])
+							// {
+//								$.getJSON('?view=updateGlobalData&backgroundView=island&currentIslandId=5488&ajax=1',function(extradata)
+//								{
+//									console.log(extradata[0][1].backgroundData);
+//									islands[x][y]['extra'] = extradatadata[0][1].backgroundData;
+//								});
+							// }
+						// }
+					// }
+// //					console.log(islands);
+				// });
+				if(typeof(warehouseinterv)!='undefined') { clearInterval(warehouseinterv); }
 				var LD = Constant.LanguageData[database.settings.languageChange.value];
 				$.each(Object.keys(LD.viewCityMenu),function(k,c)
 				{
@@ -5455,7 +6065,7 @@
 				{
 					if($('#informationSidebar').length==1)
 					{
-						$('#informationSidebar').parent().prevAll('a.accordionTitle').contents().first().text(building.getLevel+building.isUpgrading<=Constant.BuildingData[building.getName].maxLevel?Utils.format(LD.in_level,[Math.min(building.getLevel+building.isUpgrading+1,Constant.BuildingData[building.getName].maxLevel)]):'');
+						$('#informationSidebar').parent().prevAll('a.accordionTitle').text(building.getLevel+building.isUpgrading<=Constant.BuildingData[building.getName].maxLevel?Utils.format(LD.in_level,[Math.min(building.getLevel+building.isUpgrading+1,Constant.BuildingData[building.getName].maxLevel)]):'');
 					}
 					var ct = $.now();
 					if($('#upgradeInProgress').length==1)
@@ -5469,16 +6079,16 @@
 						var buildtime = Constant.BuildingData[building.getName].time;
 						buildtime = ((building.getName==Constant.Buildings.PIRATE_FORTRESS?buildtime[building.getLevel]:Math.round(buildtime.a/buildtime.b*Math.pow(buildtime.c,building.getLevel+1)-buildtime.d))-(buildtime.e!=undefined?(buildtime.e[building.getLevel]!=undefined?buildtime.e[building.getLevel]:0):0))*1000*bonTime;
 						$('[id^="upgradePercentage_"]').remove();
-						$('#upgradeProgress').parent('div').css({'height':'16px'}).after('<div id="upgradePercentage_'+ct+'" style="display:table;margin:0px auto 0px auto;font-weight:bold;text-shadow: -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF;text-align:center;position:relative;top:-16px;margin-bottom:-18px">'+(Utils.FormatNumToStr((buildtime-(building.getCompletionTime-$.now()))/buildtime*100,false,2)+' %')+'</div>');
+						$('#upgradeProgress').parent('div').css({'height':'16px'}).append($('#upgradeProgress').parent('div').find('span').length==0 ? '<span title="'+LD.shortbuildingtime[2]+'" style="float:left;position:relative;cursor:default;left:'+(((buildtime-3e5)*301/buildtime) < 0 ? -7 : (((buildtime-3e5)*301/buildtime) > 301 ? 294 : (((buildtime-3e5)*301/buildtime)-7)))+'px;top:-28px;text-shadow:none;">▼</span>' : '').after('<div id="upgradePercentage_'+ct+'" style="display:block;margin:0px auto 0px auto;font-weight:bold;text-shadow: -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF;text-align:center;position:relative;top:-16px;margin-bottom:-18px">'+(Utils.FormatNumToStr((buildtime-(building.getCompletionTime-$.now()))/buildtime*100,false,2)+' %')+'</div>');
 						$('#buildingSpeedupBuilding').css('top','-44px');
 						var upgradeinterv = setInterval(function()
 						{
 							var now = moment();
-							$('#upgradePercentage_'+ct).text(Utils.FormatNumToStr(building.getCompletionTime>now?(buildtime-(building.getCompletionTime-now))*100/buildtime:100,false,2)+' %');
+							$('#upgradePercentage_'+ct).contents().first().each(function(){return $(this).replaceWith(Utils.FormatNumToStr(building.getCompletionTime>now?(buildtime-(building.getCompletionTime-now))*100/buildtime:100,false,2)+' %')});
 							$('#upgradeEndTime_'+ct).html(building.getCompletionTime>now?Utils.FormatFullTimeToDateString(building.getCompletionTime,false)+'<br>('+Utils.FormatTimeLengthToStr(building.getCompletionTime-now,4)+')':'&nbsp;<br>&nbsp;');
 							$('#buildingSpeedupBuilding').css('top','-44px');
 							$('#buildingSpeedupBuilding').attr('title',LD.shortbuildingtime[building.getCompletionTime-now>(buildtime/2)?0:1]);
-							if(building.getCompletionTime<now) { clearInterval(upgradeinterv); }
+							if(building.getCompletionTime<now) { render.updateCitiesBuildingData(); clearInterval(upgradeinterv); }
 						},1000);
 						$('#demolition > h3.header').text(LD.demolitiontxt[0]);
 						$('#demolition > div.content > div.warning > h4').text(LD.demolitiontxt[1]);
@@ -5763,7 +6373,9 @@
 							this.parsePremium(tData);
 							break;
 						case 'avatarDetails':
+						case 'achievement':
 						case 'avatarProfile':
+						case 'normalServerBadges':
 							this.parsePlayerDetails(view);
 							break;
 						case 'cinema':
@@ -5900,7 +6512,7 @@
 							this.parseWorkshop(view,tData);
 							break;
 						case 'barbarianVillage':
-							this.parsebarbarianVillage();
+							this.parsebarbarianVillage(view,html,tData);
 							break;
 						case 'premiumDummy':
 							this.parsepremiumDummy();
@@ -7456,30 +8068,41 @@
 						{
 							if($(tr).attr('id')!=undefined && ($(tr).attr('id').startsWith('message')||$(tr).attr('id').startsWith('gmessage')))
 							{
+								var tid = $(tr).attr('id').replace(/\D+/g,'');
 								$(tr).attr('title',LD.dipladvtxt[18]);
 								$(tr).find('td:eq(0)').css({'width':'14px'});
 								$(tr).find('td:eq(1)').css({'width':'20px','padding':'4px 0px'});
-								$(tr).find('td:eq(2)').css({'white-space':'nowrap','width':'120px','padding':'4px 0px'}).removeAttr('onclick').find('a').css({'white-space':'nowrap'}).attr({'href':$('#tbl_reply'+$(tr).attr('id').replace(/\D+/g,'')+',#tbl_greply'+$(tr).attr('id').replace(/\D+/g,'')).find('a[href*="receiverId"]').attr('href') || '#','title':LD.dipladvtxt[20]}).text(function(){return $(this).text().trim();});
+								$(tr).find('td:eq(2)').css({'white-space':'nowrap','width':'120px','padding':'4px 0px'}).removeAttr('onclick').find('a').css({'white-space':'nowrap'}).attr({'href':$('#tbl_reply'+tid+',#tbl_greply'+tid).find('a[href*="receiverId"]').attr('href') || '#','title':LD.dipladvtxt[20]}).text(function(){return $(this).text().trim();});
 								$(tr).find('td:eq(3)').css({'white-space':'nowrap'}).text(function(){return $(this).text().trim();});
 								$(tr).find('td:eq(4)').css({'white-space':'nowrap','padding':'4px 3px','width':'225px'}).attr('title',LD.dipladvtxt[19]).find('a').html(function(){return $(this).text().replace(/([^]*)(\[\d+:\d+\])/,'<span style="display:inline-block;float:left" onMouseOver="this.style.textDecoration=\'underline\'" onMouseOut="this.style.textDecoration=\'none\'">$1</span> <span style="display:inline-block;float:right" onMouseOver="this.style.textDecoration=\'underline\'" onMouseOut="this.style.textDecoration=\'none\'">$2</span>');});
+								var replyall = 'ReplyToAll___'+moment($(tr).find('td:last').text().trim()+'+0200','DD.MM.YYYY HH:mm:ss Z').format('YYYYMMDDHHmmss')+'___'+$(tr).find('td:eq(2) > a').text().trim()+'___'+tid;
 								$(tr).find('td:eq(5)').css({'white-space':'nowrap','text-align':'center','padding':'4px 0px'}).text(function(){return moment($(this).text().trim()+'+0200','DD.MM.YYYY HH:mm:ss Z').format(LD.fulldateshort+':ss');});
-								$('#tbl_reply'+$(tr).attr('id').replace(/\D+/g,'')).find('a[href*="msgType=79"]').text(LD.dipladvtxt[46]);
-								$('#tbl_reply'+$(tr).attr('id').replace(/\D+/g,'')).find('a[href*="msgType=80"]').text(LD.dipladvtxt[47]);
-								$('#tbl_reply'+$(tr).attr('id').replace(/\D+/g,'')+',#tbl_greply'+$(tr).attr('id').replace(/\D+/g,'')).find('a[href*="replyTo"]').text(LD.dipladvtxt[21]);
-								$('#tbl_reply'+$(tr).attr('id').replace(/\D+/g,'')+',#tbl_greply'+$(tr).attr('id').replace(/\D+/g,'')).find('a[onclick^="createDeletePopup"]').text(LD.dipladvtxt[22]).on('click',function()
+								$('#tbl_reply'+tid).find('a[href*="msgType=79"]').text(LD.dipladvtxt[46]);
+								$('#tbl_reply'+tid).find('a[href*="msgType=80"]').text(LD.dipladvtxt[47]);
+								$('#tbl_reply'+tid+',#tbl_greply'+tid).find('a[href*="replyTo"]').text(LD.dipladvtxt[21]);
+								$('#tbl_reply'+tid+',#tbl_greply'+tid).find('a[onclick^="createDeletePopup"]').text(LD.dipladvtxt[22]).on('click',function()
 								{
 									$('#js_popupBtn1').text(LD.dipladvtxt[29]).parent().prev('div').text(LD.dipladvtxt[28]);
 									$('#js_popupBtn2').text(LD.dipladvtxt[30]);
 								});
 								$('#tbl_greply4 > td > span > a').text(LD.dipladvtxt[22]);
-								$('#tbl_reply'+$(tr).attr('id').replace(/\D+/g,'')+',#tbl_greply'+$(tr).attr('id').replace(/\D+/g,'')).find('a[onclick^="createReportPopup"]').attr('title',LD.dipladvtxt[26]).text(LD.dipladvtxt[23]).on('click',function()
+								$('#tbl_reply'+tid+',#tbl_greply'+tid).find('a[onclick^="createReportPopup"]').attr('title',LD.dipladvtxt[26]).text(LD.dipladvtxt[23]).on('click',function()
 								{
 									$('#js_popupBtn1').text(LD.dipladvtxt[29]).parent().prev('div').css('text-align','justify').html(LD.dipladvtxt[26].replace('\n','<br>')).parent().prev('div').find('div:eq(1) > h3').text(LD.dipladvtxt[28]);
 									$('#js_popupBtn2').text(LD.dipladvtxt[30]);
 								});
-								$('#tbl_reply'+$(tr).attr('id').replace(/\D+/g,'')+',#tbl_greply'+$(tr).attr('id').replace(/\D+/g,'')).find('a[href*="allyId"]').text(LD.dipladvtxt[25]);
-								$('#tbl_reply'+$(tr).attr('id').replace(/\D+/g,'')+',#tbl_greply'+$(tr).attr('id').replace(/\D+/g,'')).find('a[href*="ignoreId"]').attr('title',LD.dipladvtxt[27]).text(LD.dipladvtxt[24]);
-								$('#tbl_mail'+$(tr).attr('id').replace(/\D+/g,'')+',#tbl_gmail'+$(tr).attr('id').replace(/\D+/g,'')).find('td.msgText').html(function()
+								$('#tbl_reply'+tid+',#tbl_greply'+tid).find('a[href*="allyId"]').text(LD.dipladvtxt[25]);
+								$('#tbl_reply'+tid+',#tbl_greply'+tid).find('a[href*="ignoreId"]').attr('title',LD.dipladvtxt[27]).text(LD.dipladvtxt[24]).after('<a id="'+replyall+'" onclick="ajaxHandlerCall(this.href);return false;" class="button" href="?view=sendIKMessage&amp;allyId='+database.getGlobalData.getEmbassyData.id+'&amp;msgType=51&amp;replyTo='+tid+'">'+LD.dipladvtxt[110]+'</a>');
+								if($('#'+replyall).attr('id')!=undefined)
+								{
+									$('#'+replyall).on('click',function(rply)
+									{
+										var target = rply.target;
+										var ids = $(target).attr('id').split('___');
+										sessionStorage.setItem($(target).attr('id'),$('#tbl_mail'+ids[3]+',#tbl_gmail'+ids[3]).find('td.msgText').text());
+									});
+								}
+								$('#tbl_mail'+tid+',#tbl_gmail'+tid).find('td.msgText').html(function()
 								{
 									anchorme({input:$(this).html(),options:{attributes:{target:'_blank',style:'color:blue'}}});
 									return anchorme({input:$(this).html(),options:{attributes:{target:'_blank',style:'color:blue'}}}).replace(/(\[\d+:\d+\])/igm,function(x)
@@ -7960,16 +8583,16 @@
 								return false;
 							}
 						});
-						$('#js_researchAdvisorNextResearchName'+i+',#js_researchAdvisorNextResearchTooltipName'+i).text(LD.researchtxt[next]+(flvl>0?' ('+flvl+')':''));
+						$('#js_researchAdvisorNextResearchName'+i+',#js_researchAdvisorNextResearchTooltipName'+i).text(LD.researchtxt[next]+(flvl>0?' ('+(flvl>25?25:flvl)+')':''));
 						$('#js_researchAdvisorNextResearchTooltipShortDesc'+i).text(LD.researchshortdesc[next]);
-						$('#js_researchAdvisorProgressTxt'+i).hide().after('<div id="empire_researchAdvisorProgressTxt'+i+'_'+now+'" class="bold smallFont" style="text-shadow: -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF;">'+(tot[0]==0?LD.resadvtxt[0]:(tot[1]<nextcost && data['js_researchAdvisorProgressbar'+i].progressbar!=undefined?Utils.format(LD.resadvtxt[1],[Utils.FormatTimeLengthToStr(data['js_researchAdvisorProgressbar'+i].progressbar.enddate*1000-moment(),5)]):LD.resadvtxt[2]))+'</div>');
+						$('#js_researchAdvisorProgressTxt'+i).hide().after('<div id="empire_researchAdvisorProgressTxt'+i+'_'+now+'" class="bold smallFont" style="text-shadow: -1px -1px 0 #FFFFFF, 1px -1px 0 #FFFFFF, -1px 1px 0 #FFFFFF, 1px 1px 0 #FFFFFF;">'+(tot[0]==0?LD.resadvtxt[0]:(tot[1]<nextcost && data['js_researchAdvisorProgressbar'+i].progressbar!=undefined?Utils.format(LD.resadvtxt[1],[Utils.FormatTimeLengthToStr(data['js_researchAdvisorProgressbar'+i].progressbar.enddate*1000-moment(),5)]):LD.resadvtxt[flvl==25?12:2]))+'</div>');
 						$.each(Object.values(Constant.Research)[i],function(k,n) { rtype += n==check ? i : 0; });
 					}
 					$('#js_researchAdvisorScientists').parent().html(LD.scientists+': <span id="js_researchAdvisorScientists" style="font-weight:bold">'+Utils.FormatNumToStr(tot[0])+'</span>');
 					$('#js_researchAdvisorPoints').hide().parent().contents().first().each(function(){$(this).replaceWith(LD.researchP+': ');});
 					$('#js_researchAdvisorPoints').after('<span id="empire_researchAdvisorPoints_'+now+'" style="font-weight:bold">'+Utils.FormatNumToStr(tot[1])+'</span>');
 					$('#js_researchAdvisorTime').parent().html(LD.resadvtxt[3]+': <span id="js_researchAdvisorTime" style="font-weight:bold">'+Utils.FormatNumToStr(tot[2],false,2)+'</span><div id="js_infoResearchAdvisorBreakdownTooltip" class="tooltip" style="line-height:13px;" updated="true"><table class="breakdown_table"><tbody><tr><td class="description">'+LD.resadvtxt[4]+':</td><td class="value">'+Utils.FormatNumToStr(tot[0],false,2)+'</td></tr><tr><td class="description">'+LD.corruption+':</td><td class="value">'+(tot[4]==0?'+':'-')+' '+Utils.FormatNumToStr(tot[4],false,2)+'</td></tr><tr><td style="white-space:nowrap">'+LD.resadvtxt[5]+':</td><td class="value">+ '+Utils.FormatNumToStr(tot[5],false,2)+'</td></tr><tr><td>'+LD.research+':</td><td class="value">+ '+Utils.FormatNumToStr(tot[3],false,2)+'</td></tr>'+(tot[6]>0?'<tr><td>'+LD.cultural+'</td><td class="value">'+Utils.FormatNumToStr(tot[6],false,2)+'</td></tr>':'')+'<tr><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>'+LD.total_+':</td><td class="value">'+Utils.FormatNumToStr(tot[0]-tot[4]+tot[3]+tot[5]+tot[6],false,2)+'</td></tr></tbody></table></div>');
-					$('#js_researchAdvisorCurrResearchName').text(LD.researchtxt[selected]+(selected%1000==999?' ('+(database.getGlobalData.getResearchTopicLevel(selected)+1)+')':''));
+					$('#js_researchAdvisorCurrResearchName').text(LD.researchtxt[selected]+(selected%1000==999?' ('+(database.getGlobalData.getResearchTopicLevel(selected)+(database.getGlobalData.getResearchTopicLevel(selected)>=25?0:1))+')':''));
 					var CurrCost = parseInt($('#js_researchAdvisorCurrResearchCosts').text().replace(/(\d+)[,.](?=\d{3}(\D|$))/g,'$1'));
 					var n = {b:'buildingId',f:'formId',h:'helpId',sh:'subHelpId',s:'shipId',u:'unitId',v:'view'};
 					var v = {b:'buildingDetail',f:'formOfRuleDetail',i:'ikipedia',u:'unitdescription'};
@@ -8007,7 +8630,7 @@
 					$('#js_researchesOfTypeDetails > span.desc').text(LD.resadvtxt[11]+':');
 					$('[id^="empire_researchAdvisorCurrResearchTimeNeeded"]').remove();
 					$('#js_researchAdvisorCurrResearchTimeNeeded').hide().after('<span id="empire_researchAdvisorCurrResearchTimeNeeded_'+now+'" style="display: inline-block;text-align:center;font-weight:bold;margin-left:-40px"></span>');
-					$('#empire_researchAdvisorCurrResearchTimeNeeded_'+now).html($('#js_researchAdvisorCurrResearchesArr > li.selected.explored').length>0?LD.resadvtxt[7]:(tot[1]>=CurrCost || data['js_researchAdvisorProgressbar'+rtype].progressbar==undefined ?LD.resadvtxt[8]:Utils.FormatFullTimeToDateString(data['js_researchAdvisorProgressbar'+rtype].progressbar.enddate*1000)+'<br>('+Utils.FormatTimeLengthToStr(data['js_researchAdvisorProgressbar'+rtype].progressbar.enddate*1000-moment(),5)+')'));
+					$('#empire_researchAdvisorCurrResearchTimeNeeded_'+now).html($('#js_researchAdvisorCurrResearchesArr > li.selected.explored').length>0?LD.resadvtxt[CurrCost==0?12:7]:(tot[1]>=CurrCost || data['js_researchAdvisorProgressbar'+rtype].progressbar==undefined ?LD.resadvtxt[8]:Utils.FormatFullTimeToDateString(data['js_researchAdvisorProgressbar'+rtype].progressbar.enddate*1000)+'<br>('+Utils.FormatTimeLengthToStr(data['js_researchAdvisorProgressbar'+rtype].progressbar.enddate*1000-moment(),5)+')'));
 					$('#tab_researchAdvisor > h3.header').html(LD.zones[rtype]);
 					$('#js_researchAdvisorConservationLink').text(LD.research);
 					var changes = [];
@@ -8016,11 +8639,12 @@
 					{
 						var id = parseInt($(li).find('a').attr('href').replace(/\D+/g,''));
 						var level = parseInt($(li).find('a').text().replace(/\D+/,''));
-						var explored = !isNaN(level) ? level-1 : ($(li).hasClass('explored')===true ? 1 : 0);
+						var explored = !isNaN(level) ? level-(CurrCost==0?0:1) : ($(li).hasClass('explored')===true ? 1 : 0);
 						selected += parseInt($(li).hasClass('selected')===true ? id : 0);
 						var changed = database.getGlobalData.updateResearchTopic(id,explored);
+						console.log(database.getGlobalData.getResearchTopicLevel(Constant.Research.Economy.ECONOMIC_FUTURE));
 						if(changed) changes.push({type:'research_topic',subType:id});
-						$(li).css({'list-style-position':'outside','margin-left':'20px'}).find('a').css({'margin':'0px'}).text(LD.researchtxt[id]+(id==((rtype+1)*1000)+999?' ('+(database.getGlobalData.getResearchTopicLevel(id)+1)+')':''));
+						$(li).css({'list-style-position':'outside','margin-left':'20px'}).find('a').css({'margin':'0px'}).text(LD.researchtxt[id]+(id==((rtype+1)*1000)+999?' ('+(database.getGlobalData.getResearchTopicLevel(id)+(database.getGlobalData.getResearchTopicLevel(id)>=25?0:1))+')':''));
 					});
 					if(changes.length) events(Constant.Events.GLOBAL_UPDATED).pub(changes);
 					var s = 0;
@@ -8034,16 +8658,17 @@
 							$('#empire_researchAdvisorPoints_'+now).text(Utils.FormatNumToStr(tot[1]+(s*rate),false,0));
 							$('#researchAdvisorCurrResearchCostsPercentage_'+now).text(Utils.FormatNumToStr((1-((cc-tot[1]-(s*rate))/cc))*100,false,3));
 							$('#empire_researchAdvisorCurrResearchPointsNotEnough_'+now).text($('#js_researchAdvisorCurrResearchesArr > li.selected:not(.explored)').length>0 && tot[1]+(s*rate)<=CurrCost ?LD.resadvtxt[6]:'');
-
 							if(tot[1]+(s*rate)<=CurrCost && $('#js_researchAdvisorCurrResearchesArr > li.selected:not(.explored)'))
 							{
-								$('#empire_researchAdvisorCurrResearchTimeNeeded_'+now).html($('#js_researchAdvisorCurrResearchesArr > li.selected.explored').length>0?LD.resadvtxt[7]:(tot[1]>=CurrCost || data['js_researchAdvisorProgressbar'+rtype].progressbar==undefined ?LD.resadvtxt[8]:Utils.FormatFullTimeToDateString(data['js_researchAdvisorProgressbar'+rtype].progressbar.enddate*1000)+'<br>('+Utils.FormatTimeLengthToStr(data['js_researchAdvisorProgressbar'+rtype].progressbar.enddate*1000-moment(),5)+')'));
+								$('#empire_researchAdvisorCurrResearchTimeNeeded_'+now).html($('#js_researchAdvisorCurrResearchesArr > li.selected.explored').length>0?LD.resadvtxt[CurrCost==0?12:7]:(tot[1]>=CurrCost || data['js_researchAdvisorProgressbar'+rtype].progressbar==undefined ?LD.resadvtxt[8]:Utils.FormatFullTimeToDateString(data['js_researchAdvisorProgressbar'+rtype].progressbar.enddate*1000)+'<br>('+Utils.FormatTimeLengthToStr(data['js_researchAdvisorProgressbar'+rtype].progressbar.enddate*1000-moment(),5)+')'));
 								$('#js_researchAdvisorConservationLink').removeClass('invisible flowright button').addClass($('#js_researchAdvisorCurrResearchesArr > li.selected.explored').length>0?'invisible':(tot[1]>=CurrCost?'flowright button':'invisible'));
 							}
 							$('a[id^="js_researchAdvisorChangeResearchType"]').each(function(k,r)
 							{
 								var nextcost = parseInt($('#js_researchAdvisorNextResearchCost'+k).text().replace(/(\d+)[,.](?=\d{3}(\D|$))/g,'$1'));
-								$('#empire_researchAdvisorProgressTxt'+k+'_'+now).html(tot[0]==0?LD.resadvtxt[0]:(tot[1]<nextcost && data['js_researchAdvisorProgressbar'+k].progressbar!=undefined ? Utils.format(LD.resadvtxt[1],[Utils.FormatTimeLengthToStr(data['js_researchAdvisorProgressbar'+k].progressbar.enddate*1000-moment(),5)]) : LD.resadvtxt[2]));
+								console.log(nextcost);
+								$('#empire_researchAdvisorProgressTxt'+k+'_'+now).html(tot[0]==0?LD.resadvtxt[0]:(tot[1]<nextcost && data['js_researchAdvisorProgressbar'+k].progressbar!=undefined ? Utils.format(LD.resadvtxt[1],[Utils.FormatTimeLengthToStr(data['js_researchAdvisorProgressbar'+k].progressbar.enddate*1000-moment(),5)]) : LD.resadvtxt[isNaN(nextcost)?12:2]));
+								$(r).css({'opacity':(isNaN(nextcost)?'0.5':'1.0')});
 							});
 							s++;
 							$('#js_GlobalMenu_research, [id^="js_researchAdvisorChangeResearchType"], #js_researchAdvisorCurrResearchesArr > li > a').on('click',function()
@@ -8232,6 +8857,8 @@
 		},
 		parseAcademy: function(data)
 		{
+			if(typeof(exptxts)!='undefined') { clearInterval(exptxts); }
+			if(typeof(expinterv)!='undefined') { clearInterval(expinterv); }
 			var now = moment();
 			$('[id^="empire_expachivtxt"],[id^="empire_expcosttxt"],[id^="empire_expachiv"],[id^="empire_expcost"]').remove();
 			var LD = Constant.LanguageData[database.settings.languageChange.value];
@@ -8442,6 +9069,7 @@
 		},
 		parseWarehouse: function(view,data)
 		{
+			if(typeof(warehouseinterv)!='undefined') { clearInterval(warehouseinterv); }
 			var LD = Constant.LanguageData[database.settings.languageChange.value];
 			var city = ikariam.getCurrentCity;
 			$('#js_mainBoxHeaderTitle').text(LD[view]);
@@ -8877,7 +9505,7 @@
 				var curDiff = parseInt(params.capturePoints)-parseInt(plr.capturePoints);
 				var tip = '<table style="color:#000;font-weight:normal;font-size:12px"><tbody><tr><th colspan="3" style="text-align:center;font-size:15px">'+(mul>0?'{0} &times; {1} = {2}':LD.pirtxt[52])+'</th></tr><tr><td colspan="3" style="text-align:center;border-bottom:1px solid #FFE4B5">'+plr.name+'</td></tr><tr><td>{4}</td><td><b>«</b></td><td>{3}</td></tr><tr><td>{6}</td><td><b>«</b></td><td>{5}</td></tr><tr><td style="white-space:nowrap">{8}</td><td><b>«</b></td><td>{7}</td></tr>'+(plr.avatarId==unsafeWindow.dataSetForView.avatarId?'':'<tr style="border-top:1px solid #FFE4B5"><td style="color:{18};font-weight:bold">{19}</td><td><b>«</b></td><td>{17}</td></tr>')+'<tr style="border-top:1px solid #FFE4B5"><td style="color:{20};font-weight:bold">{21}</td><td><b>«</b></td><td>{22}</td></tr><tr><td>{23}</td><td><b>«</b></td><td>{24}</td></tr><tr><td>{25}</td><td><b>«</b></td><td>{26}</td></tr>'+(plr.avatarId==unsafeWindow.dataSetForView.avatarId?'':(building.getLevel>=plr.distance?'<tr style="border-top:1px solid #FFE4B5"><td>{10}<br>{14}</td><td><b>«</b></td><td>{13}</td></tr><tr><td>{12}<br>{16}</td><td><b>«</b></td><td>{15}</td></tr>':'<tr style="border-top:1px solid #FFE4B5"><td colspan="3" style="text-align:center">'+Utils.format(LD.pirtxt[44],[LD[city.isCapital?'capital':'colony'],city.getName])+'</td></tr>'))+'</tbody></table>';
 				$(this).addClass('empiretooltip');
-				$('#tooltip-div'+k+'_'+currt).html(Utils.format(tip,['<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAJCAYAAAD+WDajAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAEFJREFUeNpi/P//PwMIhOrzQhhAsPriZ0YQzYQugcxnQhaE6YABxhA9HhRdyICJAQ/AayzxOtFdzYRuFLIVAAEGANwqFwuukYKqAAAAAElFTkSuQmCC" style="width:auto;height:15px">',Utils.FormatNumToStr(mul,false,3).replace(/0+$/,'').replace(/[,.]$/,''),'<img src="skin/resources/icon_wood.png" style="width:auto;height:15px">+<img src="data:image/gif;base64,R0lGODlhGgAUAPZ9AA8KCScZFjY2FjslJFMzM0VAG3pIC0xzC15KNzNedXNIR2tWQnRgTXtoVYdUD5dlFaNyHIteK61+IolSUp5cXYFuW4VzYYh2Y415ZI58abRqasV4dlyJD2ibEHOtEnuPNHSlILeLLYWrN8qfNIfIFbuXXZOBbZmHdbGafMGWQdStQuG8Tc6sbd++YKHKT+3KU+/QbPXVY+zPefPWeEWGpV2TrE+Ut2ees2OrzmqszXqyzW2y1G+53ny20nK323a63Hu/4X/A4aCQgKqbi7mihbSnmIyoqZmuq5OytqWxpa2zpL+0pLu+q8qvidW4jNy+lMS7oMS5q7vHvePGi/XahejIl+XHnebInO/anv7kg9jEqNbKrM3Cs8LKvtPKvOzPpenRrfXlvYzA15TD2ITD4onH5o3J5pPK5JvN5ZXN6JbQ7qLQ5qTT667Z7bTa7Lrd7Lvh8s3QwcnUzc/YztvSxOXayenj2crg5s7p9tLr99bu+PXw6Pz37wAAAAAAAAAAACH5BAUAAH0ALAAAAAAaABQAAAf/gH2Cg3ZCKIOIfU4HHCBOiYhLdg0ZF02QHYwgLpCCWl51CxcNFZBEHIxEnWBeXEN2GA0NiU4EAQUHHR2QdEtFXnsNJhlPg04UAxMbAh0cHom9dkV7CycnJn1XA8kbEwAfzh0kglZ2UXVeXnYIGRXYVxrdAQEEJBwdHs9WdF4ZGSdR1jGoMMvJAAIEAGygkAvfLi+9KDGwQAcBAgYM+kwgoEyBggFONnAgsatTJydOFDwaRISECEhVXpQwSRMSFRgwSlQxuSVOzTAxwoSAEKHTER9l5pjkIwNLFhgPHjiYIojJGSlGyASpkQTSlykzZsQYkcLACgOCkKQx08MHkARyZhLxwTJjxIoXD1ZAkOBAkJI3QH6MoaFDDaK5VFqEqPtAxQoHDwbdYIMjjRs8QLoMwtIiRYgYKiQ8SPFCtCAoZ3LsgIMGTh4eg6pMqTLjRQoJLFjAUIFWkA0xevq0WdOmx52ayDsFAgA7" style="width:auto;height:15px">',LD.pirtxt[45],Utils.Nth(plr.place),LD.pirtxt[46],Utils.Nth(plr.oldPlace),LD.pirtxt[47],'<span style="display:inline;color:'+(parseInt(plr.oldPlace)==parseInt(plr.place)?'blue':(parseInt(plr.oldPlace)<parseInt(plr.place)?'red':'green'))+';font-weight:bold">'+Utils.FormatNumToStr(parseInt(plr.oldPlace)-parseInt(plr.place),true)+'</span>'+diff,LD.pirtxt[48],Utils.FormatTimeLengthToStr(Utils.estimateTravelTime(plr.distance),4),LD.pirtxt[49],Utils.FormatTimeLengthToStr(Utils.estimateTravelTime(plr.distance)*2,4),LD.pirtxt[50],Utils.FormatFullTimeToDateString(Utils.estimateTravelTime(plr.distance)+moment()),LD.pirtxt[51],Utils.FormatFullTimeToDateString(Utils.estimateTravelTime(plr.distance)*2+moment()),LD.pirtxt[54],pDiff>0?'green':(pDiff<0?'red':'blue'),Utils.FormatNumToStr(pDiff,true,0),curDiff>0?'green':(curDiff<0?'red':'blue'),Utils.FormatNumToStr(curDiff,true,0),LD.pirtxt[55],Utils.FormatNumToStr(Math.ceil(Math.abs(curDiff/cp[0])),false,0),LD.pirtxt[56],Utils.FormatTimeLengthToStr(Math.ceil(Math.abs(curDiff/cp[0]))*duration[0]*1000,4),LD.pirtxt[57]]));
+				$('#tooltip-div'+k+'_'+currt).html(Utils.format(tip,['<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAcAAAAJCAYAAAD+WDajAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAEFJREFUeNpi/P//PwMIhOrzQhhAsPriZ0YQzYQugcxnQhaE6YABxhA9HhRdyICJAQ/AayzxOtFdzYRuFLIVAAEGANwqFwuukYKqAAAAAElFTkSuQmCC" style="width:auto;height:15px">',Utils.FormatNumToStr(mul,false,3).replace(/0+$/,'').replace(/[,.]$/,''),'<img src="skin/resources/icon_wood.png" style="width:auto;height:15px">+<img src="data:image/gif;base64,R0lGODlhGgAUAPZ9AA8KCScZFjY2FjslJFMzM0VAG3pIC0xzC15KNzNedXNIR2tWQnRgTXtoVYdUD5dlFaNyHIteK61+IolSUp5cXYFuW4VzYYh2Y415ZI58abRqasV4dlyJD2ibEHOtEnuPNHSlILeLLYWrN8qfNIfIFbuXXZOBbZmHdbGafMGWQdStQuG8Tc6sbd++YKHKT+3KU+/QbPXVY+zPefPWeEWGpV2TrE+Ut2ees2OrzmqszXqyzW2y1G+53ny20nK323a63Hu/4X/A4aCQgKqbi7mihbSnmIyoqZmuq5OytqWxpa2zpL+0pLu+q8qvidW4jNy+lMS7oMS5q7vHvePGi/XahejIl+XHnebInO/anv7kg9jEqNbKrM3Cs8LKvtPKvOzPpenRrfXlvYzA15TD2ITD4onH5o3J5pPK5JvN5ZXN6JbQ7qLQ5qTT667Z7bTa7Lrd7Lvh8s3QwcnUzc/YztvSxOXayenj2crg5s7p9tLr99bu+PXw6Pz37wAAAAAAAAAAACH5BAUAAH0ALAAAAAAaABQAAAf/gH2Cg3ZCKIOIfU4HHCBOiYhLdg0ZF02QHYwgLpCCWl51CxcNFZBEHIxEnWBeXEN2GA0NiU4EAQUHHR2QdEtFXnsNJhlPg04UAxMbAh0cHom9dkV7CycnJn1XA8kbEwAfzh0kglZ2UXVeXnYIGRXYVxrdAQEEJBwdHs9WdF4ZGSdR1jGoMMvJAAIEAGygkAvfLi+9KDGwQAcBAgYM+kwgoEyBggFONnAgsatTJydOFDwaRISECEhVXpQwSRMSFRgwSlQxuSVOzTAxwoSAEKHTER9l5pjkIwNLFhgPHjiYIojJGSlGyASpkQTSlykzZsQYkcLACgOCkKQx08MHkARyZhLxwTJjxIoXD1ZAkOBAkJI3QH6MoaFDDaK5VFqEqPtAxQoHDwbdYIMjjRs8QLoMwtIiRYgYKiQ8SPFCtCAoZ3LsgIMGTh4eg6pMqTLjRQoJLFjAUIFWkA0xevq0WdOmx52ayDsFAgA7" style="width:auto;height:15px">',LD.pirtxt[45],Utils.Nth(plr.place),LD.pirtxt[46],Utils.Nth(plr.oldPlace),LD.pirtxt[47],'<span  style="display:inline;color:'+(parseInt(plr.oldPlace)==parseInt(plr.place)?'blue':(parseInt(plr.oldPlace)<parseInt(plr.place)?'red':'green'))+';font-weight:bold">'+Utils.FormatNumToStr(parseInt(plr.oldPlace)-parseInt(plr.place),true)+'</span>'+diff,LD.pirtxt[48],Utils.FormatTimeLengthToStr(Utils.estimateTravelTime(plr.distance),4),LD.pirtxt[49],Utils.FormatTimeLengthToStr(Utils.estimateTravelTime(plr.distance)*2,4),LD.pirtxt[50],Utils.FormatFullTimeToDateString(Utils.estimateTravelTime(plr.distance)+moment()),LD.pirtxt[51],Utils.FormatFullTimeToDateString(Utils.estimateTravelTime(plr.distance)*2+moment()),LD.pirtxt[54],pDiff>0?'green':(pDiff<0?'red':'blue'),Utils.FormatNumToStr(pDiff,true,0),curDiff>0?'green':(curDiff<0?'red':'blue'),Utils.FormatNumToStr(curDiff,true,0),LD.pirtxt[55],Utils.FormatNumToStr(Math.ceil(Math.abs(curDiff/cp[0])),false,0),LD.pirtxt[56],Utils.FormatTimeLengthToStr(Math.ceil(Math.abs(curDiff/cp[0]))*duration[0]*1000,4),LD.pirtxt[57]]));
 				$(this).find('span.place').text(function(){return Utils.FormatNumToStr(parseInt($(this).text().replace(/\D+/g,'')),false,0)+'.';}).removeAttr('title').before(k==parseInt(params.highscorePlayerPosition) || building.getLevel<=plr.distance?'':'<span style="float:right'+(parseInt(plr.place) <=50 ? ';margin-right:27px' : '')+'">'+Utils.FormatTimeLengthToStr(Utils.estimateTravelTime(plr.distance),2)+'</span>');
 				var capPoints = typeof plr.capturePoints === 'number' && isFinite(plr.capturePoints) ? parseInt(plr.capturePoints) : parseInt(plr.capturePoints.replace(/(\d+)[,.](?=\d{3}(\D|$))/g,"$1"));
 				$(this).find('span.pirateBooty').removeAttr('title').html(Utils.FormatNumToStr(capPoints,false,0)+' &nbsp;<img src="skin/resources/capturePoints_small.png" alt="'+LD.pirtxt[3]+'">');
@@ -9283,21 +9911,50 @@
 		parseIKMessage: function()
 		{
 			var LD = Constant.LanguageData[database.settings.languageChange.value];
+			$('#js_mainBoxHeaderTitle,#sendMessageBox > h3.header').text(LD.CompMsg);
+			var id = Object.keys(sessionStorage)[0];
+			if(id!=undefined && id.startsWith('ReplyToAll'))
+			{
+				var elems = id.split('___');
+				var head = Utils.format(LD.ikmsgtxt[0],[moment(elems[1],'YYYYMMDDHHmmss').format(LD.dateformat),moment(elems[1],'YYYYMMDDHHmmss').format(LD.timeformat),elems[2]]);
+				$('#js_msgTextConfirm').html('\n\n'+head+'\n&gt; '+sessionStorage.getItem(id).replace(/\n/g,'\n&gt; '));
+				sessionStorage.removeItem(id);
+			}
 			if(database.settings.ctfinder.value)
 			{
 				var opt = $('select#js_treatiesConfirm > option[value="77"]').length;
 				if(!opt)
 				{
-					if($('form#sendMessageBoxForm > div.mailRecipient > span:nth-child(2) > a').length)
+					if($('form#sendMessageBoxForm > div.mailRecipient > span:last() > a').length==1)
 					{
-						var rid = $('form#sendMessageBoxForm > div.mailRecipient > span:nth-child(2) > a').attr('href').replace('?view=avatarProfile&avatarId=','');
+						var rid = $('form#sendMessageBoxForm > div.mailRecipient > span:last() > a').attr('href').replace(/\D+/,'');
 						if(Object.keys(database.getGlobalData.getMuseumTreaties).indexOf(rid)==-1 && Object.keys(database.getGlobalData.getPotMuseumTreaties).indexOf(rid)==-1 && $('select#js_treatiesConfirm > option[value="78"]').length!=1 && $('select#js_treatiesConfirm > option[value="81"]').length!=1)
 						{
 							$('select#js_treatiesConfirm > option:first').after('<option value="77">'+LD.sendCTsopt+'</option>');
 						}
+						if(Object.keys(database.getGlobalData.getMuseumTreaties).indexOf(rid)!=-1)
+						{
+							$('form#sendMessageBoxForm > div.mailRecipient > span:last()').after('<img src="skin/museum/icon32_culturalgood.png" style="width:15px;height:auto" title="'+LD.ctenabled+'">');
+						}
+						else if(Object.keys(database.getGlobalData.getPotMuseumTreaties).indexOf(rid)!=-1)
+						{
+							$('form#sendMessageBoxForm > div.mailRecipient > span:last()').after('<img src="skin/museum/icon32_culturalgood.png" style="width:15px;height:auto;opacity:0.5" title="'+LD.ctrequested[database.getGlobalData.getPotMuseumTreaties[rid].type*0.5-39]+'">');
+						}
 					}
 				}
 			}
+			$('.nr_chars_div').css({'display':'block','text-align':'left'}).prepend(Utils.format(LD.ikmsgtxt[2],['<span style="float:right">'+($('#js_ThreadTextInput').text().length==1?LD.ikmsgtxt[4]:LD.ikmsgtxt[5])+'</span>','<span id="empire_nrChars0" style="float:right;font-weight:bold;color:'+($('#js_ThreadTextInput').text().length<7900?'#008000':'red')+';margin-right:5px">'+Utils.FormatNumToStr($('#js_ThreadTextInput').text().length,false,0)+'</span>'])+'<br>'+Utils.format(LD.ikmsgtxt[3],['<span style="float:right">'+(8000-$('#js_ThreadTextInput').text().length==1?LD.ikmsgtxt[4]:LD.ikmsgtxt[5])+'</span>','<span id="empire_nrChars1" style="float:right;font-weight:bold;color:'+(8000-$('#js_ThreadTextInput').text().length>100?'#008000':'red')+';margin-right:5px">'+Utils.FormatNumToStr(8000-$('#js_ThreadTextInput').text().length,false,0)+'</span>']));
+			$('#js_nrChars').css({'display':'none'}).parent().contents().eq(11).each(function(){return $(this).replaceWith('')})
+			$('#js_nrChars').parent().contents().eq(9).each(function(){return $(this).replaceWith('')});
+			$('#sendMessageBoxForm > div.centerButton').css({'height':'42px'});
+			$('#js_messageSubmitButton').attr('title',LD.ikmsgtxt[1]).val(LD.ikmsgtxt[1]);
+			$('#js_nrChars').on('DOMNodeInserted DOMNodeRemoved DOMSubtreeModified',function(e)
+			{
+				var t = e.target;
+				var len = 8000-parseInt($(t).text().trim());
+				$('#empire_nrChars0').css({'color':len<7900?'#008000':'red'}).text(Utils.FormatNumToStr(len,false,0)).prev().text(LD.ikmsgtxt[len==1?4:5]);
+				$('#empire_nrChars1').css({'color':8000-len>100?'#008000':'red'}).text(Utils.FormatNumToStr(8000-len,false,0)).prev().text(LD.ikmsgtxt[8000-len==1?4:5]);
+			});
 			render.toast(Utils.format('{0}',[LD.CompMsg]));
 		},
 		parseInviteFriend: function()
@@ -9664,6 +10321,7 @@
 				$('#tab_diplomacyAlly > div:first > div.content > div.filter > span.filterEntry:eq(3) > a').attr('title',LD.dipladvtxt[67]).find('span.filterEntryButton > span:last').text(LD.dipladvtxt[67]);
 				if(inAlliance)
 				{
+					var crds = [];
 					$('table#allyMemberList > tbody > tr').each(function(y,tr)
 					{
 						switch(y)
@@ -9680,6 +10338,11 @@
 								var cids = [];
 								$(tr).find('td:eq(2) > div:last > ul > li').each(function(z,c)
 								{
+									var coords = $(c).find('a.city').text().replace(/^(.*)\[(\d+)\:(\d+)\](.*)$/,'$2:$3');
+									if(crds.indexOf(coords)==-1 && database.getGlobalData.getOwnIslandData.indexOf(coords)==-1)
+									{
+										crds.push(coords);
+									}
 									$(c).find('a.city').html(function(){return $(this).text().replace(/(\[\d+:\d+\])/,'<span style="float:right">$1</span>')});
 									cids.push(parseInt($(c).find('a').attr('href').split('&').pop().split('=').pop()));
 								});
@@ -9695,6 +10358,8 @@
 								break;
 						}
 					});
+					database._globalData.islands.allies = crds;
+					events(Constant.Events.DATABASE_LOADED).pub();
 				}
 				else
 				{
@@ -9884,15 +10549,261 @@
 		parsePlayerDetails: function(view)
 		{
 			var LD = Constant.LanguageData[database.settings.languageChange.value];
-			if(view=='avatarProfile')
+//			console.log(view);
+//			console.log(LD.playerdetailstxt);
+//			var arr = []; // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+			$('#js_mainBoxHeaderTitle,#'+view+' div.buildingDescription').css({'position':'sticky','top':'0px'}).find('h1').html(LD.playerdetailstxt[view=='avatarProfile'?2:0]);
+			$('#'+view+' ul.tabmenu').css({'position':'sticky','top':'13px','z-index':'1'}).before('<div style="background-color:#FFF8D7;width:681px;height:17px;position:fixed;top:181px;z-index:1;"></div>').find('li').each(function(a,li)
 			{
-				$('table.profileTable').css('width','60%');
+				$(li).find('b').html(LD.playerdetailstxt[a+1]);
+			});
+			if(view=='avatarDetails')
+			{
+				if($('[id^="achievement_"][id$="_line"]').length==0)
+				{
+					$('#'+view+' ul.tabmenu + div > div:first > h3.header').text(LD.playerdetailstxt[1]);
+					$('#achievementCategoryTitle').text(LD.playerdetailstxt[4]);
+					$('#'+view+' ul.tabmenu + div > div:first > div.content > table > tbody > tr:not(:first,:last)').each(function(b,tr)
+					{
+						var compare = $('#category_'+(b+1)+'_bar_compare').height()>0 ? 1 : 0;
+						$(tr).find('td:first').text(LD.playerdetailstxt[b+5]);
+						$(tr).find('td:eq(2)').text($(tr).find('td:eq(2)').text().replace(/(\d+)\D+(\d+)/,'$1 '+LD.playerdetailstxt[26+compare]+' $2'));
+						$(tr).find('td:last > a').text(LD.playerdetailstxt[12]);
+					});
+					var compare = $('#category_sum_bar_compare').height()>0 ? 1 : 0;
+					$('#category_sum_points').text($('#category_sum_points').text().replace(/(\d+)\D+(\d+)/,'$1 '+LD.playerdetailstxt[26+compare]+' $2'));
+					$('#'+view+' ul.tabmenu + div > div:last > h3.header').text(LD.playerdetailstxt[13]);
+					$('#'+view+' ul.tabmenu + div > div:last > div.content > div.userSearchContainer > form > span').text(LD.playerdetailstxt[14]+':');
+					$('#'+view+' ul.tabmenu + div > div:last > div.content > div.userSearchContainer > form > input[type="submit"]').val(LD.playerdetailstxt[15]);
+					$('#'+view+' ul.tabmenu + div > div:last > div.content > div.userSearchContainer > form > div.searchLinkRight > a').text(LD.playerdetailstxt[16]);
+				}
+				else
+				{
+					var compare = $('#overview_bar_compare').height()>0 ? true : false;
+					$('#overview_rewind').attr('title',LD.playerdetailstxt[17]);
+					$('#overview_prev').attr('title',LD.playerdetailstxt[18]);
+					$('#overview_points').text($('#overview_points').text().replace(/(\d+)\D+(\d+)/,'$1 '+LD.playerdetailstxt[26+compare]+' $2'));
+					$('#overview_next').attr('title',LD.playerdetailstxt[19]);
+					var prev = parseInt($('#overview_prev').attr('href').replace(/\D+/,''));
+					var next = parseInt($('#overview_next').attr('href').replace(/\D+/,''));
+					var cid = (!isNaN(prev)?prev:0)+1 || (!isNaN(next)?next:8)-1;
+					$('#'+view+' ul.tabmenu + div > div:first > h3.header').css({'position':'sticky','top':'51px'}).text(Utils.format(LD.playerdetailstxt[21],[LD.playerdetailstxt[cid+4]]));
+					$('#achievementsTable th').css({'position':'sticky','top':'81px','z-index':'1'});
+					$('#categoryCompareTitle').css({'z-index':'1'}).parent().parent().css({'position':'sticky','top':'51px'});
+					$('[id^="achievement_"][id$="_line"]').each(function(c,ach)
+					{
+						var aid = parseInt($(ach).attr('id').replace(/\D+/g,''));
+						var currlvl = $('#achievement_'+aid+'_currentLevel').length==0 ? 0 : parseInt($('#achievement_'+aid+'_currentLevel').text().replace(/\D+/g,''));
+						var nextlvl = $('#achievement_'+aid+'_nextLevel').length==0 || compare ? currlvl : parseInt($('#achievement_'+aid+'_nextLevel').text().replace(/\D+/g,''));
+//						arr.push({id:aid,catid:catid,category:$('#categoryCompareTitle').text().replace('Category ',''),sortid:c,name:$('#achievement_'+aid+'_name > span.achievementName').text(),requirements:['','','','','',''],rewards:['','','','','','']}); // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+						$('#achievement_'+aid+'_name > span.achievementName').text(LD.achievementstxt[aid].name);
+						if(nextlvl>currlvl || compare)
+						{
+							$('#achievement_'+aid+'_requierenments > ul').html('<li>'+LD.achievementstxt[aid].reqs[nextlvl-1].split('|').join('</li><li>')+'</li>');
+							var match = $('#achievement_'+aid+'_requierenments > ul').html().match(/\d+/g);
+							if(match)
+							{
+								$.each(match,function(k,m)
+								{
+									$('#achievement_'+aid+'_requierenments > ul').html($('#achievement_'+aid+'_requierenments > ul').html().replace(m,Utils.FormatNumToStr(parseInt(m),false,0)));
+								});
+							}
+							$('#achievement_'+aid+'_gains').html(LD.achievementstxt[aid].rews[nextlvl-1]==''?'':Utils.format(LD.playerdetailstxt[LD.achievementstxt[aid].rews[nextlvl-1].split('|').length==1?22:23]+':',[nextlvl])+'<ul><li>'+LD.achievementstxt[aid].rews[nextlvl-1].split('|').join('</li><li>')+'</li></ul>');
+							var match = $('#achievement_'+aid+'_gains').html().match(/\d+/g);
+							if(match)
+							{
+								$.each(match,function(k,m)
+								{
+									$('#achievement_'+aid+'_gains').html($('#achievement_'+aid+'_gains').html().replace(m,Utils.FormatNumToStr(parseInt(m),false,0)));
+								});
+							}
+							$('#achievement_'+aid+'_nextLevel').text(Utils.format(LD.playerdetailstxt[20],[nextlvl]));
+						}
+						if(currlvl>0 || !compare)
+						{
+							$('#achievement_'+aid+'_collectGains').html(LD.achievementstxt[aid].rews[currlvl-1]=='' || LD.achievementstxt[aid].reqs[nextlvl-1]!=''?'':Utils.format(LD.playerdetailstxt[LD.achievementstxt[aid].rews[currlvl-1].split('|').length==1?22:23]+':',[currlvl])+'<ul><li>'+LD.achievementstxt[aid].rews[currlvl-1].split('|').join('</li><li>')+'</li></ul>');
+							var match = $('#achievement_'+aid+'_collectGains').html().match(/\d+/g);
+							if(match)
+							{
+								$.each(match,function(k,m)
+								{
+									$('#achievement_'+aid+'_collectGains').html($('#achievement_'+aid+'_collectGains').html().replace(m,Utils.FormatNumToStr(parseInt(m),false,0)));
+								});
+							}
+							$('#achievement_'+aid+'_currentLevel').text(Utils.format(LD.playerdetailstxt[20],[currlvl]));
+						}
+						if($('#achievement_'+aid+'_progressText').text()!='')
+						{
+							var progtxt = $('#achievement_'+aid+'_progressText').text().split('/');
+							var t = '';
+							$.each(progtxt,function(k,txt)
+							{
+								t += Utils.FormatNumToStr(parseInt(txt.replace(/\D+/g,'')),false,0)+' / ';
+							});
+							$('#achievement_'+aid+'_progressText').text(t.replace(/( \/ )+$/,''));
+						}
+					});
+				}
+//				console.log(JSON.stringify(arr)); // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+			}
+			else if(view=='achievement')
+			{
+				var aid = parseInt($('[id^="achievement_"][id$="_requierenments"]').attr('id').replace(/\D+/g,''));
+				var aidarr = {};
+				$.each(LD.achievementstxt,function(i,a)
+				{
+					if(a.cid==LD.achievementstxt[aid].cid)
+					{
+						aidarr[a.sid] = a.id;
+					}
+				});
+				aidarr = Object.values(aidarr);
+				$('#achievementTitle').css({'position':'sticky','top':'51px'}).text(LD.achievementstxt[aid].name);
+				$('#overview_rewind').attr('title',LD.playerdetailstxt[17]);
+				$('#overview_category').attr('title',Utils.format(LD.playerdetailstxt[21],[LD.achievementstxt[aid].cat])).after(aidarr.indexOf(aid)<1?'':'<a id="overview_prev" class="overview_arrow" style="left:45px" href="?view=achievement&amp;achievementId='+aidarr[aidarr.indexOf(aid)-1]+'" onclick="ajaxHandlerCall(this.href);return false;" title="'+LD.playerdetailstxt[24]+'"></a>');
+				$('#overview_points').after(aidarr.indexOf(aid)==aidarr.length-1?'':'<a id="overview_next" class="overview_arrow" href="?view=achievement&amp;achievementId='+aidarr[aidarr.indexOf(aid)+1]+'" onclick="ajaxHandlerCall(this.href);return false;" title="'+LD.playerdetailstxt[25]+'"></a>');
+				$('#achievementsTable th').css({'position':'sticky','top':'81px','z-index':'1'});
+				var arr = [], reqs = [], rews = [];
+				$('[id^="achievement_"][id$="_line"]').each(function(c,ach)
+				{
+					var req = '', rew = '';
+					var lid = parseInt($(ach).attr('id').replace(/\D+/g,''));
+					var lchecked = $('#achievement_'+lid+'_name > span.achievementName > img.achievementCheck').length==0?'':'<img class="achievementCheck" src="skin/interface/check_mark_17px.png">';
+					$('#achievement_'+lid+'_name > span.achievementName').html((Utils.format(LD.playerdetailstxt[20],[lid])+' '+lchecked).trim());
+					$('#achievement_'+lid+'_nextData > div.achievementRequirenmentList > div#achievement_'+aid+'_requierenments > ul > li').each(function(a,li)
+					{
+//						req += $(li).html().replace('<img class="achievementCheck" src="skin/interface/check_mark_17px.png">','')+'|'; // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+						var achecked = $(li).find('img.achievementCheck').length==0?'':'<img class="achievementCheck" src="skin/interface/check_mark_17px.png">';
+						$(li).html((LD.achievementstxt[aid].reqs[lid-1].split('|')[a]+' '+achecked).trim());
+					});
+//					reqs[lid-1] = req.replace(/\|+$/,''); // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+//					req = ''; // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+					if($('#achievement_'+aid+'_'+lid+'_gains').length==1)
+					{
+						$('#achievement_'+aid+'_'+lid+'_gains').html(Utils.format(LD.playerdetailstxt[LD.achievementstxt[aid].rews[lid-1].split('|').length==1?22:23]+':',[lid])+'<ul><li>'+LD.achievementstxt[aid].rews[lid-1].split('|').join('</li><li>')+'</li></ul>');
+//						$('#achievement_'+aid+'_'+lid+'_gains > ul > li').each(function(b,li) // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+//						{ // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+//							rew += $(li).html()+'|'; // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+//						}); // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+					}
+//					else // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+//					{ // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+//						rews[lid-1] = ''; // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+//					} // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+//					rews[lid-1] = rew.replace(/\|+$/,''); // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+//					rew = ''; // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+					if($('#achievement_'+lid+'_nextData #achievement_'+aid+'_progressText').text()!='')
+					{
+						var progtxt = $('#achievement_'+lid+'_nextData #achievement_'+aid+'_progressText').text().split('/');
+						var t = '';
+						$.each(progtxt,function(k,txt)
+						{
+							t += Utils.FormatNumToStr(parseInt(txt.replace(/\D+/g,'')),false,0)+' / ';
+						});
+						$('#achievement_'+lid+'_nextData #achievement_'+aid+'_progressText').text(t.replace(/( \/ )+$/,''));
+					}
+					var match = $('#achievement_'+lid+'_nextData > div.achievementRequirenmentList').html().match(/\d+/g);
+					if(match)
+					{
+						$.each(match,function(k,m)
+						{
+							$('#achievement_'+lid+'_nextData > div.achievementRequirenmentList').html($('#achievement_'+lid+'_nextData > div.achievementRequirenmentList').html().replace(m,Utils.FormatNumToStr(parseInt(m),false,0)));
+						});
+					}
+				});
+//				arr.push({requirements:reqs,rewards:rews}); // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+//				console.log(aid,JSON.stringify({requirements:reqs,rewards:rews})); // Χρησιμοποιείται για τη λήψη των κειμένων με σκοπό τη μετάφραση
+			}
+			else if(view=='avatarProfile')
+			{
+				$('#avatarProfile h3.header:first').html(LD.playerdetailstxt[2]);
+				$('#playerIcon + span').html(LD.playerdetailstxt[28]);
+				console.log(unsafeWindow.dataSetForView.avatarAllyId);
+				// <a onclick="ajaxHandlerCall(this.href);return false;" href="?view=sendIKMessage&allyId='++'" alt="Στείλε κυκλικό μήνυμα"></a>
+				$('table.profileTable').css('width','60%').find('tbody > tr').each(function(a,tr)
+				{
+					$(tr).find('td:first').html(LD.playerdetailstxt[a+29]+':');
+					if(a==2 || a==3)
+					{
+						$(tr).find('td:last').text(Utils.FormatNumToStr(parseInt($(tr).find('td:last').text().replace(/\D+/g,'')),false,0));
+					}
+					else if(a==$('table.profileTable > tbody > tr').length-1)
+					{
+						$(tr).find('td:last').html('<a onclick="ajaxHandlerCall(this.href);return false;" href="?view=sendIKMessage&allyId='+unsafeWindow.dataSetForView.avatarAllyId+'&amp;msgType=51" alt="'+LD.playerdetailstxt[35]+'" title="'+LD.playerdetailstxt[35]+'">'+$(tr).find('td:last').text().replace('[',' [')+'</a>');
+					}
+				});
+				$('table.profileTable + table > tbody > tr:first > td:first').text(LD.playerdetailstxt[36]);
+				$('table.profileTable + table > tbody > tr:first > td:last > div > input').attr('title',LD.playerdetailstxt[37]);
+				$('table.profileTable + table > tbody > tr:first > td:last > div > span').text(LD.playerdetailstxt[37]);
+				$('table.profileTable + table > tbody > tr:last > td:last > div > input').attr('title',LD.playerdetailstxt[38]);
+				$('table.profileTable + table > tbody > tr:last > td:last > div > span').text(LD.playerdetailstxt[38]);
+				$('#avatarProfile h3.header:last').html(LD.playerdetailstxt[39]);
+				$('#js_CreateSubmit').val(LD.playerdetailstxt[40]);
+				$('#js_nrChars').parent().hide().before('<div class="nr_chars_div" style="display:block;text-align:left;width:250px;position:absolute;top:290px">'+Utils.format(LD.ikmsgtxt[2],['<span style="float:right">'+($('#js_msgTextConfirm').text().length==1?LD.ikmsgtxt[4]:LD.ikmsgtxt[5])+'</span>','<span id="empire_nrChars0" style="float:right;font-weight:bold;color:'+($('#js_msgTextConfirm').text().length<7900?'#008000':'red')+';margin-right:5px">'+Utils.FormatNumToStr($('#js_msgTextConfirm').text().length,false,0)+'</span>'])+'<br>'+Utils.format(LD.ikmsgtxt[3],['<span style="float:right">'+(8000-$('#js_msgTextConfirm').text().length==1?LD.ikmsgtxt[4]:LD.ikmsgtxt[5])+'</span>','<span id="empire_nrChars1" style="float:right;font-weight:bold;color:'+(8000-$('#js_msgTextConfirm').text().length>100?'#008000':'red')+';margin-right:5px">'+Utils.FormatNumToStr(8000-$('#js_msgTextConfirm').text().length,false,0)+'</span>']));
+				$('#js_nrChars').on('DOMNodeInserted DOMNodeRemoved DOMSubtreeModified',function(e)
+				{
+					var t = e.target;
+					var len = 8000-parseInt($(t).text().trim());
+					$('#empire_nrChars0').css({'color':len<7900?'#008000':'red'}).text(Utils.FormatNumToStr(len,false,0)).prev().text(LD.ikmsgtxt[len==1?4:5]);
+					$('#empire_nrChars1').css({'color':8000-len>100?'#008000':'red'}).text(Utils.FormatNumToStr(8000-len,false,0)).prev().text(LD.ikmsgtxt[8000-len==1?4:5]);
+				});
+				var sortedtitles = Object.fromEntries(Object.entries(LD.playertitles).sort((a,b)=>a[1]>b[1]?1:((b[1]>a[1])?-1:0)));
+				var selectTitles = $('#selectTitleSelect > option').map(function(){return $(this).val().replace('_',',');}).get();
+				var selected = $('#selectTitleSelect > option:selected').val().replace('_',',');
+				var options = '', lis = '';
+				$.each(sortedtitles,function(k,v)
+				{
+					options += selectTitles.indexOf(k)!=-1 ? '<option value="'+k.replace(',','_')+'"'+(selected==k || $('#selectTitleContainer > span > a').html()==v ? ' selected="selected"':'')+'>'+v : '';
+					lis += selectTitles.indexOf(k)!=-1 ? '<li selectvalue="'+k.replace(',','_')+'"'+(k=='0'?' class="first-child"':'')+(selected==k?' style="color:blue"':'')+'><a>'+v+'</a></li>' : '';
+				});
+				$('#selectTitleSelect').html(options);
+				$('#dropDown_selectTitleContainer').width('208px').find('div.bg').width('189px').find('ul').width('190px').html(lis);
+				$('#selectTitleContainer').on('DOMActivate DOMNodeInserted DOMNodeRemoved DOMSubtreeModified click mousedown mouseenter mouseleave mousemove mouseout mouseover mouseup pointerdown pointerenter pointerleave pointermove pointerout pointerover pointerup selectstart',function(i,op)
+				{
+					if(op!=undefined)
+					{
+						var target = op.target;
+						$.ajax(
+						{
+							success: function()
+							{
+								$(target).css({'width':'200px','background-size':'208px 75px'});
+								$('#dropDown_selectTitleContainer').width('208px').find('div.bg').width('189px').find('ul').width('190px');
+							}
+						});
+					}
+				});
+				$('#dropDown_selectTitleContainer > div.bg > ul > li:last').addClass('last-child');
+				$('#dropDown_selectTitleContainer > div.bg > ul > li').each(function(k,li)
+				{
+					$(li).find('a').on('click',function(i,op)
+					{
+						var target = op.target;
+						$.ajax(
+						{
+							success: function()
+							{
+								$('#selectTitleContainer > span > a').html($(target).html());
+								$(target).parent().css({'color':'blue'});
+								$('#selectTitleSelect > option[value="'+$(target).html()+'"]').attr('selected','selected');
+							}
+						});
+					});
+				});
+				$('#selectTitleContainer > span > a').html($('#selectTitleSelect > option:selected').html());
 				var regdate = $('#selectTitleForm').parentsUntil('table','tbody').find('tr:nth-child(5) > td:last');
 				database.getGlobalData._regDate = moment($(regdate).text()+'+0100','DD.MM.YYYY HH:mm:ss Z').valueOf();
 				$(regdate).hide().after('<span id="regDate"></span>');
 				$('table.profileTable > tbody > tr:nth-child(4) > td:last').text(Utils.FormatNumToStr($('table.profileTable > tbody > tr:nth-child(4) > td:last').text().replace(/(\d+)[,.](?=\d{3}(\D|$))/g,'$1')));
 				setInterval(function() { $('#regDuration').html(Utils.FormatTimeLengthToStr(moment()-database.getGlobalData.getRegDate,6)); },1000);
 				$('#regDate').css({'text-align':'center','display':'inline-block'}).html(Utils.FormatFullTimeToDateString(database.getGlobalData.getRegDate)+'<br>(<span id="regDuration">'+Utils.FormatTimeLengthToStr(moment()-database.getGlobalData.getRegDate,6)+'</span>)');
+			}
+			else if(view=='normalServerBadges')
+			{
+				$('#normalServerBadges h3.header:first').html(LD.playerdetailstxt[45]);
+				$('#emailInvalidWarning td.eventServerBadgesTd:first > div > p').html(LD.playerdetailstxt[47]);
+				$('#badgePreview div.cityName').css({'top':'25px','left':'0px','text-align':'center'});
+				$('#normalServerBadges h3.header:last').html(LD.playerdetailstxt[46]);
 			}
 			if(database.settings.ctfinder.value)
 			{
@@ -11141,8 +12052,13 @@
 			});
 			render.toast(Utils.format('{0}: {1} {2} {3} {4}',[LD.updated_,LD.workshop,LD.tothe,LD[city.isCapital?'capital':'colony'],LD.leftquot+city._name+LD.rightquot]));
 		},
-		parsebarbarianVillage: function()
+		parsebarbarianVillage: function(view,html,data)
 		{
+//			console.log(view);
+//			if(data.barbarianCityCooldownTimer)
+//			{
+//				console.log(Utils.FormatTimeLengthToStr(data.barbarianCityCooldownTimer.countdown.enddate*1000-moment()),Utils.FormatFullTimeToDateString(data.barbarianCityCooldownTimer.countdown.enddate*1000));
+//			}
 			var LD = Constant.LanguageData[database.settings.languageChange.value];
 			var city = ikariam.getCurrentCity;
 			var sum = 0;
@@ -11464,7 +12380,8 @@
 			AUTO_UPDATE: 'autoUpdates',
 			DONATION_BUTTONS: 'donationButtons',
 			CT_FINDER: 'ctfinder',
-			XY_SHOW: 'ΧΥshow',
+			XY_SHOW: 'XYshow',
+			WORLDMAP_SHOW: 'worldmapshow',
 			SMALLER_FONT: 'smallFont',
 			GOLD_LONG: 'GoldShort',
 			NEWS_TICKER: 'newsTicker',
@@ -11517,7 +12434,8 @@
 			compressedBuildingList:{type:'boolean', default:false, category:'building_category'},
 			donationButtons:{type:'boolean', default:false, categories:'tweaks_category'},
 			ctfinder:{type:'boolean', default:false, categories:'tweaks_category'},
-			ΧΥshow:{type:'boolean', default:false, categories:'tweaks_category'},
+			XYshow:{type:'boolean', default:false, categories:'tweaks_category'},
+			worldmapshow:{type:'boolean', default:true, categories:'worldmapshow'},
 			hourlyRess:{type:'boolean', default:false, categories:'resource_category'},
 			wineOut:{type:'boolean', default:false, categories:'resource_category'},
 			dailyBonus:{type:'boolean', default:false, categories:'resource_category'},
@@ -11534,7 +12452,7 @@
 			TWEAKS: 'tweaks_category',
 			BUILDING: 'building_category',
 			RESOURCE: 'resource_category',
-			LANGUAGE: 'language_category',
+			LANGUAGE: 'language_category'
 		},
 		LanguageData:
 		{
@@ -11554,7 +12472,8 @@
 				buildings: 'Buildings',
 				economy: 'Economy',
 				military: 'Military',
-				greek: 'Greek',
+				worldmap: 'Map',
+				greek: 'Hellenic',
 				empire: 'Empire',
 				overview: 'Overview',
 				troops: 'Troops',
@@ -11737,7 +12656,7 @@
 				capacity: 'Capacity',
 				safe: 'Safe',
 				resources_lootable: 'Lootable',
-				shortbuildingtime: ['Shorten building time','End building time'],
+				shortbuildingtime: ['Shorten building time','End building time','Start of last 5minutes!'],
 				training: 'Training',
 				theatertxts: {active: 'Active',inactive: 'Inactive',status: 'Status',resource: 'Drama<br>Wood production',tradegood: 'Comedy<br>{0} production',favour: 'Cultural<br>show',wood: 'Wood',wine: 'Wine',marble: 'Marble',glass: 'Crystal',sulfur: 'Sulphur',tip: 'Available show for +20 % {0}',luxury: 'Luxury resource'},
 				plundering: 'Plundering',
@@ -11875,7 +12794,8 @@
 				donwoodlogall: 'All available quantity',
 				donwoodlogtitle: '{0} wood units for Donation',
 				ctfinder: 'Cultural Treaties Finder',
-				ΧΥshow: 'Show island coordinates',
+				XYshow: 'Show island coordinates',
+				worldmapshow: 'Show the tab worldmap',
 				hourlyRes: 'Hide hourly resources',
 				playerInfo: 'Show information about player',
 				control: 'Hide Control center',
@@ -11968,7 +12888,8 @@
 				noTheater_description: 'Removes the Cinetheater',
 				donationButtons_description: 'Adds standard amount for donation buttons (0,500,+1K,+10K,+100K,+500K,+1M) for expansion',
 				ctfinder_description: 'Displays a icon next to the player&apos;s name, if you have a CT with him/her.<br>If the player hasn&apos;t accepted your request yet, the icon is half transparent.',
-				ΧΥshow_description: 'Displays the coordinates ([X:Y]) of the island next to the city name.',
+				XYshow_description: 'Displays the coordinates ([X:Y]) of the island next to the city name.',
+				worldmapshow_description: 'Displays worldmap tab',
 				hourlyRes_description: 'Hide hourly resources in the infobar',
 				playerInfo_description: 'View information from the players in the island view',
 				control_description: 'Hide the Control center in world, island and city view',
@@ -12025,12 +12946,12 @@
 				servertimetip: '<b>World time (server)</b><br>{0}<br><b>Local time</b><br>{1}',
 				summertime: 'Summer time',
 				wintertime: 'Winter time',
-				viewCityMenu: {image_troops:'Troops in town',image_espionage:'Espionage',image_resourceShop:'Λήψη αγαθών!',image_trader:'Premium trader',image_friends:'Invite friends',image_constructionlist:'Building construction list',image_fireunit:'Dismiss units',image_toggle:'Display building names',empire_Menu:'Empire overview'},
-				dipladvtxt: ['Messages ({0})','Agora ({0})','Treaties','Alliance ({0})','Search player','Ignored players','Alliance','Inbox','Outbox','Inbox Archive','Outbox Archive','Inbox Archive','Outbox Archive','Action','Sender','Subject','Town','Date','Click here to expand/hide the message','Go to sender&aposs town','Reply to sender','Reply','Delete','Report','Ignore','Reply to all','This function forwards insults and offences to the Game Operator.\nDo you really want to forward this message to the GO?','Messages sent by this player will no longer be displayed.','Sure?','Yes','Cancel','No messages.','next','previous','All','Unread','Read','None','Mark as read','Delete','Influence','Diplomacy points: {0}','Receiver','New post','Agora','There are no messages on the Agora at the moment. Contact your town neighbours now by creating a new post.','Accept','Reject','Trade treaties','Partner','Cities','Status','Action','Cancel trade treaty','{0} towns','{0} town','Location','Name','Luxury<br>good','Cultural treaties {0}','Go to museum','Distribute cultural goods ({0})','Alliance forum','Alliance forum ({0})','Alliance information','Alliance information','Menbers list','Search alliance','Subforum','Threads','Last thread','Actions','Threads: {0}','Title','Replies','Create thread','Reply','Return to top','Report','Quote','Title','Submit','<b>{0}</b> characters remain','<b>{0}</b> character remains','No more characters are remaining','Username','Search','Θέση','Title','Username','Alliance','Ranks','Actions','No player found on this research.','Players you ignore','No entries','Title','Name','Alliance','Action','Player will no longer be ignored.','Delete','You can write a new post for the Agora here, which all islanders will be able to read.','Subject','Message','Create new thread','Back','{0} characters','{0} character','No more characters'],
+				viewCityMenu: {image_troops:'Troops in town',image_espionage:'Espionage',image_resourceShop:'Receive goods!',image_trader:'Premium trader',image_friends:'Invite friends',image_constructionlist:'Building construction list',image_fireunit:'Dismiss units',image_toggle:'Display building names',empire_Menu:'Empire overview'},
+				dipladvtxt: ['Messages ({0})','Agora ({0})','Treaties','Alliance ({0})','Search player','Ignored players','Alliance','Inbox','Outbox','Inbox Archive','Outbox Archive','Inbox Archive','Outbox Archive','Action','Sender','Subject','Town','Date','Click here to expand/hide the message','Go to sender&aposs town','Reply to sender','Reply','Delete','Report','Ignore','Reply to all','This function forwards insults and offences to the Game Operator.\nDo you really want to forward this message to the GO?','Messages sent by this player will no longer be displayed.','Sure?','Yes','Cancel','No messages.','next','previous','All','Unread','Read','None','Mark as read','Delete','Influence','Diplomacy points: {0}','Receiver','New post','Agora','There are no messages on the Agora at the moment. Contact your town neighbours now by creating a new post.','Accept','Reject','Trade treaties','Partner','Cities','Status','Action','Cancel trade treaty','{0} towns','{0} town','Location','Name','Luxury<br>good','Cultural treaties {0}','Go to museum','Distribute cultural goods ({0})','Alliance forum','Alliance forum ({0})','Alliance information','Alliance information','Menbers list','Search alliance','Subforum','Threads','Last thread','Actions','Threads: {0}','Title','Replies','Create thread','Reply','Return to top','Report','Quote','Title','Submit','<b>{0}</b> characters remain','<b>{0}</b> character remains','No more characters are remaining','Username','Search','Θέση','Title','Username','Alliance','Ranks','Actions','No player found on this research.','Players you ignore','No entries','Title','Name','Alliance','Action','Player will no longer be ignored.','Delete','You can write a new post for the Agora here, which all islanders will be able to read.','Subject','Message','Create new thread','Back','{0} characters','{0} character','No more characters','Forward to alliance'],
 				action: 'Action',
 				museumlvl: 'Museum level',
 				embassytxt: ['The embassy is a busy place: diplomats from all over the world negotiate contracts here, forge treaties and found alliances. In order to get a larger alliance you need to upgrade your embassy. Every expansion level of your embassy increases your diplomacy points.','Diplomacy Points','Alliance','Members list','Alliance Internal Page','Search alliance','Founding date (Age)','Members','Short description','Placement (Points)','Alliance homepage','Diplomatic Influence','Your rank','Founding an Alliance','In the embassy you can manage and lead your alliance or redistribute your ranks.','Tag (up to <b>5</b> characters)','Alliance name (up to <b>15</b> characters)','Become a member of an existent alliance','An alliance can be suggested that suits your place on the highscore list.','Alliance suggestion','Name','Abbreviation','Abbreviation','Name','Members','Points','Actions','Display Alliance page','Join the alliance','Last connection','Name','Towns','Rank','Points','Actions','Actions','Send message to the members of your alliance','Alliance treaties','Withdraw','You are not a member of an alliance','Alliance information'],
-				resadvtxt: ['No scientist available','Available in {0}','Available','per Hour','Basic production','Premium Bonus','Not enough research points','Already researched.','Immediately','Requirement(s)','Costs','Available in'],
+				resadvtxt: ['No scientist available','Available in {0}','Available','per Hour','Basic production','Premium Bonus','Not enough research points','Already researched.','Immediately','Requirement(s)','Costs','Available in','Maximum reached!'],
 				researchshortdesc: {1010:'Building of ballista ships in the shipyard',1020:'2 % less upkeep for ships',1030:'Building of palaces, founding of colonies, overseas trading',1040:'Construction of Embassies.',1050:'4 % less upkeep for ships',1060:'Building of flame ships in the shipyard',1070:'Building of catapult-ships at the shipyard',1080:'Garrison right',1090:'8 % less upkeep for ships',1100:'Construction of paddle speedboats in the shipyard',1110:'Building of mortar ships in the shipyard.',1120:'Building of an architect&aposs office.',1130:'Quicker ships with a lighter load.',1140:'Construction of tenders in the shipyard',1150:'Construction of steam rams in the shipyard',1160:'Construction of balloon carriers in the shipyard.',1170:'Construction of Pirate Fortresses, Capture Runs, Raids, participation in the Capture Points Highscores',1999:'2 % ess upkeep for ships for each future level.',2010:'Building of warehouses.',2020:'2 % less building costs.',2030:'Allows the production of luxury goods, the construction of trading posts and gives you 130 units of each luxury good.',2040:'Building of taverns.',2050:'Training of chefs in the barracks.',2060:'4 % less building costs.',2070:'Treaties, form of government: Democracy.',2080:'Increases the satisfaction and maximum population in all towns.',2090:'Overloading of resources.',2100:'8 % less cost for the construction of buildings.',2110:'An additional building space in the towns.',2120:'+200 housing space, +200 satisfaction in the capital.',2130:'Construction of Forester Houses, Stonemasons, Wineries, Glassblowers and Alchemists&apos Towers.',2140:'Building of wine cellars.',2150:'Building of Carpentries.',2160:'Allows you to build depots.',2170:'Form of government: Nomocracy.',2180:'Building the Black Market.',2999:'+10 satisfaction and +20 max. inhabitants in every town for each future level.',3010:'+50 housing space, +50 happiness in the capital.',3020:'2 % more research points.',3030:'Building of hideouts.',3040:'Temples and Miracles.',3050:'4 % more research points.',3060:'Building of museums, cultural goods treaties, Phoenician merchant ships.',3070:'Recruiting of doctors in the barracks.',3080:'Building of an optician&aposs.',3081:'Purchase of research points for crystal glass, form of government: technocracy.',3090:'8 % more research points.',3100:'Construction of Gyrocopter in the barracks.',3110:'3 Gold upkeep cost less per scientist.',3120:'Building of submersibles in the shipyard.',3130:'Building of bombardiers in the barracks.',3140:'Building of workshops.',3150:'Start of a revolution, forms of government: dictatorship and oligarchy.',3160:'Form of government: theocracy.',3170:'Building a Sea Chart Archive.',3999:'2 % more research points for each future level.',4010:'Construction of a second trading port, shipyard.',4020:'2 % less upkeep for soldiers.',4030:'Recruiting of swordsmen and hoplites at the barracks.',4040:'Building of battering rams in the barracks.',4050:'4 % less upkeep costs and allows the form of government: aristocracy.',4060:'Training of archers in the barracks.',4070:'Building of catapults in the barracks.',4080:'Occupation.',4090:'8 % less upkeep for soldiers.',4100:'Construction of carabineers in the barracks and rocket ships in the shipyard.',4110:'Building of steam giants in the barracks.',4120:'Building of mortars in the barracks.',4130:'Building of firework test area.',4999:'2 % less upkeep for units for each future level.'},
 				researchdesc: {1010:'A rotating attachment for our warships on which we can mount huge weapons! For a start our inventors have mounted a huge crossbow on it. But we assume that the attachment will be able to bear other machines, too. So as soon as one of our scientists has an idea we can install it on our ships without a problem.<br><br><b>Allows:</b> Building of [[v:u,s:213,h:10|ballista ships]] in the [[v:b,b:5,h:1|shipyard]].',1020:'If we always keep our ships nice and clean, they won&apos;t have to be repaired that often. It will also keep up the morale of the crew when they sing songs together from time to time while scrubbing the deck or mending the sail cloths.<br><br><b>Effect:</b> 2 % less upkeep for [[v:u,s:210,h:10|ships]].',1030:'There is a lot more than just an ocean out there! More islands await being discovered. We are not alone! We can gain ground on one of the newly discovered islands, tap new resources and get to know other nations! Our clerks are eager to administer even more, our traders ready to travel to new lands!<br><br><b>Allows:</b> Building of [[v:b,b:11,h:1|palaces]], founding of [[v:i,h:0,sh:6|colonies]], [[v:i,h:0,sh:3|overseas trading]].',1040:'If we get to know other nations, it will help us to make progress ourselves. Regular talks and warm exchanges can work true wonders and lead to new alliances and friendships. Of course we need a pretty and comfortable building for all the ambassadors and the feasts we will hold in their honour!<br><br><b>Allows:</b> Construction of [[v:b,b:12,h:1|Embassies]].',1050:'That is some tough and bad smelling liquid our scientists have found there! But since we have started sticking it onto our ships there are hardly any holes we have to mend!<br><br><b>Effect:</b> 4 % less upkeep for [[v:u,s:210,h:10|ships]].',1060:'A fire that can&apos;t be extinguished with water! With this mixture from many secret ingredients we can now set fire to ships and sink them! Soon we will conquer the seas with ships that have the breath of a dragon!<br><br><b>Allows:</b> Building of [[v:u,s:211,h:10|flame ships]] in the [[v:b,b:5,h:1|shipyard]].',1070:'Our scientists have improved the weapon attachment for our ships, so that they don&apos;t tear apart when we fling huge rocks towards our enemies. And thanks to the counterweight our catapult stays on board now and doesn&apos;t launch itself anymore.<br><br><b>Allows:</b> Building of [[v:u,s:214,h:10|catapult-ships]] at the [[v:b,b:5,h:1|shipyard]].',1080:'One of our philosophers has written down wise things about war and peace. He has advised us to confederate with other nations so that we can fight our enemies together!<br><br><b>Allows:</b> [[v:i,h:14|Garrison right]].',1090:'Our voyages will be much safer if we write down where all the dangerous currents and treacherous shallows are! Then our seamen won&apos;t have to be afraid of any jagged rocks, deadly maelstroms or seductive sirens any more.<br><br><b>Effect:</b> 8% less upkeep for [[v:u,s:210,h:10|ships]].',1100:'Great news for our seamen: A steam driven paddle wheel allows our ships to move much faster than they ever could with oarsmen. Now we can teach our enemies to fear us with our mighty paddle wheel rams.<br><br><b>Allows:</b> Construction of [[v:u,s:218,h:10|paddle speedboats]] in the [[v:b,b:5,h:1|shipyard]].',1110:'This mortar is so huge, that not even Hercules could drag it along. Only an armoured steam ship is strong enough to carry it and all the huge cannon balls it can fire at our enemies.<br><br><b>Allows:</b> Building of [[v:u,s:215,h:10|mortar ships]] in the [[v:b,b:5,h:1|shipyard]].',1120:'A good house can withstand the harshest elements. It can withstand them even better when a clever mind takes care of it with a lot of drawings and a little mathematics before hand, so that all the walls are straight and the roof is tight. Thanks to angles and compasses our buildings will be much more stable and well protected from the rain. An architect&apos;s office would spare us a lot of marble, just think about the savings we could make in constructing a new building!<br><br><b>Allows:</b> Building of an [[v:b,b:24,h:1|architect&apos;s office]].',1130:'Our scientists have found out that our ships have less water resistance when their load is smaller. This means that we can put larger sails on the mast and travel more quickly.<br><br><b>Allows:</b> Quicker ships with a lighter load.',1140:'With this technology, our engineers can seal leaky ships. Caulking in and in front of the port is a complicated undertaking, but gives our fleets the chance to get ready for battle between two attacks.<br><br><b>Allows:</b> Construction of [[v:u,s:220,h:10|tenders]] in the [[v:b,b:5,h:1|shipyard]].',1150:'One of the most dangerous sea units can be built with the ram. This masterpiece of engineering ingenuity is attached to the ship&apos;s bow and can inflict massive amounts of damage onto other ships.<br><br><b>Allows:</b> Construction of [[v:u,s:216,h:10|steam rams]] in the [[v:b,b:5,h:1|shipyard]].',1160:'We can use this research to build some of the largest ships in the shipyard. These are equipped with balloons that bomb opponents on the high seas.<br><br><b>Allows:</b> Construction of [[v:u,s:219,h:10|balloon carriers]] in the [[v:b,b:5,h:1|shipyard]].',1170:'A powerful Pirate Fortress with a strong crew eager for your orders. They are looking to loot capture points and gold. Fame and enormous amounts of resources beckon the most successful pirates. From here you can start raids on other Pirate Fortresses.<br><br><b>Allows:</b> construction of [[v:b,b:30,h:1|Pirate Fortresses]], [[v:i,h:19,sh:2|Capture Runs]], [[v:i,h:19,sh:5|Raids]], participation in the [[v:i,h:19,sh:6|Capture Points Highscores]].',1999:'The secrets of the oceans are finally ours! Our ships are constantly becoming tougher and faster! There are almost no ships on this ocean capable of competing with ours.<br><br><b>Effect:</b> 2% less upkeep for [[v:u,s:210,h:10|ships]].',2010:'We have learned how to store and protect our resources in the long term from wind and weather. Additionally a part of our resources is safe from pirates and other villains, who might want to steal from us!<br><br><b>Allows:</b> Building of [[v:b,b:7,h:1|warehouses]].',2020:'A brilliant idea: A rope that is pulled over a roll gives a simple man the strength of Hercules. So now our workers can lift up huge blocks of stone on their own and construct our buildings even faster!<br><br><br><b>Effect:</b> 2% less building costs.',2030:'The earth is full of valuable treasures! We have learned how to mine sulphur and crystal and how to chisel marble off rocks. We are also growing wonderful vines on the fertile land on our hills which produce delicious wine!<br>A new era of prosperity will dawn on us when we start using these treasures. We can then sell goods at a trading post and buy what we need from foreign traders.<br><br><b>Effect:</b> Allows the production of [[v:i,h:6|luxury goods]], the construction of [[v:b,b:13,h:1|trading posts]] and gives you 130 units of each luxury good.',2040:'A happy population needs festivals in which they can spend hours revelling and drinking our fantastic free-flowing wine. Dionysus loves seeing us enjoying what he has given us!<br><br><b>Allows:</b> Building of [[v:b,b:9,h:1|taverns]].',2050:'Our culture is truly rich in delicious treats! If we have cooks joining our soldiers in battle the delicious smell will be enough to remind them of their kitchen at home and surely strengthen their fighting spirit. And it shouldn&apos;t be forgotten, that a hearty meal has always brought a man back onto his feet. And of course a cook has a sharp knife that he can jump into the fight with.<br><br><b>Allows:</b> Training of [[v:u,u:310,h:9|chefs]] in the [[v:b,b:6,h:1|barracks]].',2060:'Right angles, triangles, circles – a few bright minds can calculate how we can construct our buildings even better and more beautifully. And soon our towns will serve as examples to the whole world!<br><br><b>Effect:</b> 4% less building costs.',2070:'The most unusual goods arrive at the market here from distant islands. You can form treaties with merchants here so that we get all the resources that we need.<br><br><b>Allows:</b> [[v:i,h:14|treaties]], [[v:i,h:18,sh:0|form of government:]] [[v:f,f:2,h:18,sh:3|democracy]].',2080:'A worker who has had a good rest is much more eager to work than an exhausted one. That&apos;s why every citizen should have one day off per week. This will make all our citizens happier!<br><br><b>Effect:</b> Increases the [[v:i,h:3|satisfaction]] and maximum population in all towns.',2090:'If our citizens help out a little underground instead of tanning themselves on the beach, we’ll get more raw materials and they’ll get less sunburn. There’s always a need for help down the mines, saw mills and vineyards.<br><br><b>Allows:</b> Overloading of [[v:i,h:5|resources]].',2100:'Water is always even. We should use this knowledge so that our buildings become even, too! Our town will become even more beautiful and we will use less stone and wood for constructing our buildings!<br><br><b>Effect:</b> 8% less cost for the construction of buildings.',2110:'Now our palace has even more shelves, boxes and drawers, more piles of records and forms as well as clerks who can understand it all. Finally we can afford to build and administer an additional building in our towns!<br>But due to the increased administration burden and the meticulous documentation of all processes, we cannot smuggle goods in or out of occupied towns anymore, as our occupier is also well informed about our records.<br><br><b>Allows:</b> An additional [[v:i,h:0,sh:1|building space]] in the towns.',2120:'Our citizens are living in wealth and prosperity. They are happy and healthy and have very little to worry about. Yes, one could say we are living in one of those places that you can only find in the scriptures from one of the great philosophers.<br><br><b>Effect:</b> +200 housing space, +200 satisfaction in the capital.',2130:'Some time has passed since we learned how to use the treasures of our island for our own needs. We should now educate our workers and let every forest, quarry or vineyard, every sulphur pit or crystal mine be administered by men who are not only strong but also skilful. This way we will gather even more income and our civilization will get richer than ever!<br><br><b>Allows:</b> Construction of [[v:b,b:18,h:1|Forester Houses]], [[v:b,b:19,h:1|Stonemasons]], [[v:b,b:21,h:1|Wineries]], [[v:b,b:20,h:1|Glassblowers]] and [[v:b,b:22,h:1|Alchemists&apos; Towers]].',2140:'What an event those annual wine fêtes are! The whole town is there when the best grapes in town are stomped into wine and when the liquid gold splashes around, the kids have the most fun! With a wine press though, handled by an experienced winemaker, we would lose much less. The winemaker could also organise proper storage that allows us to let the wine age and mature well!<br><br><b>Allows:</b> Building of [[v:b,b:26,h:1|wine cellars]].',2150:'Our island&apos;s forests provide us with excellent building material so that we can create strong woodwork for the roofs of our buildings. But to ensure that this is the case, lumber must be carefully selected and handled properly! A carpenter in our town would take care of this and would use up a lot less building material!<br><br><b>Allows:</b> Building of [[v:b,b:23,h:1|Carpentries]].',2160:'As our warehouses cannot handle the increasing amount of goods, we will need alternatives in the long run. Advanced methods of sealed tarpaulins and covers should enable us to store large amounts of goods in the open air.<br><br><b>Effect:</b> Allows you to build [[v:b,b:29,h:1|depots]].',2170:'We think it&apos;s a good idea to define the rules of living together on paper. This means that every island inhabitant can look up what&apos;s allowed and what isn&apos;t - meaning they&apos;ll be no more room for excuses!<br><br><b>Allows:</b> [[v:i,h:18,sh:0|Form of government]]: [[v:f,f:4,h:18,sh:5|Nomocracy]].',2180:'Our battle-tested warriors in their shiny armour, and our progressive war machines have become legendary. Now it&apos;s time to make a profit from them. Other leaders will be eager to purchase these troops.<br><br><b>Allows:</b> building the [[v:b,b:31,h:1|Black Market]].',2999:'Our citizens are wealthy and the marketplace is spilling over with delicacies from all over the world! The streets are clean and developed, making it easier for building material to reach the building site more quickly.<br><br><b>Effect:</b> +10 [[v:i,h:3|satisfaction]] and +20 max. inhabitants in every town per level of this future research.',3010:'Eureka! A well in our settlement! Now we don&apos;t have to wait for it to rain all the time. Our citizens will be much better off and the fields won&apos;t have to stay dry for very long!<br><br><b>Effect:</b> +50 housing space, +50 [[v:i,h:3|happiness]] in the capital.',3020:'We have found a better way to archive our knowledge! Now we have scriptures made from the papyrus plant, so we don&apos;t have to chisel our words into the heavy stones anymore in order to fill our library!<br><br><b>Effect:</b> 2% more research points.',3030:'When some of our citizens settle down in other towns, they can help us to keep an eye on our neighbours. We could keep ourselves informed when a neighbour makes a discovery or what kind of resources he has in stock.<br><br><b>Allows:</b> Building of [[v:b,b:16,h:1|hideouts]].',3040:'Man cannot rationally explain everything that happens in the world. And whenever he cannot explain it, the answer is sought from the gods. Gods are like humans on the one hand, but are very different on the other hand. After all, what other kind of rational explanation can the unexplainable have?<br><br><b>Allows:</b> [[v:b,b:28,h:1|Temples]] and [[v:i,h:15,sh:3|Miracles]].',3050:'Nature gives us everything we need to write: The birds give us their feathers and eight-armed fish out of the sea provide us with their black ink! Now we can write down our ideas even more easily!<br><br><br><b>Effect:</b> 4% more research points.',3060:'Our citizens should really have the chance to look at the cultural achievements of other people. And surely, in exchange, they will be interested in learning from us and exhibiting some of our great works of art in their museums.<br><br><b>Allows:</b> Building of [[v:b,b:10,h:1|museums]], [[v:i,h:14|cultural goods treaties]], Phoenician merchant ships.',3070:'We have learned a lot about the human body! Now we can send doctors into battle to help the wounded soldiers to quickly get back on their feet again. Of course they can mix the right tinctures and some doctors even know a secret recipe for a mixture that makes our fighters even braver.<br><br><b>Allows:</b> Recruiting of [[v:u,u:311,h:9|doctors]] in the [[v:b,b:6,h:1|barracks]].',3080:'When our scientists invent new things, many a glass can break. Or it gets lost in the infinite vastness of our laboratories, as keeping them tidy isn&apos;t really the primal virtue of the academy. If an optician would take care of not only the quality, but also that all the lenses and glasses are put back where they belong, we would use far less crystal glass!<br><br><b>Allows:</b> Building of an [[v:b,b:25,h:1|optician&apos;s]].',3081:'Our scientists would like to test their theories in practice. These kinds of attempts will probably accelerate the research, but it does mean we will need a certain amount of additional laboratory equipment. <br><br><b>Allows:</b> Purchase of research points for crystal glass, [[v:i,h:18,sh:0|form of government]]: [[v:f,f:6,h:18,sh:7|technocracy]].',3090:'A brilliant little apparatus: A smart inventor has managed to teach writing to a machine. Now we can copy our scriptures easily and our academies can quickly exchange their ideas with each other! <br><br><b>Effect:</b> 8% more research points.',3100:'We have learned how to fly like the birds! Now we can build a machine that can lift a man up into the skies and can whizz above the heads of our enemies with breath-taking speed, shooting arrows far behind the front lines.<br><br><b>Allows:</b> Construction of [[v:u,u:312,h:9|Gyrocopter]] in the [[v:b,b:6,h:1|barracks]].',3110:'A marvel: We can now shoot scrolls through pipes, so that they reach our scientists even faster! This saves us long errands and we have to pay less gold for our scientists!<br><br><b>Effect:</b> 3 Gold upkeep cost less per scientist.',3120:'Now we can let our ships sail under water, without them sinking! The oceans are ours! No enemy will see us, when we stalk them under water and sink them before they notice us!<br><br><b>Allows:</b> Building of [[v:u,s:212,h:10|submersibles]] in the [[v:b,b:5,h:1|shipyard]].',3130:'We have managed to get a machine to fly! Now even the sky isn&apos;t a limit anymore! We can let huge balloons fly over the heads of our enemies and throw fire or bee-hives at them from above!<br><br><b>Allows:</b> Building of [[v:u,u:309,h:9|bombardiers]] in the [[v:b,b:6,h:1|barracks]].',3140:'There has recently been a number of incidents relating to exploding powder and other substances. That&apos;s why we have set up an own workshop for all the nosy scientists, so that all the explosions don&apos;t disturb the work in the academy any more. It also has stronger walls and can&apos;t burn down as easily.<br><br><b>Allows:</b> Building of [[v:b,b:15,h:1|workshops]].',3150:'We have been thinking about the fact that a different form of government could give us special advantages. To do so there would be quite a lot to organise and we would possibly have to cut down on some staff, but it would be great to have that kind of government. <br><br><b>Allows:</b> Start of a revolution, [[v:i,h:18,sh:0|forms of government]]: [[v:f,f:3,h:18,sh:4|dictatorship]] and [[v:f,f:5,h:18,sh:6|oligarchy]].',3160:'Actually we don&apos;t need any secular laws - the religious ones are more than enough. And while we&apos;re at it: we don&apos;t actually need all our civil servants. <br><br><b>Allows:</b> [[v:i,h:18,sh:0|Form of government]]: [[v:f,f:7,h:18,sh:8|theocracy]].',3170:'We should probably archive our treasured sea charts. This will allow our sailors to always find the maps they need and save time on their journeys.<br><br><b>Allows:</b> building a [[v:b,b:32,h:1|Sea Chart Archive]].',3999:'The smartest brains in the world are working to answer the big question: Why are we here? Why is everything the way it is? And once again we are one step closer to enlightenment.<br><br><b>Effect:</b> 2% more research points.',4010:'A basin at the sea where water can be drained makes it so much easier for us to build ships and set sail. May a mighty fleet arise that teaches our enemies the true meaning of fear! <br><br><b>Allows:</b> Construction of a second [[v:b,b:3,h:1|trading port]], [[v:b,b:5,h:1|shipyard]].',4020:'These long marches over the hills and through the swamps mean that our material will wear out very fast. If we write down, how our soldiers can travel over land without always getting stuck in the undergrowth or sinking into the mud, the soldiers will have to mend their uniforms a lot less often.<br><br><b>Effect:</b> 2% less upkeep for [[v:u,u:301,h:9|soldiers]].',4030:'Chasing away pirates, barbarians and other villains will be much easier with some professional soldiers! It might be more expensive than just making our citizens into soldiers in the event of war, but in exchange our troops will be able to handle sword, spear and shield much better!<br><br><b>Allows:</b> Recruiting of [[v:u,u:302,h:9|swordsmen]] and [[v:u,u:303,h:9|hoplites]] at the [[v:b,b:6,h:1|barracks]].',4040:'With a ram&apos;s head made of metal and the strength of ten men we can even tear down town walls. Now it will be easy for our soldiers to conquer other towns!<br><br><b>Allows:</b> Building of [[v:u,u:307,h:9|battering rams]] in the [[v:b,b:6,h:1|barracks]].',4050:'Our soldiers are proud of serving their unit and their island kingdom. They are even taking better care of their uniforms, so that we don&apos;t have to mend and repair them as often.<br><br><b>Effect:</b> 4% less upkeep costs and allows the [[v:i,h:18,sh:0|form of government]]: [[v:f,f:1,h:18,sh:2|aristocracy]].',4060:'Now we know how to shoot arrows at our enemies. We should start right now to train our soldiers with these skills, so we can have archers joining our army in battle soon!<br><br><b>Allows:</b> Training of [[v:u,u:313,h:9|archers]] in the [[v:b,b:6,h:1|barracks]].',4070:'With this technology we can unleash powers that can even let huge rocks fly through the air! And if the rocks are large enough, they can even tear down town walls!<br><br><b>Allows:</b> Building of [[v:u,u:306,h:9|catapults]] in the [[v:b,b:6,h:1|barracks]].',4080:'If we employ a civil servant, we can then not only pillage our enemies&apos; towns, but also use and manage them. In no time we will be able to occupy foreign towns with our army from which we can then carry out further missions to increase our wealth and prosperity.<br><br><b>Allows:</b> [[v:i,h:8,sh:8|Occupation]].',4090:'Our soldiers can fight much better if they don&apos;t have to drag that much. And their equipment will last much longer on the long marches, so we won&apos;t have to mend it that often.<br><br><b>Effect:</b> 8% less upkeep for [[v:u,u:301,h:9|soldiers]].',4100:'This black mixture from the alchemist&apos;s kitchen can spark a fire with a loud bang and do truly devilish things! Now we can fill iron pipes with this powder to shoot heavy cannon balls through the air. <br><br><b>Allows:</b> Construction of [[v:u,u:304,h:9|carabineers]] in the [[v:b,b:6,h:1|barracks]] and [[v:u,s:217,h:10|rocket ships]] in the [[v:b,b:5,h:1|shipyard]].',4110:'Our scientists have built a mechanical giant with muscles made of metal and a steaming heart! Only the keenest and most skilled soldiers can steer such a colossus, but it will strike fear into everyone on the battlefield!<br><br><b>Allows:</b> Building of [[v:u,u:308,h:9|steam giants]] in the [[v:b,b:6,h:1|barracks]].',4120:'Our iron is getting heavier and harder: now we can even build barrels through which we can fire huge cannon balls at our enemies! If we can even fire bombs from a long distance our enemies and their town walls will tremble in fear!<br><br><b>Allows:</b> Building of [[v:u,u:305,h:9|mortars]] in the [[v:b,b:6,h:1|barracks]].',4130:'Sulphur is a really is a work of the devil! And with every new mixture, we can get even more impact from this precious resource. A safe practice ground would allow our blasters to test their inventions, without including the surrounding buildings as involuntary targets into their experiments.<br><br><b>Allows:</b> Building of [[v:b,b:27,h:1|firework test area]].',4999:'Our war machines are stronger and mightier than ever before and our armies are perfectly organised! Our civil servants managing the military have everything under control and thus the upkeep costs can be lowered.<br><br><b>Effect:</b> 2% less upkeep for [[v:u,u:301,h:9|units]].'},
 				troopstxt: ['Troops in town','Inspect troops that are stationed in the town.','Inland garrison limit','Sea garrison limit','Units','Ships','Garrison','Defender','There are no allied units stationed in this town!','Occupying Forces','There are no units from an enemy occupation force stationed here!','Blocking fleets','There are no enemy troops stationed in this town.',''],
@@ -12058,8 +12979,42 @@
 				blackmarkettxt: ['The Black Market allows you to sell military units for gold or another resource. Upgrade the building to enable you to sell more types of units and reduce the tax rate for this trade. Other leaders will see your offers in their Trading Post.','Offer units','My offers','Offer units: {0} / {1}','Tax break: {0} %','Your current tax rate is <b>{0} %</b>. The taxes are deducted from each of your sales.','While there is combat going on at the city, no soldier exchange is possible.','As a member of an alliance, you can put <b>4</b> additional offers up for sale.','Unit type','Amount','Currency','Limits','Price per unit','max','Add','My offers: {0} / {1}','You currently have no offers on sale in the Black Market.','Units','Amount','Price / unit','Tax','Profit / unit','Action','Cancel offer'],
 				SCAtxt: ['Valuable sea charts are archived in the Sea Chart Archive. This allows our sailors to navigate the seven seas even faster. The higher the building level and the more distant the destination, the greater the time saving for the journey there and back.','5 Islands','20 Islands','50 Islands','Distance','Current duration (next level&apos;s saving / current saving)'],
 				walltxt: ['The town wall protects your citizens against your enemies and the sun. Beware! Enemies will try to tear holes into your wall or to climb over it. Every level increases the resistance of your town wall.','Information','Ballista|Catapult|Bombs','Damage','Accuracy','Hit points','Armour','Garrison limit'],
-				safehousetxt: ['A wise leader always keeps an eye on both his allies and his enemies. The hideout allows you to hire spies who can provide you with information from inside other towns. A larger hideout provides space for more spies.','Espionage reports','Archive','Train spy','This citizen is loyal and discreet. An ideal candidate for a spy. Training time for a spy:','{0} are currently working in the defence','Maximum number of spies has been reached!','Ανεπαρκής ποσότητα αγαθών','Εκπαίδευση','Επαναφορά<br>αριθμού<br>κατασκόπων','Εκπαίδευση<br>μέγιστου αριθμού<br>κατασκόπων','Info','You can train {0} spies','You can train {0} spy','<b>{0}</b> are waiting for their training','<b>{0}</b> is waiting for his training','No citizen is waiting for training','<b>{0}</b> are currently working in the defence','<b>{0}</b> is currently working in the defence','No spy is currently working in the defence','<b>{0}</b> are currently on a mission','<b>{0}</b> is currently on a mission','No spy on a mission','Spy on a mission','None of your spies are currently on a mission!','Owner','Target','Mission','Results','Agents','Decoys','Date','No espionage reports!'],
-				unitdescs: {slinger:'Slings are light and cheap weapons. They cannot inflict much damage on well-armed opponents, but at least their munition is readily available.',swordsman:'Sword fighters are usually barely armoured and fight without shields to retain their mobility. Thus they can circulate around the immobile Phalanx formation and attack from the flanks.',phalanx:'Hoplites are heavily armoured spearmen from the towns&apos; middle classes. They form the heart of every Greek army. In the so-called "Phalanx" formation they push forward in an unstoppable wall of spears and shields.',marksman:'Shots from the sulphur carbine can penetrate even the most durable armour. However, due to its sight line, only a single row of carabineers can fire, while the rest have to reload.',mortar:'The mortar fires explosive shells against the walls of a besieged city. No building can withstand this destructiveness. However, the rare munition for it has to be brought along additionally, so shots fired need to be very well-targeted.',catapult:'Catapults sling huge rocks against opponents&apos; defence facilities and thus they can destroy even the strongest stone walls. However they are less useful for defence against enemy armed forces.',ram:'Powerful men swing the massive tree trunk against the enemy gates, until they give way and the men run for cover under the roof. It might only be useful for gates and walls, but at least it does not need any munition.',steamgiant:'This powerful machine moves like a person on the battlefield, but has a superhuman hit strength. Stones, arrows and swords simply bounce off it. Woe betide anyone who dares to oppose it!',bombardier:'Our inventors have discovered that the sun is so hot because it attracts warm air. That is why a balloon filled with hot air also rises in direction of the sun and our soldiers can throw explosive shells down on our enemies from up there.',cook:'Your army&apos;s cooks know exactly how to give new courage to the warriors and heroes in the encampment: A glass of wine and a stew, just like mum used to make! If they take the evening to remember what they are fighting for, enemies will find it very hard to wear them down.',medic:'These doctors have voluntarily enlisted to help tend to the wounds of those on the battle front. They can remove arrow heads, bandage up sword wounds and have enough ice available for soldiers&apos; heads should enemies attack with slingshots.',gyrocopter:'A novel flying machine that is fast, versatile and not dependant on the direction of the wind - we can hunt cowardly enemies that want to attack us from the skies with it!',archer:'Bows are a very popular hunting equipment, so it is very easy to recruit archers amongst citizens. Military training turns simple citizens into formidable long-range combat troops.',spearman:'Spearmen are conscripts from the rural population, that go into battle with light armour and basic spears. They do not usually have a chance against professional soldiers.',spartan:'He is born for battle. His trade is that of war. He only fights on the front line on the field.',ship_ram:'Equipped with a simple ram at the stable bow, this ship is the primary warship of the navy. A dozen strong rowers power it in order to ram the spur against the opposing hull. That alone is often enough to make an enemy ship sink.',ship_flamethrower:'At the fire ship&apos;s bow there is flame thrower, which sprays Greek fire over the sea. Even on the ocean&apos;s surface, the mixture keeps on burning and creates a bed of flames. A terrifying close combat ship',ship_submarine:'A boat that sails below the water&apos;s surface is the ultimate sea weapon. It can slip past enemy lines almost unnoticed and cause massive amounts of damage.',ship_ballista:'This ship contains a ballista, which was originally meant for firing grappling hooks. However, the ballista is also very valuable as a precise long-range combat weapon, as it hits the enemy under the waterline, even though it does not cause a large amount of damage.',ship_catapult:'The catapult at the deck of the ship is smaller than its counterpart on land due to a lack of space. The ocean waves make it very imprecise, but it does fire clay jugs of burning oil, which leave dangerous little oil slicks behind at sea.',ship_mortar:'The mortar ship has an especially large hull with a high water displacement, so that it can withstand the enormous recoil of the mortar. If the fuse of a missile is correctly measured, the powerful projectile explodes just over the enemy deck.',ship_steamboat:'Just like the ram ship, the steam ram is fully equipped with a ram spur at its bow. However, it is a considerably more advanced version. Due to its steam engine, this ship can accelerate even more speedily and can therefore inflict a larger amount of damage on the enemy. The steam ram is probably the most dangerous ship at the front line.',ship_rocketship:'Thanks to our research, our scientists have managed to store large amounts of explosive power in wooden devices that can be blasted several hundred meters over the water&apos;s surface and can cause a huge explosion if thrust on opposing ships. The enemy should be afraid - very afraid - of this lethal weapon!',ship_paddlespeedship:'An invention that would have even astounded Heron: the paddle speedboat uses the impulse of a giant aeolipile as well as paddle wheels to drive into opposing ships with a huge amount of power and speed. The ship barely needs any crew.',ship_ballooncarrier:'The balloon carrier is an enormous floating stronghold. With the balloons on it we can attack our enemy in the skies at sea too.',ship_tender:'Tenders are designed for the support and maintenance of ships. Trained engineers and divers can repair minor damage in the dock immediately, allowing these units to return to the front lines. They also supply the sailors with food and wine.'},
+				safehousetxt: [
+					'A wise leader always keeps an eye on both his allies and his enemies. The hideout allows you to hire spies who can provide you with information from inside other towns. A larger hideout provides space for more spies.',
+					'Espionage reports',
+					'Archive',
+					'Train spy',
+					'This citizen is loyal and discreet. An ideal candidate for a spy. Training time for a spy:',
+					'{0} are currently working in the defence',
+					'Maximum number of spies has been reached!',
+					'Insufficient quantity of goods',
+					'Education',
+					'Reset <br> spy number',
+					'Training of a maximum number of spies',
+					'Info',
+					'You can train {0} spies',
+					'You can train {0} spy',
+					'<b>{0}</b> are waiting for their training',
+					'<b>{0}</b> is waiting for his training',
+					'No citizen is waiting for training',
+					'<b>{0}</b> are currently working in the defence',
+					'<b>{0}</b> is currently working in the defence',
+					'No spy is currently working in the defence',
+					'<b>{0}</b> are currently on a mission',
+					'<b>{0}</b> is currently on a mission',
+					'No spy on a mission',
+					'Spy on a mission',
+					'None of your spies are currently on a mission!',
+					'Owner',
+					'Target',
+					'Mission',
+					'Results',
+					'Agents',
+					'Decoys',
+					'Date',
+					'No espionage reports!'
+				],
+				unitdescs: {slinger:'Slings are light and cheap weapons. They cannot inflict much damage on well-armed opponents, but at least their munition is readily available.',				swordsman: 'Sword fighters are usually barely armoured and fight without shields to retain their mobility. Thus they can circulate around the immobile Phalanx formation and attack from the flanks.',phalanx:'Hoplites are heavily armoured spearmen from the towns&apos; middle classes. They form the heart of every Greek army. In the so-called "Phalanx" formation they push forward in an unstoppable wall of spears and shields.',marksman:'Shots from the sulphur carbine can penetrate even the most durable armour. However, due to its sight line, only a single row of carabineers can fire, while the rest have to reload.',mortar:'The mortar fires explosive shells against the walls of a besieged city. No building can withstand this destructiveness. However, the rare munition for it has to be brought along additionally, so shots fired need to be very well-targeted.',catapult:'Catapults sling huge rocks against opponents&apos; defence facilities and thus they can destroy even the strongest stone walls. However they are less useful for defence against enemy armed forces.',ram:'Powerful men swing the massive tree trunk against the enemy gates, until they give way and the men run for cover under the roof. It might only be useful for gates and walls, but at least it does not need any munition.',steamgiant:'This powerful machine moves like a person on the battlefield, but has a superhuman hit strength. Stones, arrows and swords simply bounce off it. Woe betide anyone who dares to oppose it!',bombardier:'Our inventors have discovered that the sun is so hot because it attracts warm air. That is why a balloon filled with hot air also rises in direction of the sun and our soldiers can throw explosive shells down on our enemies from up there.',cook:'Your army&apos;s cooks know exactly how to give new courage to the warriors and heroes in the encampment: A glass of wine and a stew, just like mum used to make! If they take the evening to remember what they are fighting for, enemies will find it very hard to wear them down.',medic:'These doctors have voluntarily enlisted to help tend to the wounds of those on the battle front. They can remove arrow heads, bandage up sword wounds and have enough ice available for soldiers&apos; heads should enemies attack with slingshots.',gyrocopter:'A novel flying machine that is fast, versatile and not dependant on the direction of the wind - we can hunt cowardly enemies that want to attack us from the skies with it!',archer:'Bows are a very popular hunting equipment, so it is very easy to recruit archers amongst citizens. Military training turns simple citizens into formidable long-range combat troops.',spearman:'Spearmen are conscripts from the rural population, that go into battle with light armour and basic spears. They do not usually have a chance against professional soldiers.',spartan:'He is born for battle. His trade is that of war. He only fights on the front line on the field.',ship_ram:'Equipped with a simple ram at the stable bow, this ship is the primary warship of the navy. A dozen strong rowers power it in order to ram the spur against the opposing hull. That alone is often enough to make an enemy ship sink.',ship_flamethrower:'At the fire ship&apos;s bow there is flame thrower, which sprays Greek fire over the sea. Even on the ocean&apos;s surface, the mixture keeps on burning and creates a bed of flames. A terrifying close combat ship',ship_submarine:'A boat that sails below the water&apos;s surface is the ultimate sea weapon. It can slip past enemy lines almost unnoticed and cause massive amounts of damage.',ship_ballista:'This ship contains a ballista, which was originally meant for firing grappling hooks. However, the ballista is also very valuable as a precise long-range combat weapon, as it hits the enemy under the waterline, even though it does not cause a large amount of damage.',ship_catapult:'The catapult at the deck of the ship is smaller than its counterpart on land due to a lack of space. The ocean waves make it very imprecise, but it does fire clay jugs of burning oil, which leave dangerous little oil slicks behind at sea.',ship_mortar:'The mortar ship has an especially large hull with a high water displacement, so that it can withstand the enormous recoil of the mortar. If the fuse of a missile is correctly measured, the powerful projectile explodes just over the enemy deck.',ship_steamboat:'Just like the ram ship, the steam ram is fully equipped with a ram spur at its bow. However, it is a considerably more advanced version. Due to its steam engine, this ship can accelerate even more speedily and can therefore inflict a larger amount of damage on the enemy. The steam ram is probably the most dangerous ship at the front line.',ship_rocketship:'Thanks to our research, our scientists have managed to store large amounts of explosive power in wooden devices that can be blasted several hundred meters over the water&apos;s surface and can cause a huge explosion if thrust on opposing ships. The enemy should be afraid - very afraid - of this lethal weapon!',ship_paddlespeedship:'An invention that would have even astounded Heron: the paddle speedboat uses the impulse of a giant aeolipile as well as paddle wheels to drive into opposing ships with a huge amount of power and speed. The ship barely needs any crew.',ship_ballooncarrier:'The balloon carrier is an enormous floating stronghold. With the balloons on it we can attack our enemy in the skies at sea too.',ship_tender:'Tenders are designed for the support and maintenance of ships. Trained engineers and divers can repair minor damage in the dock immediately, allowing these units to return to the front lines. They also supply the sailors with food and wine.'},
 				prodBuildtxt: [{forester:'The strong lumberjacks can chop down even the largest trees. But they also know that a forest must be cultivated and new trees planted so that we can continue to use only the best timber for our houses. The production of building material is increased by <b>2 %</b> for every level of expansion.',winegrower:'A winegrower only chooses the most sunny hills of the surrounding area to cover them with the comforting green of the vines. That&apos;s how the vineyards produce plump fruits that make for a much better harvest. Every level of the winegrower&apos;s expansion increases your wine production by <b>2 %</b>.',stonemason:'A trained stonemason always quarries the right blocks of marble with his strong arms. Thus less is broken and our builders always have the material they need. For every level of expansion this building increases the marble production by <b>2 %</b>.',glassblowing:'True masters of their art create sparkling pieces at the glassblower&apos;s house. The blow tubes, glass and all sorts of other apparatuses are only understood by our scientists. And they are so nimble, that barely anything ever gets broken. Every level of expansion increases your production of crystal glass by <b>2 %</b>.',alchemist:'When the wind blows from the west, a smell fills the streets around the tower and not many citizens are seen leaving the house without a peg on their nose. Our alchemists work restlessly on finding the perfect mixture and ensuring that we can get the maximum amount of sulphur from the pit. For every level of the building your sulphur production is increased by <b>2 %</b>.'},'{0} production','Basic Production','Premium Bonus','Cinetheater','Helios&apos; Tower','Ξυλοκόπος','Corruption','Resource','Bonus','There is corruption in this town!','Productivity and satisfaction in this town are rapidly decreasing! Upgrade {0} to reduce the corruption.','your Governor&apos;s Residence','your Palace',{forester:'Wood',winegrower:'Wine',stonemason:'Marble',glassblowing:'Crystal',alchemist:'Sulphur'}],
 				reductBuildtxt: [{carpentering:'Only the best lumber is used at the carpenter&apos;s workshop. Therefore our handy craftsmen are able to build a solid framework and our houses do not have to be repaired all the time. Every level of the carpenter&apos;s workshop lowers your demand for building material by <b>1 %</b> of the basic value.',vineyard:'Only the purest wines mature in the town&apos;s deep and cool cellars. The cellarer ensures that not a drop goes to waste and that all the wine can run down the throats of your citizens. The demand for wine in your town will be reduced by <b>1 %</b> for each building level.',architect:'Angle, Compass and Yardstick: The architects&apos; office provides everything you need for building straight walls and stable roofs. And a well-planned house needs a lot less marble than a skew one. The demand for marble in your town will be reduced by <b>1 %</b> for each building level.',optician:'Lenses and magnifying glasses don&apos;t just help our scientists to see clearly and to find important papers on their desk, but they are also necessary in order to invent all those new technologies that make us so proud. The optician keeps everything we need carefully stored in boxes, so that less things get lost. The demand for crystal glass is reduced by <b>1 %</b> per building level.',fireworker:'Constant tests with fireworks don&apos;t just light up the skies but sometimes also the surrounding buildings. However our scientists can only optimise the demand for sulphur, when they keep testing new mixtures. The demand for sulphur in your town will be reduced by <b>1 %</b> for each building level.'},{carpentering:'Wood',vineyard:'Wine',architect:'Marble',optician:'Crystal',fireworker:'Sulphur'},'{0} cost reduction for building','{0} cost reduction for Units','{0} cost reduction for Ships','{0} cost reduction for Experiments','{0} cost reduction for Unit and Ship Improvements','Basic Cost','Research','Cost','{0} cost reduction','Resource'],
 				militarytxt: ['Troop movements ({0})','Combat reports ({0})','Gauntlet Wars','Current battles','Fleet / Troop Movements','All','Mission','Arrival time','Speed','Units','Origin','Target','Action','Currently there are no troop movements for you to see!','Combat reports','There are no combat reports available at the moment.','Type','Last round','Rounds','Town','Owner','Action',{groundfight:['Battle','Display battle'],seafight:['Sea battle','Display sea battle']},'All','Reverse selection','-- Select action --','Delete','Mark as read','OK','Alliance Gauntlet Wars','Concluded Gauntlet Wars','Concluded Alliance Gauntlet Wars','You aren&apos;t currently involved in any Gauntlet Wars','Your alliance isn&apos;t currently involved in any Gauntlet Wars'],
@@ -12084,697 +13039,11 @@
 				invfriendtxt: ['Invite friends','You can get in touch with players that are in your friend list more quickly and you can also both see when the other is online. If a player founds a colony, all his friends will receive a gold bonus. If a player completes a research topic, all his friends will receive a small bonus from the invested research points.','Add Ikariam players','Username','Add','Existing invitations'],
 				takeoffertxt: ['Offer management','Choose which goods or units you want to buy from the player with name {0}. Also, set the amount of gold you intend to pay.','From here you can send fleets to sell goods on player with name {0}. The exchange will be completed only when your fleets arrive to their destination. For this, you can set the minimum price for your goods, if the owner reduces the offer meanwhile.'],
 				notEnCap: ['Insufficient storage capacity','Go to the {0}','Go to the {0}','Go to<br>the {0} or the {1}'],
-				speeduptxt: ['Shorten building time','Complete instantly','Do you want to halve (<b>&frac12;</b>) the building time<br>{1}<br>of the specific building (<b>{0}</b>);','Do you want to complete instantly<br>the specific building (<b>{0}</b>);','Cancel','Activate','<b>{0}</b> Ambrosia is required','<b>{0}</b> Ambrosia are requiredς','Buy Ambrosia'],
+				speeduptxt: ['Shorten building time','Complete instantly','Do you want to halve (<b>&frac12;</b>) the building time<br>{1}<br>of the specific building (<b>{0}</b>);','Do you want to complete instantly<br>the specific building (<b>{0}</b>);','Cancel','Activate','<b>{0}</b> Ambrosia is required','<b>{0}</b> Ambrosia are required','Buy Ambrosia'],
+				ikmsgtxt: ['On {0} and at {1} {2} wrote:','Submit','You typed already {0} {1}.','Still available {0} {1}','character','characters'],
+				playertitles: {'0':'No title','1,6':'Hammer of the Barbarians','2,6':'Emperor','3,1':'Power Monkey','3,6':'Pirate King','4,4':'Genius','4,6':'The Illuminated','5,1':'Art Lover','5,6':'Child of Apollo','6,3':'Marathon Runner','6,6':'Sisyphus','7,1':'Point Hunter','8,6':'Hercules&apos; Vanquisher','12,2':'Miracle Worker','13,6':'Apostle of Zeus','14,5':'Lord of the Sawmill','15,5':'Lord of the Vine','16,5':'Lord of the Quarry','17,5':'Lord of the Crystal','18,5':'Lord of Brimstone','19,6':'Pride of Hermes','20,4':'Wholesaler','21,1':'Sleuth','21,6':'007','23,6':'Mastermind','24,1':'Lab Rat','26,6':'Champion of Achilles','27,6':'Odysseus&apos; Helmsman','34,5':'King of the Arms Deal','35,2':'Reformist','36,5':'Lord of the Flames','40,6':'King Midas&apos; Treasurer','41,1':'Freebooter','41,6':'Scourge of the Seven Seas','42,6':'Spymaster','44,6':'Scourge of the Barbarians','45,4':'Passionate Collector','46,6':'The Kraken','100,4':'Mayor','104,4':'Keeper of the Ivory Tower','109,6':'Cupbearer to the Gods','110,3':'Patron','110,6':'Master of Fine Arts','111,6':'Governor','112,2':'Ambassador','117,6':'Prefect','130,2':'Pirate Captain','201,6':'Admiral','310,4':'Head Chef','311,6':'Asclepius&apos; Right Hand','319,6':'Leonidas&apos; General'},
+				achievementstxt: {1:{id:1,cid:5,cat:'Defence',sid:0,name:'Barbarian Fighter',reqs:['Defeat level 1 barbarians.','Defeat level 2 barbarians.','Defeat level 3 barbarians.','Defeat level 6 barbarians.','Defeat level 12 barbarians.','Defeat level 15 barbarians.'],rews:['','','','','','Title: Hammer of the Barbarians']},2:{id:2,cid:1,cat:'Empire',sid:0,name:'Expansion',reqs:['Own 2 towns.','Own 4 towns.','Own 6 towns.','Own 8 towns.','Own 10 towns.','Own 12 towns.'],rews:['','','','','','Title: Emperor']},3:{id:3,cid:5,cat:'Defence',sid:4,name:'Pirate King',reqs:['Own a Pirate Fortress.','Own 2 Pirate Fortresses.','Own 3 Pirate Fortresses.|Reach at least rank 50 in the pirate highscore.','Own 3 Pirate Fortresses.|Reach at least rank 25 in the pirate highscore.','Own 3 Pirate Fortresses.|Reach at least rank 3 in the pirate highscore.','Own 3 Pirate Fortresses.|Reach rank 1 in the pirate highscore.'],rews:['Title: Power Monkey','','','','','Title: Pirate King']},4:{id:4,cid:1,cat:'Empire',sid:1,name:'Researcher',reqs:['Employ 100 researchers in your academies.','Employ 200 researchers in your academies.','Complete a future research.','Complete all level 1 future researches.','Complete all level 10 future researches.','Complete all level 25 future researches.'],rews:['','','','Title: Genius','','Title: The Illuminated']},5:{id:5,cid:2,cat:'Social',sid:0,name:'Patron of Culture',reqs:['Have 1 cultural goods treaties.','Have 5 cultural goods treaties.','Have 15 cultural goods treaties.','Have 50 cultural goods treaties.','Have 100 cultural goods treaties.','Have 190 cultural goods treaties.'],rews:['Title: Art Lover','','','','','Title: Child of Apollo']},6:{id:6,cid:1,cat:'Empire',sid:2,name:'Activity',reqs:['Earn the 7 day bonus 1 times.','Earn the 7 day bonus 5 times.','Earn the 7 day bonus 10 times.','Earn the 7 day bonus 20 times.','Earn the 7 day bonus 40 times.','Earn the 7 day bonus 100 times.'],rews:['','','Title: Marathon Runner','1 &times; <div class="small itemIcon premiumAccount days sevenDays"></div>Premium Account (7 Days)','','Title: Sisyphus|Ambrosia: <img class="achievementCheck" src="skin/resources/icon_ambrosia_small.png" title="Ambrosia"> 50']},7:{id:7,cid:1,cat:'Empire',sid:3,name:'Points',reqs:['Score 10000 points in the total highscore table.','Score 100000 points in the total highscore table.','Score 500000 points in the total highscore table.','Score 1000000 points in the total highscore table.','Score 10000000 points in the total highscore table.','Score 40000000 points in the total highscore table.'],rews:['Title: Point Hunter','','','','','']},8:{id:8,cid:1,cat:'Empire',sid:4,name:'Highscore',reqs:['Reach the top 250 in any highscore table.','Reach the top 125 in any highscore table.','Reach the top 50 in any highscore table.','Reach the top 10 in any highscore table.','Remain in the top 10 of any highscore table for a month.','Remain in the top 10 of any highscore table for 3 months.'],rews:['','','','','','Title: Hercules&apos; Vanquisher']},9:{id:9,cid:1,cat:'Empire',sid:10,name:'Achievements',reqs:['Reach achievement level sum 10.','Reach achievement level sum 25.','Reach achievement level sum 100.','Reach achievement level sum 250.','Reach achievement level sum 500.','Reach achievement level sum 800.'],rews:['','','','','','']},11:{id:11,cid:2,cat:'Social',sid:1,name:'Messages',reqs:['Receive 5 messages from other players.','Receive 25 messages from other players.','Receive 100 messages from other players.','Receive 250 messages from other players.','Receive 1000 messages from other players.','Receive 2000 messages from other players.'],rews:['','5 &times; <div class="small itemIcon archiveMessageCoin coin"></div>Archive Message','','','','1 &times; <div class="small itemIcon premiumAccount days sevenDays"></div>Premium Account (7 Days)']},12:{id:12,cid:3,cat:'Island',sid:1,name:'Miracles',reqs:['Activate a miracle.','Activate a miracle of at least level 3.','Activate a miracle of at least level 5.','Activate 3 different miracles of at least level 5.','Activate 5 different miracles of at least level 5.','Activate 8 different miracles of at least level 5.'],rews:['','Title: Miracle Worker','','','','']},13:{id:13,cid:3,cat:'Island',sid:0,name:'Priests',reqs:['Employ 250 priests in your towns.','Employ 500 priests in your towns.','Employ 1000 priests in your towns.','Employ 2500 priests in your towns.','Employ 5000 priests in your towns.','Employ 7500 priests in your towns.'],rews:['','','','','','Title: Apostle of Zeus']},14:{id:14,cid:3,cat:'Island',sid:2,name:'Saw Mill',reqs:['Employ 250 workers in your saw mills.','Employ 1000 workers in your saw mills.','Employ 3500 workers in your saw mills.','Employ 6000 workers in your saw mills.','Employ 10000 workers in your saw mills.','Employ 15000 workers in your saw mills.'],rews:['1 &times; <div class="small itemIcon resourceBonus days twoDays"></div>Steam Saw (2 Days)','','','1 &times; <div class="small itemIcon resourceBonus days sevenDays"></div>Steam Saw (7 Days)','Title: Lord of the Sawmill','']},15:{id:15,cid:3,cat:'Island',sid:3,name:'Vineyard',reqs:['Employ 250 workers in the vineyards.','Employ 500 workers in the vineyards.','Employ 1000 workers in the vineyards.','Employ 2500 workers in the vineyards.','Employ 5000 workers in the vineyards.','Employ 7500 workers in the vineyards.'],rews:['1 &times; <div class="small itemIcon wineBonus days twoDays"></div>Steam Wine Press (2 Days)','','','1 &times; <div class="small itemIcon wineBonus days sevenDays"></div>Steam Wine Press (7 Days)','Title: Lord of the Vine','']},16:{id:16,cid:3,cat:'Island',sid:4,name:'Quarry',reqs:['Employ 250 workers in the quarries.','Employ 500 workers in the quarries.','Employ 1000 workers in the quarries.','Employ 2500 workers in the quarries.','Employ 5000 workers in the quarries.','Employ 7500 workers in the quarries.'],rews:['1 &times; <div class="small itemIcon marbleBonus days twoDays"></div>Steam Hammer (2 Days)','','','1 &times; <div class="small itemIcon marbleBonus days sevenDays"></div>Steam Hammer (7 Days)','Title: Lord of the Quarry','']},17:{id:17,cid:3,cat:'Island',sid:5,name:'Crystal mine',reqs:['Employ 125 workers in the crystal mines.','Employ 250 workers in the crystal mines.','Employ 500 workers in the crystal mines.','Employ 750 workers in the crystal mines.','Employ 1500 workers in the crystal mines.','Employ 3000 workers in the crystal mines.'],rews:['','1 &times; <div class="small itemIcon crystalBonus days twoDays"></div>Steam Crystal Drill (2 Days)','','','Title: Lord of the Crystal|1 &times; <div class="small itemIcon crystalBonus days sevenDays"></div>Steam Crystal Drill (7 Days)','']},18:{id:18,cid:3,cat:'Island',sid:6,name:'Sulphur Pit',reqs:['Employ 125 workers in the sulphur pits.','Employ 250 workers in the sulphur pits.','Employ 500 workers in the sulphur pits.','Employ 750 workers in the sulphur pits.','Employ 1500 workers in the sulphur pits.','Employ 3000 workers in the sulphur pits.'],rews:['','1 &times; <div class="small itemIcon sulfurBonus days twoDays"></div>Steam Sulphur Paddle Wheel (2 Days)','','','Title: Lord of Brimstone|1 &times; <div class="small itemIcon sulfurBonus days sevenDays"></div>Steam Sulphur Paddle Wheel (7 Days)','']},19:{id:19,cid:2,cat:'Social',sid:2,name:'Trade: Purchasing',reqs:['Purchase goods to the value of 100000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold">.','Purchase goods to the value of 1000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold">.','Purchase goods to the value of 5000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold">.','Purchase goods to the value of 10000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold">.','Purchase goods to the value of 25000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold">.','Purchase goods to the value of 50000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold">.'],rews:['','','','','','Title: Pride of Hermes']},20:{id:20,cid:2,cat:'Social',sid:3,name:'Trade: Selling',reqs:['Sell goods to the value of 100000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold">.','Sell goods to the value of 1000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold">.','Sell goods to the value of 5000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold">.','Sell goods to the value of 10000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold">.','Sell goods to the value of 25000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold">.','Sell goods to the value of 50000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold">.'],rews:['','','','Title: Wholesaler','','']},21:{id:21,cid:5,cat:'Defence',sid:5,name:'Espionage',reqs:['Carry out a successful spying mission (excluding infiltration).','Carry out 5 successful spying missions.','Carry out 5 different successful spying missions.','Carry out 8 different successful spying missions.','Carry out 11 different successful spying missions.','Carry out 11 different successful spying missions 3 times each.'],rews:['Title: Sleuth','5 &times; <div class="small itemIcon archiveEspionageReportCoin coin"></div>Archive Espionage Report','','','','Title: 007']},23:{id:23,cid:1,cat:'Empire',sid:5,name:'Inventions',reqs:['Improve damage and armour of one unit to bronze.','Improve damage and armour of 5 units to bronze.','Improve damage and armour of 10 units to bronze.','Improve damage and armour of all units to bronze.','Improve damage and armour of all units to silver.','Improve damage and armour of all units to gold.'],rews:['','','','','','Title: Mastermind|1 &times; <div class="small itemIcon badTaxAccountant days sevenDays"></div>Terrible Tax Adviser (7 Days)']},24:{id:24,cid:1,cat:'Empire',sid:7,name:'Experiments',reqs:['Conduct an experiment.','Conduct 10 experiments.','Conduct 100 experiments.','Conduct 250 experiments.','Conduct 500 experiments.','Conduct 1000 experiments.'],rews:['Title: Lab Rat','','','','','']},26:{id:26,cid:5,cat:'Defence',sid:6,name:'Land Warfare',reqs:['Win a land battle against another player.','Win 10 land battles against other players.','Win 100 land battles against other players.','Win 250 land battles against other players.','Win 500 land battles against other players.','Win 1000 land battles against other players.'],rews:['','','','','','Title: Champion of Achilles']},27:{id:27,cid:5,cat:'Defence',sid:7,name:'Naval Warfare',reqs:['Win a sea battle against another player.','Win 10 sea battles against other players.','Win 100 sea battles against other players.','Win 250 sea battles against other players.','Win 500 sea battles against other players.','Win 1000 sea battles against other players.'],rews:['','','','','','Title: Odysseus&apos; Helmsman']},28:{id:28,cid:5,cat:'Defence',sid:2,name:'Pillager',reqs:['Pillage 10000 goods.','Pillage 100000 goods.','Pillage 500000 goods.','Pillage 1000000 goods.','Pillage 10000000 goods.','Pillage 40000000 goods.'],rews:['','','','','','']},29:{id:29,cid:5,cat:'Defence',sid:8,name:'Liberator',reqs:['Liberate another player&apos;s town.','Liberate 10 towns belonging to other players.','Liberate 25 towns belonging to other players.','Liberate 50 towns belonging to other players.','Liberate 100 towns belonging to other players.','Liberate 250 towns belonging to other players.'],rews:['','','','','','']},33:{id:33,cid:2,cat:'Social',sid:4,name:'Arms Buyer',reqs:['Buy 100 units.','Buy 1000 units.','Buy 5000 units.','Buy 10000 units.','Buy 25000 units.','Buy 50000 units.'],rews:['','','','','','1 &times; <div class="small itemIcon badTaxAccountant days sevenDays"></div>Terrible Tax Adviser (7 Days)']},34:{id:34,cid:2,cat:'Social',sid:5,name:'Arms Seller',reqs:['Sell 100 units.','Sell 1000 units.','Sell 5000 units.','Sell 10000 units.','Sell 25000 units.','Sell 50000 units.'],rews:['','','','','Title: King of the Arms Deal','1 &times; <div class="small itemIcon badTaxAccountant days sevenDays"></div>Terrible Tax Adviser (7 Days)']},35:{id:35,cid:1,cat:'Empire',sid:8,name:'Forms of Government',reqs:['Change your form of government once.','Change your form of government 2 times.','Change your form of government 3 times.','Change your form of government 4 times.','Change your form of government 5 times.','Use every possible form of government at least once.'],rews:['','Title: Reformist','','','','']},36:{id:36,cid:3,cat:'Island',sid:7,name:'Helios Towers',reqs:['Donate lamp oil 1 times.','Donate lamp oil 2 times.','Donate lamp oil 3 times.','Donate lamp oil 4 times.','Donate lamp oil 5 times.','Donate lamp oil 10 times.'],rews:['','','','','Title: Lord of the Flames','1 &times; <div class="small itemIcon heliosTowerOil coin"></div>Lamp Oil']},38:{id:38,cid:5,cat:'Defence',sid:9,name:'Town Occupier',reqs:['Occupy a town belonging to another player.','Occupy 2 towns belonging to other players at the same time.','Occupy 3 towns belonging to other players at the same time.','Occupy 4 towns belonging to other players at the same time.','Occupy 5 towns belonging to other players at the same time.','Occupy 10 towns belonging to other players at the same time.'],rews:['','','','','','']},39:{id:39,cid:5,cat:'Defence',sid:10,name:'Port Occupier',reqs:['Occupy a port belonging to another player.','Occupy 2 ports belonging to other players at the same time.','Occupy 3 ports belonging to other players at the same time.','Occupy 4 ports belonging to other players at the same time.','Occupy 5 ports belonging to other players at the same time.','Occupy 10 ports belonging to other players at the same time.'],rews:['','','','','','']},40:{id:40,cid:1,cat:'Empire',sid:9,name:'Gold',reqs:['Have 100000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold"> in your treasury.','Have 2500000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold"> in your treasury.','Have 10000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold"> in your treasury.','Have 50000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold"> in your treasury.','Have 100000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold"> in your treasury.','Have 250000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Gold"> in your treasury.'],rews:['','','','','','Title: King Midas&apos; Treasurer']},41:{id:41,cid:5,cat:'Defence',sid:3,name:'Pirate Raid',reqs:['Successfully raid a town.','Successfully raid 10 towns.','Successfully raid 100 towns.','Successfully raid 250 towns.','Successfully raid 500 towns.','Successfully raid 1000 towns.'],rews:['Title: Freebooter','1 &times; <div class="small itemIcon convertCapturePointsCoin coin"></div>Capture Point Conversion','','','','Title: Scourge of the Seven Seas']},42:{id:42,cid:6,cat:'Land Units',sid:27,name:'Spies',reqs:['Produce 10 spies.','Produce 50 spies.','Produce 100 spies.','Produce 500 spies.','Produce 1000 spies.','Produce 10000 spies.'],rews:['','','','','','Title: Spymaster']},43:{id:43,cid:1,cat:'Empire',sid:6,name:'Storage Capacity',reqs:['Reach a storage capacity of 30000 per resource.','Reach a storage capacity of 150000 per resource.','Reach a storage capacity of 1000000 per resource.','Reach a storage capacity of 5000000 per resource.','Reach a storage capacity of 10000000 per resource.','Reach a storage capacity of 20000000 per resource.'],rews:['','','','1 &times; <div class="small itemIcon storageCapacityBonus days sevenDays"></div>Steam Driven Forklift (7 Days)','','']},44:{id:44,cid:5,cat:'Defence',sid:1,name:'Barbarian Hunter',reqs:['Defeat level 9 barbarians.','Defeat level 19 barbarians.','Defeat level 29 barbarians.','Defeat level 39 barbarians.','Defeat level 50 barbarians.','Defeat level 50 barbarians on 3 different islands.'],rews:['','1 &times; <div class="small itemIcon barbarianTruce coin n2"></div>Ceasefire (Barbarian Village Level 20-29)','','1 &times; <div class="small itemIcon barbarianTruce coin n4"></div>Ceasefire (Barbarian Village Level 40-49)','','Title: Scourge of the Barbarians|1 &times; <div class="small itemIcon barbarianTruce coin n5"></div>Ceasefire (Barbarian Village Level 50)']},45:{id:45,cid:5,cat:'Defence',sid:25,name:'Archivist',reqs:['Find a complete sea chart.','Find 3 different sea charts at least once.','Find 5 different sea charts at least once.','Find 7 different sea charts at least once.','Find 10 different sea charts at least once.','Find 10 different sea charts at least 5 times.'],rews:['','','','Title: Passionate Collector','','']},46:{id:46,cid:5,cat:'Defence',sid:26,name:'Sea Monster',reqs:['Defeat barbarian fleet 5 times at any level.','Defeat barbarian fleet 10 times at any level.','Defeat barbarian fleet 30 times at any level.','Defeat barbarian fleet 50 times at any level.','Defeat barbarian fleet 75 times at any level.','Defeat barbarian fleet 100 times at any level.'],rews:['','','','','','Title: The Kraken']},100:{id:100,cid:4,cat:'Buildings',sid:0,name:'Town Hall',reqs:['Upgrade the building to level 10.','Upgrade the building to level 10 in 2 towns.','Upgrade the building to level 15 in 4 towns.','Upgrade the building to level 20 in 6 towns.','Upgrade the building to level 25 in 9 towns.','Upgrade the building to level 30 in 12 towns.'],rews:['','','','Title: Mayor','','']},103:{id:103,cid:4,cat:'Buildings',sid:7,name:'Trading Port',reqs:['Upgrade the building to level 10.','Upgrade the building to level 10 in 3 towns.','Upgrade the building to level 15 in 5 towns.','Upgrade the building to level 20 in 7 towns.','Upgrade the building to level 25 in 9 towns.','Upgrade the building to level 30 in 11 towns.'],rews:['','','','','','']},104:{id:104,cid:4,cat:'Buildings',sid:1,name:'Academy',reqs:['Upgrade the building to level 10.','Upgrade the building to level 10 in 2 towns.','Upgrade the building to level 15 in 4 towns.','Upgrade the building to level 20 in 6 towns.','Upgrade the building to level 25 in 9 towns.','Upgrade the building to level 30 in 12 towns.'],rews:['','','','Title: Keeper of the Ivory Tower','','']},105:{id:105,cid:4,cat:'Buildings',sid:8,name:'Shipyard',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10 in 3 towns.','Upgrade the building to level 10 in 5 towns.','Upgrade the building to level 15 in 7 towns.','Upgrade the building to level 20 in 7 towns.','Upgrade the building to level 20 in 10 towns.'],rews:['','','','','','']},106:{id:106,cid:4,cat:'Buildings',sid:9,name:'Barracks',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10 in 3 towns.','Upgrade the building to level 15 in 5 towns.','Upgrade the building to level 20 in 7 towns.','Upgrade the building to level 25 in 7 towns.','Upgrade the building to level 30 in 10 towns.'],rews:['','','','','','']},107:{id:107,cid:4,cat:'Buildings',sid:2,name:'Warehouse',reqs:['Upgrade the building to level 10.','Upgrade the building to level 15 in 2 towns.','Upgrade the building to level 25 in 4 towns.','Upgrade the building to level 30 in 6 towns.','Upgrade the building to level 35 in 9 towns.','Upgrade the building to level 40 in 12 towns.'],rews:['','1 &times; <div class="small itemIcon safeCapacityBonus days twoDays"></div>Padlock (2 Days)','','1 &times; <div class="small itemIcon safeCapacityBonus days sevenDays"></div>Padlock (7 Days)','','']},108:{id:108,cid:4,cat:'Buildings',sid:10,name:'Town Wall',reqs:['Upgrade the building to level 15.','Upgrade the building to level 20 in 3 towns.','Upgrade the building to level 25 in 5 towns.','Upgrade the building to level 30 in 7 towns.','Upgrade the building to level 35 in 9 towns.','Upgrade the building to level 40 in 11 towns.'],rews:['','','','','','']},109:{id:109,cid:4,cat:'Buildings',sid:3,name:'Tavern',reqs:['Upgrade the building to level 10.','Upgrade the building to level 15 in 2 towns.','Upgrade the building to level 25 in 4 towns.','Upgrade the building to level 30 in 6 towns.','Upgrade the building to level 35 in 9 towns.','Upgrade the building to level 40 in 12 towns.'],rews:['','','','','','Title: Cupbearer to the Gods']},110:{id:110,cid:4,cat:'Buildings',sid:6,name:'Museum',reqs:['Upgrade the building to level 5.','Upgrade the building to level 5 in 3 towns.','Upgrade the building to level 8 in 5 towns.','Upgrade the building to level 10 in 7 towns.','Upgrade the building to level 12 in 9 towns.','Upgrade the building to level 15 in 11 towns.'],rews:['','1 &times; <div class="small itemIcon culturalTreatyCoin coin"></div>Cultural Goods Search','Title: Patron','','','Title: Master of Fine Arts']},111:{id:111,cid:4,cat:'Buildings',sid:4,name:'Palace',reqs:['Upgrade the building to level 1.','Upgrade the building to level 3.','Upgrade the building to level 5.','Upgrade the building to level 7.','Upgrade the building to level 9.','Upgrade the building to level 11.'],rews:['','','','','','Title: Governor']},112:{id:112,cid:4,cat:'Buildings',sid:11,name:'Embassy',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10.','Upgrade the building to level 15.','Upgrade the building to level 20.','Upgrade the building to level 25.','Upgrade the building to level 30 in 2 towns.'],rews:['','Title: Ambassador','','','','']},113:{id:113,cid:4,cat:'Buildings',sid:12,name:'Trading Post',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10 in 2 towns.','Upgrade the building to level 15 in 2 towns.','Upgrade the building to level 20 in 2 towns.','Upgrade the building to level 25 in 3 towns.','Upgrade the building to level 30 in 3 towns.'],rews:['','','','','','']},115:{id:115,cid:4,cat:'Buildings',sid:13,name:'Workshop',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10 in 2 towns.','Upgrade the building to level 15 in 2 towns.','Upgrade the building to level 20 in 2 towns.','Upgrade the building to level 25 in 3 towns.','Upgrade the building to level 30 in 3 towns.'],rews:['','','','','','']},116:{id:116,cid:4,cat:'Buildings',sid:14,name:'Hideout',reqs:['Upgrade the building to level 10.','Upgrade the building to level 10 in 3 towns.','Upgrade the building to level 15 in 5 towns.','Upgrade the building to level 20 in 7 towns.','Upgrade the building to level 25 in 9 towns.','Upgrade the building to level 30 in 11 towns.'],rews:['','','','','','']},117:{id:117,cid:4,cat:'Buildings',sid:5,name:'Governor`s Residence',reqs:['Upgrade the building to level 1.','Upgrade the building to level 3 in 3 towns.','Upgrade the building to level 5 in 5 towns.','Upgrade the building to level 7 in 7 towns.','Upgrade the building to level 9 in 9 towns.','Upgrade the building to level 11 in 11 towns.'],rews:['','','','','','Title: Prefect|1 &times; <div class="small itemIcon moveCityCoin coin"></div>Town Relocation']},118:{id:118,cid:4,cat:'Buildings',sid:15,name:'Forester`s House',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10.','Upgrade the building to level 15.','Upgrade the building to level 20.','Upgrade the building to level 25.','Upgrade the building to level 30.'],rews:['','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount1000"></div>Resource Delivery: Building Material (Tiny)','','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount10000"></div>Resource Delivery: Building Material (Small)','','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount100000"></div>Resource Delivery: Building Material (Large)']},119:{id:119,cid:4,cat:'Buildings',sid:19,name:'Stonemason',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10.','Upgrade the building to level 15.','Upgrade the building to level 20.','Upgrade the building to level 25.','Upgrade the building to level 30.'],rews:['','1 &times; <div class="small itemIcon marblePackage goodsPackage amount1000"></div>Resource Delivery: Marble (Tiny)','','1 &times; <div class="small itemIcon marblePackage goodsPackage amount10000"></div>Resource Delivery: Marble (Small)','','1 &times; <div class="small itemIcon marblePackage goodsPackage amount100000"></div>Resource Delivery: Marble (Large)']},120:{id:120,cid:4,cat:'Buildings',sid:16,name:'Glassblower',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10.','Upgrade the building to level 15.','Upgrade the building to level 20.','Upgrade the building to level 25.','Upgrade the building to level 30.'],rews:['','1 &times; <div class="small itemIcon crystalPackage goodsPackage amount1000"></div>Resource Delivery: Crystal Glass (Tiny)','','1 &times; <div class="small itemIcon crystalPackage goodsPackage amount10000"></div>Resource Delivery: Crystal Glass (Small)','','1 &times; <div class="small itemIcon crystalPackage goodsPackage amount100000"></div>Resource Delivery: Crystal Glass (Large)']},121:{id:121,cid:4,cat:'Buildings',sid:18,name:'Winery',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10.','Upgrade the building to level 15.','Upgrade the building to level 20.','Upgrade the building to level 25.','Upgrade the building to level 30.'],rews:['','1 &times; <div class="small itemIcon winePackage goodsPackage amount1000"></div>Resource Delivery: Wine (Tiny)','','1 &times; <div class="small itemIcon winePackage goodsPackage amount10000"></div>Resource Delivery: Wine (Small)','','1 &times; <div class="small itemIcon winePackage goodsPackage amount100000"></div>Resource Delivery: Wine (Large)']},122:{id:122,cid:4,cat:'Buildings',sid:17,name:'Alchemist`s Tower',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10.','Upgrade the building to level 15.','Upgrade the building to level 20.','Upgrade the building to level 25.','Upgrade the building to level 30.'],rews:['','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount1000"></div>Resource Delivery: Sulphur (Tiny)','','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount10000"></div>Resource Delivery: Sulphur (Small)','','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount100000"></div>Resource Delivery: Sulphur (Large)']},123:{id:123,cid:4,cat:'Buildings',sid:20,name:'Carpenter`s Workshop',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10.','Upgrade the building to level 15.','Upgrade the building to level 20.','Upgrade the building to level 25.','Upgrade the building to level 30.'],rews:['','','','','','']},124:{id:124,cid:4,cat:'Buildings',sid:24,name:'Architect`s Office',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10.','Upgrade the building to level 15.','Upgrade the building to level 20.','Upgrade the building to level 25.','Upgrade the building to level 30.'],rews:['','','','','','']},125:{id:125,cid:4,cat:'Buildings',sid:21,name:'Optician',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10.','Upgrade the building to level 15.','Upgrade the building to level 20.','Upgrade the building to level 25.','Upgrade the building to level 30.'],rews:['','','','','','']},126:{id:126,cid:4,cat:'Buildings',sid:23,name:'Wine Press',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10.','Upgrade the building to level 15.','Upgrade the building to level 20.','Upgrade the building to level 25.','Upgrade the building to level 30.'],rews:['','','','','','']},127:{id:127,cid:4,cat:'Buildings',sid:22,name:'Firework Test Area',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10.','Upgrade the building to level 15.','Upgrade the building to level 20.','Upgrade the building to level 25.','Upgrade the building to level 30.'],rews:['','','','','','']},128:{id:128,cid:4,cat:'Buildings',sid:25,name:'Temple',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10 in 2 towns.','Upgrade the building to level 15 in 2 towns.','Upgrade the building to level 20 in 2 towns.','Upgrade the building to level 25 in 3 towns.','Upgrade the building to level 30 in 3 towns.'],rews:['','','','','','']},129:{id:129,cid:4,cat:'Buildings',sid:26,name:'Depot',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10.','Upgrade the building to level 15.','Upgrade the building to level 20.','Upgrade the building to level 25 in 2 towns.','Upgrade the building to level 30 in 2 towns.'],rews:['','','','','','1 &times; <div class="small itemIcon storageCapacityBonus days sevenDays"></div>Steam Driven Forklift (7 Days)']},130:{id:130,cid:4,cat:'Buildings',sid:27,name:'Pirate Fortress',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10.','Upgrade the building to level 15.','Upgrade the building to level 20.','Upgrade the building to level 25 in 2 towns.','Upgrade the building to level 30 in 2 towns.'],rews:['','Title: Pirate Captain','','','','']},131:{id:131,cid:4,cat:'Buildings',sid:28,name:'Black Market',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10.','Upgrade the building to level 15.','Upgrade the building to level 20.','Upgrade the building to level 23 in 2 towns.','Upgrade the building to level 25 in 3 towns.'],rews:['','','','','','']},132:{id:132,cid:4,cat:'Buildings',sid:29,name:'Sea Chart Archive',reqs:['Upgrade the building to level 5.','Upgrade the building to level 10.','Upgrade the building to level 15 in 2 towns.','Upgrade the building to level 20 in 2 towns.','Upgrade the building to level 25 in 3 towns.','Upgrade the building to level 35 in 5 towns.'],rews:['','','','','','']},201:{id:201,cid:7,cat:'Naval Units',sid:0,name:'Merchant Ships',reqs:['Own 5 merchant ships.','Own 25 merchant ships.','Own 50 merchant ships.','Own 75 merchant ships.','Own 125 merchant ships.','Own 200 merchant ships.'],rews:['','','1 &times; <div class="small itemIcon goldPackage goodsPackage amount10000"></div>Resource Delivery: Gold (Small)','','1 &times; <div class="small itemIcon goldPackage goodsPackage amount250000"></div>Resource Delivery: Gold (Massive)','Title: Admiral']},210:{id:210,cid:7,cat:'Naval Units',sid:1,name:'Ram Ship Producer',reqs:['Produce 25 Ram Ship units.','Produce 400 Ram Ship units.','Produce 1000 Ram Ship units.','Produce 2500 Ram Ship units.','Produce 10000 Ram Ship units.','Produce 100000 Ram Ship units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s210 ships amount50"></div>Troop Pack: Ram Ship (Small)','','1 &times; <div class="small itemIcon troopsPackage s210 ships amount250"></div>Troop Pack: Ram Ship (Normal)','','1 &times; <div class="small itemIcon troopsPackage s210 ships amount500"></div>Troop Pack: Ram Ship (Large)']},211:{id:211,cid:7,cat:'Naval Units',sid:3,name:'Fire Ship Producer',reqs:['Produce 25 Fire Ship units.','Produce 400 Fire Ship units.','Produce 1000 Fire Ship units.','Produce 2500 Fire Ship units.','Produce 10000 Fire Ship units.','Produce 100000 Fire Ship units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s211 ships amount50"></div>Troop Pack: Fire Ship (Small)','','1 &times; <div class="small itemIcon troopsPackage s211 ships amount250"></div>Troop Pack: Fire Ship (Normal)','','1 &times; <div class="small itemIcon troopsPackage s211 ships amount500"></div>Troop Pack: Fire Ship (Large)']},212:{id:212,cid:7,cat:'Naval Units',sid:8,name:'Diving Boat Producer',reqs:['Produce 25 Diving Boat units.','Produce 400 Diving Boat units.','Produce 1000 Diving Boat units.','Produce 2500 Diving Boat units.','Produce 10000 Diving Boat units.','Produce 100000 Diving Boat units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s212 ships amount50"></div>Troop Pack: Diving Boat (Small)','','1 &times; <div class="small itemIcon troopsPackage s212 ships amount250"></div>Troop Pack: Diving Boat (Normal)','','1 &times; <div class="small itemIcon troopsPackage s212 ships amount500"></div>Troop Pack: Diving Boat (Large)']},213:{id:213,cid:7,cat:'Naval Units',sid:2,name:'Ballista Ship Producer',reqs:['Produce 25 Ballista Ship units.','Produce 400 Ballista Ship units.','Produce 1000 Ballista Ship units.','Produce 2500 Ballista Ship units.','Produce 10000 Ballista Ship units.','Produce 100000 Ballista Ship units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s213 ships amount50"></div>Troop Pack: Ballista Ship (Small)','','1 &times; <div class="small itemIcon troopsPackage s213 ships amount250"></div>Troop Pack: Ballista Ship (Normal)','','1 &times; <div class="small itemIcon troopsPackage s213 ships amount500"></div>Troop Pack: Ballista Ship (Large)']},214:{id:214,cid:7,cat:'Naval Units',sid:4,name:'Catapult Ship Producer',reqs:['Produce 25 Catapult Ship units.','Produce 400 Catapult Ship units.','Produce 1000 Catapult Ship units.','Produce 2500 Catapult Ship units.','Produce 10000 Catapult Ship units.','Produce 100000 Catapult Ship units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s214 ships amount50"></div>Troop Pack: Catapult Ship (Small)','','1 &times; <div class="small itemIcon troopsPackage s214 ships amount250"></div>Troop Pack: Catapult Ship (Normal)','','1 &times; <div class="small itemIcon troopsPackage s214 ships amount500"></div>Troop Pack: Catapult Ship (Large)']},215:{id:215,cid:7,cat:'Naval Units',sid:5,name:'Mortar Ship Producer',reqs:['Produce 25 Mortar Ship units.','Produce 400 Mortar Ship units.','Produce 1000 Mortar Ship units.','Produce 2500 Mortar Ship units.','Produce 10000 Mortar Ship units.','Produce 100000 Mortar Ship units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s215 ships amount50"></div>Troop Pack: Mortar Ship (Small)','','1 &times; <div class="small itemIcon troopsPackage s215 ships amount250"></div>Troop Pack: Mortar Ship (Normal)','','1 &times; <div class="small itemIcon troopsPackage s215 ships amount500"></div>Troop Pack: Mortar Ship (Large)']},216:{id:216,cid:7,cat:'Naval Units',sid:6,name:'Steam Ram Producer',reqs:['Produce 25 Steam Ram units.','Produce 400 Steam Ram units.','Produce 1000 Steam Ram units.','Produce 2500 Steam Ram units.','Produce 10000 Steam Ram units.','Produce 100000 Steam Ram units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s216 ships amount50"></div>Troop Pack: Steam Ram (Small)','','1 &times; <div class="small itemIcon troopsPackage s216 ships amount250"></div>Troop Pack: Steam Ram (Normal)','','1 &times; <div class="small itemIcon troopsPackage s216 ships amount500"></div>Troop Pack: Steam Ram (Large)']},217:{id:217,cid:7,cat:'Naval Units',sid:7,name:'Rocket Ship Producer',reqs:['Produce 25 Rocket Ship units.','Produce 400 Rocket Ship units.','Produce 1000 Rocket Ship units.','Produce 2500 Rocket Ship units.','Produce 10000 Rocket Ship units.','Produce 100000 Rocket Ship units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s217 ships amount50"></div>Troop Pack: Rocket Ship (Small)','','1 &times; <div class="small itemIcon troopsPackage s217 ships amount250"></div>Troop Pack: Rocket Ship (Normal)','','1 &times; <div class="small itemIcon troopsPackage s217 ships amount500"></div>Troop Pack: Rocket Ship (Large)']},218:{id:218,cid:7,cat:'Naval Units',sid:9,name:'Paddle Speedboat Producer',reqs:['Produce 25 Paddle Speedboat units.','Produce 400 Paddle Speedboat units.','Produce 1000 Paddle Speedboat units.','Produce 2500 Paddle Speedboat units.','Produce 10000 Paddle Speedboat units.','Produce 100000 Paddle Speedboat units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s218 ships amount50"></div>Troop Pack: Paddle Speedboat (Small)','','1 &times; <div class="small itemIcon troopsPackage s218 ships amount250"></div>Troop Pack: Paddle Speedboat (Normal)','','1 &times; <div class="small itemIcon troopsPackage s218 ships amount500"></div>Troop Pack: Paddle Speedboat (Large)']},219:{id:219,cid:7,cat:'Naval Units',sid:10,name:'Balloon Carrier Producer',reqs:['Produce 25 Balloon Carrier units.','Produce 400 Balloon Carrier units.','Produce 1000 Balloon Carrier units.','Produce 2500 Balloon Carrier units.','Produce 10000 Balloon Carrier units.','Produce 100000 Balloon Carrier units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s219 ships amount50"></div>Troop Pack: Balloon Carrier (Small)','','1 &times; <div class="small itemIcon troopsPackage s219 ships amount250"></div>Troop Pack: Balloon Carrier (Normal)','','1 &times; <div class="small itemIcon troopsPackage s219 ships amount500"></div>Troop Pack: Balloon Carrier (Large)']},220:{id:220,cid:7,cat:'Naval Units',sid:11,name:'Tender Producer',reqs:['Produce 10 Tender units.','Produce 75 Tender units.','Produce 150 Tender units.','Produce 300 Tender units.','Produce 1000 Tender units.','Produce 10000 Tender units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s220 ships amount5"></div>Troop Pack: Tender (Small)','','1 &times; <div class="small itemIcon troopsPackage s220 ships amount25"></div>Troop Pack: Tender (Normal)','','1 &times; <div class="small itemIcon troopsPackage s220 ships amount50"></div>Troop Pack: Tender (Large)']},301:{id:301,cid:6,cat:'Land Units',sid:0,name:'Slinger Producer',reqs:['Produce 25 Slinger units.','Produce 400 Slinger units.','Produce 1000 Slinger units.','Produce 2500 Slinger units.','Produce 10000 Slinger units.','Produce 100000 Slinger units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s301 units amount100"></div>Troop Pack: Slinger (Small)','','1 &times; <div class="small itemIcon troopsPackage s301 units amount500"></div>Troop Pack: Slinger (Normal)','','1 &times; <div class="small itemIcon troopsPackage s301 units amount1000"></div>Troop Pack: Slinger (Large)']},302:{id:302,cid:6,cat:'Land Units',sid:4,name:'Swordsman Producer',reqs:['Produce 25 Swordsman units.','Produce 400 Swordsman units.','Produce 1000 Swordsman units.','Produce 2500 Swordsman units.','Produce 10000 Swordsman units.','Produce 100000 Swordsman units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s302 units amount100"></div>Troop Pack: Swordsman (Small)','','1 &times; <div class="small itemIcon troopsPackage s302 units amount500"></div>Troop Pack: Swordsman (Normal)','','1 &times; <div class="small itemIcon troopsPackage s302 units amount1000"></div>Troop Pack: Swordsman (Large)']},303:{id:303,cid:6,cat:'Land Units',sid:5,name:'Hoplite Producer',reqs:['Produce 25 Hoplite units.','Produce 400 Hoplite units.','Produce 1000 Hoplite units.','Produce 2500 Hoplite units.','Produce 10000 Hoplite units.','Produce 100000 Hoplite units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s303 units amount100"></div>Troop Pack: Hoplite (Small)','','1 &times; <div class="small itemIcon troopsPackage s303 units amount500"></div>Troop Pack: Hoplite (Normal)','','1 &times; <div class="small itemIcon troopsPackage s303 units amount1000"></div>Troop Pack: Hoplite (Large)']},304:{id:304,cid:6,cat:'Land Units',sid:2,name:'Sulphur Carabineer Producer',reqs:['Produce 25 Sulphur Carabineer units.','Produce 400 Sulphur Carabineer units.','Produce 1000 Sulphur Carabineer units.','Produce 2500 Sulphur Carabineer units.','Produce 10000 Sulphur Carabineer units.','Produce 100000 Sulphur Carabineer units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s304 units amount100"></div>Troop Pack: Sulphur Carabineer (Small)','','1 &times; <div class="small itemIcon troopsPackage s304 units amount500"></div>Troop Pack: Sulphur Carabineer (Normal)','','1 &times; <div class="small itemIcon troopsPackage s304 units amount1000"></div>Troop Pack: Sulphur Carabineer (Large)']},305:{id:305,cid:6,cat:'Land Units',sid:11,name:'Mortar Producer',reqs:['Produce 25 Mortar units.','Produce 400 Mortar units.','Produce 1000 Mortar units.','Produce 2500 Mortar units.','Produce 10000 Mortar units.','Produce 100000 Mortar units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s305 units amount100"></div>Troop Pack: Mortar (Small)','','1 &times; <div class="small itemIcon troopsPackage s305 units amount500"></div>Troop Pack: Mortar (Normal)','','1 &times; <div class="small itemIcon troopsPackage s305 units amount1000"></div>Troop Pack: Mortar (Large)']},306:{id:306,cid:6,cat:'Land Units',sid:10,name:'Catapult Producer',reqs:['Produce 25 Catapult units.','Produce 400 Catapult units.','Produce 1000 Catapult units.','Produce 2500 Catapult units.','Produce 10000 Catapult units.','Produce 100000 Catapult units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s306 units amount100"></div>Troop Pack: Catapult (Small)','','1 &times; <div class="small itemIcon troopsPackage s306 units amount500"></div>Troop Pack: Catapult (Normal)','','1 &times; <div class="small itemIcon troopsPackage s306 units amount1000"></div>Troop Pack: Catapult (Large)']},307:{id:307,cid:6,cat:'Land Units',sid:9,name:'Battering Ram Producer',reqs:['Produce 25 Battering Ram units.','Produce 400 Battering Ram units.','Produce 1000 Battering Ram units.','Produce 2500 Battering Ram units.','Produce 10000 Battering Ram units.','Produce 100000 Battering Ram units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s307 units amount100"></div>Troop Pack: Battering Ram (Small)','','1 &times; <div class="small itemIcon troopsPackage s307 units amount500"></div>Troop Pack: Battering Ram (Normal)','','1 &times; <div class="small itemIcon troopsPackage s307 units amount1000"></div>Troop Pack: Battering Ram (Large)']},308:{id:308,cid:6,cat:'Land Units',sid:6,name:'Steam Giant Producer',reqs:['Produce 25 Steam Giant units.','Produce 400 Steam Giant units.','Produce 1000 Steam Giant units.','Produce 2500 Steam Giant units.','Produce 10000 Steam Giant units.','Produce 100000 Steam Giant units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s308 units amount100"></div>Troop Pack: Steam Giant (Small)','','1 &times; <div class="small itemIcon troopsPackage s308 units amount500"></div>Troop Pack: Steam Giant (Normal)','','1 &times; <div class="small itemIcon troopsPackage s308 units amount1000"></div>Troop Pack: Steam Giant (Large)']},309:{id:309,cid:6,cat:'Land Units',sid:8,name:'Balloon-Bombardier Producer',reqs:['Produce 25 Balloon-Bombardier units.','Produce 400 Balloon-Bombardier units.','Produce 1000 Balloon-Bombardier units.','Produce 2500 Balloon-Bombardier units.','Produce 10000 Balloon-Bombardier units.','Produce 100000 Balloon-Bombardier units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s309 units amount100"></div>Troop Pack: Balloon-Bombardier (Small)','','1 &times; <div class="small itemIcon troopsPackage s309 units amount500"></div>Troop Pack: Balloon-Bombardier (Normal)','','1 &times; <div class="small itemIcon troopsPackage s309 units amount1000"></div>Troop Pack: Balloon-Bombardier (Large)']},310:{id:310,cid:6,cat:'Land Units',sid:13,name:'Cook Producer',reqs:['Produce 10 Cook units.','Produce 75 Cook units.','Produce 150 Cook units.','Produce 300 Cook units.','Produce 1000 Cook units.','Produce 10000 Cook units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s310 units amount10"></div>Troop Pack: Cook (Small)','','1 &times; <div class="small itemIcon troopsPackage s310 units amount50"></div>Troop Pack: Cook (Normal)|Title: Head Chef','','1 &times; <div class="small itemIcon troopsPackage s310 units amount100"></div>Troop Pack: Cook (Large)']},311:{id:311,cid:6,cat:'Land Units',sid:12,name:'Doctor Producer',reqs:['Produce 10 Doctor units.','Produce 75 Doctor units.','Produce 150 Doctor units.','Produce 300 Doctor units.','Produce 1000 Doctor units.','Produce 10000 Doctor units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s311 units amount10"></div>Troop Pack: Doctor (Small)','','1 &times; <div class="small itemIcon troopsPackage s311 units amount50"></div>Troop Pack: Doctor (Normal)','','1 &times; <div class="small itemIcon troopsPackage s311 units amount100"></div>Troop Pack: Doctor (Large)|Title: Asclepius&apos; Right Hand']},312:{id:312,cid:6,cat:'Land Units',sid:7,name:'Gyrocopter Producer',reqs:['Produce 25 Gyrocopter units.','Produce 400 Gyrocopter units.','Produce 1000 Gyrocopter units.','Produce 2500 Gyrocopter units.','Produce 10000 Gyrocopter units.','Produce 100000 Gyrocopter units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s312 units amount100"></div>Troop Pack: Gyrocopter (Small)','','1 &times; <div class="small itemIcon troopsPackage s312 units amount500"></div>Troop Pack: Gyrocopter (Normal)','','1 &times; <div class="small itemIcon troopsPackage s312 units amount1000"></div>Troop Pack: Gyrocopter (Large)']},313:{id:313,cid:6,cat:'Land Units',sid:1,name:'Archer Producer',reqs:['Produce 25 Archer units.','Produce 400 Archer units.','Produce 1000 Archer units.','Produce 2500 Archer units.','Produce 10000 Archer units.','Produce 100000 Archer units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s313 units amount100"></div>Troop Pack: Archer (Small)','','1 &times; <div class="small itemIcon troopsPackage s313 units amount500"></div>Troop Pack: Archer (Normal)','','1 &times; <div class="small itemIcon troopsPackage s313 units amount1000"></div>Troop Pack: Archer (Large)']},315:{id:315,cid:6,cat:'Land Units',sid:3,name:'Spearman Producer',reqs:['Produce 25 Spearman units.','Produce 400 Spearman units.','Produce 1000 Spearman units.','Produce 2500 Spearman units.','Produce 10000 Spearman units.','Produce 100000 Spearman units.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s315 units amount100"></div>Troop Pack: Spearman (Small)','','1 &times; <div class="small itemIcon troopsPackage s315 units amount500"></div>Troop Pack: Spearman (Normal)','','1 &times; <div class="small itemIcon troopsPackage s315 units amount1000"></div>Troop Pack: Spearman (Large)']},319:{id:319,cid:6,cat:'Land Units',sid:14,name:'Spartan Producer',reqs:['Buy 300 units.','Buy 600 units.','Buy 900 units.','Buy 1200 units.','Buy 1500 units.','Buy 3000 units.'],rews:['','','','','','Title: Leonidas&apos; General']},501:{id:501,cid:6,cat:'Land Units',sid:15,name:'Slinger Destroyer',reqs:['Destroy 25 Slinger units.','Destroy 400 Slinger units.','Destroy 1000 Slinger units.','Destroy 2500 Slinger units.','Destroy 10000 Slinger units.','Destroy 100000 Slinger units.'],rews:['','1 &times; <div class="small itemIcon marblePackage goodsPackage amount1000"></div>Resource Delivery: Marble (Tiny)','','1 &times; <div class="small itemIcon marblePackage goodsPackage amount10000"></div>Resource Delivery: Marble (Small)','','1 &times; <div class="small itemIcon marblePackage goodsPackage amount25000"></div>Resource Delivery: Marble (Normal)']},502:{id:502,cid:6,cat:'Land Units',sid:19,name:'Swordsman Destroyer',reqs:['Destroy 25 Swordsman units.','Destroy 400 Swordsman units.','Destroy 1000 Swordsman units.','Destroy 2500 Swordsman units.','Destroy 10000 Swordsman units.','Destroy 100000 Swordsman units.'],rews:['','','','','','']},503:{id:503,cid:6,cat:'Land Units',sid:20,name:'Hoplite Destroyer',reqs:['Destroy 25 Hoplite units.','Destroy 400 Hoplite units.','Destroy 1000 Hoplite units.','Destroy 2500 Hoplite units.','Destroy 10000 Hoplite units.','Destroy 100000 Hoplite units.'],rews:['','','','','','']},504:{id:504,cid:6,cat:'Land Units',sid:17,name:'Sulphur Carabineer Destroyer',reqs:['Destroy 25 Sulphur Carabineer units.','Destroy 400 Sulphur Carabineer units.','Destroy 1000 Sulphur Carabineer units.','Destroy 2500 Sulphur Carabineer units.','Destroy 10000 Sulphur Carabineer units.','Destroy 100000 Sulphur Carabineer units.'],rews:['','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount1000"></div>Resource Delivery: Sulphur (Tiny)','','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount10000"></div>Resource Delivery: Sulphur (Small)','','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount25000"></div>Resource Delivery: Sulphur (Normal)']},505:{id:505,cid:6,cat:'Land Units',sid:26,name:'Mortar Destroyer',reqs:['Destroy 25 Mortar units.','Destroy 400 Mortar units.','Destroy 1000 Mortar units.','Destroy 2500 Mortar units.','Destroy 10000 Mortar units.','Destroy 100000 Mortar units.'],rews:['','','','','','']},506:{id:506,cid:6,cat:'Land Units',sid:25,name:'Catapult Destroyer',reqs:['Destroy 25 Catapult units.','Destroy 400 Catapult units.','Destroy 1000 Catapult units.','Destroy 2500 Catapult units.','Destroy 10000 Catapult units.','Destroy 100000 Catapult units.'],rews:['','','','','','']},507:{id:507,cid:6,cat:'Land Units',sid:24,name:'Battering Ram Destroyer',reqs:['Destroy 25 Battering Ram units.','Destroy 400 Battering Ram units.','Destroy 1000 Battering Ram units.','Destroy 2500 Battering Ram units.','Destroy 10000 Battering Ram units.','Destroy 100000 Battering Ram units.'],rews:['','','','','','']},508:{id:508,cid:6,cat:'Land Units',sid:21,name:'Steam Giant Destroyer',reqs:['Destroy 25 Steam Giant units.','Destroy 400 Steam Giant units.','Destroy 1000 Steam Giant units.','Destroy 2500 Steam Giant units.','Destroy 10000 Steam Giant units.','Destroy 100000 Steam Giant units.'],rews:['','','','','','']},509:{id:509,cid:6,cat:'Land Units',sid:23,name:'Balloon-Bombardier Destroyer',reqs:['Destroy 25 Balloon-Bombardier units.','Destroy 400 Balloon-Bombardier units.','Destroy 1000 Balloon-Bombardier units.','Destroy 2500 Balloon-Bombardier units.','Destroy 10000 Balloon-Bombardier units.','Destroy 100000 Balloon-Bombardier units.'],rews:['','','','','','']},512:{id:512,cid:6,cat:'Land Units',sid:22,name:'Gyrocopter Destroyer',reqs:['Destroy 25 Gyrocopter units.','Destroy 400 Gyrocopter units.','Destroy 1000 Gyrocopter units.','Destroy 2500 Gyrocopter units.','Destroy 10000 Gyrocopter units.','Destroy 100000 Gyrocopter units.'],rews:['','','','','','']},513:{id:513,cid:6,cat:'Land Units',sid:16,name:'Archer Destroyer',reqs:['Destroy 25 Archer units.','Destroy 400 Archer units.','Destroy 1000 Archer units.','Destroy 2500 Archer units.','Destroy 10000 Archer units.','Destroy 100000 Archer units.'],rews:['','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount1000"></div>Resource Delivery: Building Material (Tiny)','','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount10000"></div>Resource Delivery: Building Material (Small)','','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount25000"></div>Resource Delivery: Building Material (Normal)']},515:{id:515,cid:6,cat:'Land Units',sid:18,name:'Spearman Destroyer',reqs:['Destroy 25 Spearman units.','Destroy 400 Spearman units.','Destroy 1000 Spearman units.','Destroy 2500 Spearman units.','Destroy 10000 Spearman units.','Destroy 100000 Spearman units.'],rews:['','','','','','']},610:{id:610,cid:7,cat:'Naval Units',sid:12,name:'Ram Ship Destroyer',reqs:['Destroy 25 Ram Ship units.','Destroy 400 Ram Ship units.','Destroy 1000 Ram Ship units.','Destroy 2500 Ram Ship units.','Destroy 10000 Ram Ship units.','Destroy 100000 Ram Ship units.'],rews:['','','','','','']},611:{id:611,cid:7,cat:'Naval Units',sid:14,name:'Fire Ship Destroyer',reqs:['Destroy 25 Fire Ship units.','Destroy 400 Fire Ship units.','Destroy 1000 Fire Ship units.','Destroy 2500 Fire Ship units.','Destroy 10000 Fire Ship units.','Destroy 100000 Fire Ship units.'],rews:['','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount1000"></div>Resource Delivery: Sulphur (Tiny)','','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount10000"></div>Resource Delivery: Sulphur (Small)','','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount25000"></div>Resource Delivery: Sulphur (Normal)']},612:{id:612,cid:7,cat:'Naval Units',sid:19,name:'Diving Boat Destroyer',reqs:['Destroy 25 Diving Boat units.','Destroy 400 Diving Boat units.','Destroy 1000 Diving Boat units.','Destroy 2500 Diving Boat units.','Destroy 10000 Diving Boat units.','Destroy 100000 Diving Boat units.'],rews:['','','','','','']},613:{id:613,cid:7,cat:'Naval Units',sid:13,name:'Ballista Ship Destroyer',reqs:['Destroy 25 Ballista Ship units.','Destroy 400 Ballista Ship units.','Destroy 1000 Ballista Ship units.','Destroy 2500 Ballista Ship units.','Destroy 10000 Ballista Ship units.','Destroy 100000 Ballista Ship units.'],rews:['','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount1000"></div>Resource Delivery: Building Material (Tiny)','','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount10000"></div>Resource Delivery: Building Material (Small)','','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount25000"></div>Resource Delivery: Building Material (Normal)']},614:{id:614,cid:7,cat:'Naval Units',sid:15,name:'Catapult Ship Destroyer',reqs:['Destroy 25 Catapult Ship units.','Destroy 400 Catapult Ship units.','Destroy 1000 Catapult Ship units.','Destroy 2500 Catapult Ship units.','Destroy 10000 Catapult Ship units.','Produce 100000 Catapult Ship units.'],rews:['','1 &times; <div class="small itemIcon marblePackage goodsPackage amount1000"></div>Resource Delivery: Marble (Tiny)','','1 &times; <div class="small itemIcon marblePackage goodsPackage amount10000"></div>Resource Delivery: Marble (Small)','','1 &times; <div class="small itemIcon marblePackage goodsPackage amount25000"></div>Resource Delivery: Marble (Normal)']},615:{id:615,cid:7,cat:'Naval Units',sid:16,name:'Mortar Ship Destroyer',reqs:['Destroy 25 Mortar Ship units.','Destroy 400 Mortar Ship units.','Destroy 1000 Mortar Ship units.','Destroy 2500 Mortar Ship units.','Destroy 10000 Mortar Ship units.','Destroy 100000 Mortar Ship units.'],rews:['','','','','','']},616:{id:616,cid:7,cat:'Naval Units',sid:17,name:'Steam Ram Destroyer',reqs:['Destroy 25 Steam Ram units.','Destroy 400 Steam Ram units.','Destroy 1000 Steam Ram units.','Destroy 2500 Steam Ram units.','Destroy 10000 Steam Ram units.','Destroy 100000 Steam Ram units.'],rews:['','','','','','']},617:{id:617,cid:7,cat:'Naval Units',sid:18,name:'Rocket Ship Destroyer',reqs:['Destroy 25 Rocket Ship units.','Destroy 400 Rocket Ship units.','Destroy 1000 Rocket Ship units.','Destroy 2500 Rocket Ship units.','Destroy 10000 Rocket Ship units.','Destroy 100000 Rocket Ship units.'],rews:['','','','','','']},618:{id:618,cid:7,cat:'Naval Units',sid:20,name:'Paddle Speedboat Destroyer',reqs:['Destroy 25 Paddle Speedboat units.','Destroy 400 Paddle Speedboat units.','Destroy 1000 Paddle Speedboat units.','Destroy 2500 Paddle Speedboat units.','Destroy 10000 Paddle Speedboat units.','Destroy 100000 Paddle Speedboat units.'],rews:['','','','','','']},619:{id:619,cid:7,cat:'Naval Units',sid:21,name:'Balloon Carrier Destroyer',reqs:['Destroy 25 Balloon Carrier units.','Destroy 400 Balloon Carrier units.','Destroy 1000 Balloon Carrier units.','Destroy 2500 Balloon Carrier units.','Destroy 10000 Balloon Carrier units.','Destroy 100000 Balloon Carrier units.'],rews:['','','','','','']},701:{id:701,cid:5,cat:'Defence',sid:14,name:'Specialist: Slinger',reqs:['Win a battle against another player&apos;s units whilst only using Slinger units.'],rews:['1 &times; <div class="small itemIcon troopsPackage s301 units amount500"></div>Troop Pack: Slinger (Normal)']},702:{id:702,cid:5,cat:'Defence',sid:18,name:'Specialist: Swordsman',reqs:['Win a battle against another player&apos;s units whilst only using Swordsman units.'],rews:['1 &times; <div class="small itemIcon troopsPackage s302 units amount500"></div>Troop Pack: Swordsman (Normal)']},703:{id:703,cid:5,cat:'Defence',sid:11,name:'Specialist: Hoplite',reqs:['Win a battle against another player&apos;s units whilst only using Hoplite units.'],rews:['1 &times; <div class="small itemIcon troopsPackage s303 units amount500"></div>Troop Pack: Hoplite (Normal)']},704:{id:704,cid:5,cat:'Defence',sid:13,name:'Specialist: Sulphur Carabineer',reqs:['Win a battle against another player&apos;s units whilst only using Sulphur Carabineer units.'],rews:['1 &times; <div class="small itemIcon troopsPackage s304 units amount500"></div>Troop Pack: Sulphur Carabineer (Normal)']},705:{id:705,cid:5,cat:'Defence',sid:17,name:'Specialist: Steam Giant',reqs:['Win a battle against another player&apos;s units whilst only using Steam Giant units.'],rews:['1 &times; <div class="small itemIcon troopsPackage s308 units amount500"></div>Troop Pack: Steam Giant (Normal)']},706:{id:706,cid:5,cat:'Defence',sid:12,name:'Specialist: Archer',reqs:['Win a battle against another player&apos;s units whilst only using Archer units.'],rews:['1 &times; <div class="small itemIcon troopsPackage s313 units amount500"></div>Troop Pack: Archer (Normal)']},707:{id:707,cid:5,cat:'Defence',sid:16,name:'Specialist: Spearman',reqs:['Win a battle against another player&apos;s units whilst only using Spearman units.'],rews:['1 &times; <div class="small itemIcon troopsPackage s315 units amount500"></div>Troop Pack: Spearman (Normal)']},708:{id:708,cid:5,cat:'Defence',sid:15,name:'Specialist: Spartan',reqs:['Win a battle against another player&apos;s units whilst only using Spartan units.'],rews:['']},810:{id:810,cid:5,cat:'Defence',sid:23,name:'Specialist: Ram Ship',reqs:['Win a battle against another player&apos;s units whilst only using Ram Ship units.'],rews:['1 &times; <div class="small itemIcon troopsPackage s210 ships amount250"></div>Troop Pack: Ram Ship (Normal)']},811:{id:811,cid:5,cat:'Defence',sid:21,name:'Specialist: Fire Ship',reqs:['Win a battle against another player&apos;s units whilst only using Fire Ship units.'],rews:['1 &times; <div class="small itemIcon troopsPackage s211 ships amount250"></div>Troop Pack: Fire Ship (Normal)']},813:{id:813,cid:5,cat:'Defence',sid:19,name:'Specialist: Ballista Ship',reqs:['Win a battle against another player&apos;s units whilst only using Ballista Ship units.'],rews:['1 &times; <div class="small itemIcon troopsPackage s213 ships amount250"></div>Troop Pack: Ballista Ship (Normal)']},814:{id:814,cid:5,cat:'Defence',sid:20,name:'Specialist: Catapult Ship',reqs:['Win a battle against another player&apos;s units whilst only using Catapult Ship units.'],rews:['1 &times; <div class="small itemIcon troopsPackage s214 ships amount250"></div>Troop Pack: Catapult Ship (Normal)']},815:{id:815,cid:5,cat:'Defence',sid:22,name:'Specialist: Mortar Ship',reqs:['Win a battle against another player&apos;s units whilst only using Mortar Ship units.'],rews:['1 &times; <div class="small itemIcon troopsPackage s215 ships amount250"></div>Troop Pack: Mortar Ship (Normal)']},816:{id:816,cid:5,cat:'Defence',sid:24,name:'Specialist: Steam Ram',reqs:['Win a battle against another player&apos;s units whilst only using Steam Ram units.'],rews:['1 &times; <div class="small itemIcon troopsPackage s216 ships amount250"></div>Troop Pack: Steam Ram (Normal)']}},
 				click_: '<b>Click</b>'
-			},
-			es:
-			{
-				allyranks: ['Líder','Ministro del Interior','General','Diplomático'],
-				advisors: ['Asesor comercial', 'Asesor militar', 'Asesor de investigación', 'Asesor de diplomacia'],
-				adequacy: 'Adecuación',
-				level: 'Nivel',
-				in_level: 'en nivel {0}',
-				upgrade: 'Actualizar',
-				inqueue: 'En cola',
-				downgrade: 'Demoler',
-				upbtntitle: 'La actualización no es posible en este momento',
-				qubtntitle: 'La actualización se puede poner en cola',
-				downbtntitle: ['¡La demolición no es posible!', '¡La demolición es posible!'],
-				buildings: 'Edificios',
-				economy: 'Economía',
-				military: 'Milicia',
-				greek: 'Griego',
-				empire: 'Empire',
-				overview: 'Overview',
-				troops: 'Tropas',
-				fleet: 'Flota',
-				ships: 'Barcos',
-				units: 'Unidades',
-				towns: 'Ciudades',
-				city: 'Ciudad',
-				townHall: 'Intendencia',
-				colony: 'Colonia',
-				colony_: 'Colonia',
-				capital: 'Capital',
-				capital_: 'Capital',
-				palace: 'Palacio',
-				palaceColony: 'Residencia del Gobernador',
-				government: 'Forma actual de gobierno',
-				anarchie: 'Anarquia',
-				xenokratie: 'Xenocracia',
-				ikakratie: 'Ikacracia',
-				aristokratie: 'Aristocracia',
-				diktatur: 'Dictadura',
-				demokratie: 'Democracia',
-				nomokratie: 'Nomocracia',
-				oligarchie: 'Oligarquía',
-				technokratie: 'Tecnocracia',
-				theokratie: 'Teocracía',
-				from_government: 'del gobierno',
-				tavern: 'Taberna',
-				miracle: 'Maravillas',
-				MirTxts: ['','Este milagro se activó recientemente. Reutilizar'],
-				world_miracle: 'Milagro mundial',
-				priests: 'Sacerdotes en el templo',
-				conversion: 'Tasa de conversión de fe',
-				curislandfaith: 'Isla de la <b>Fe</b>',
-				maxislandfaith: '<b>Fe</b> máxima en la isla',
-				percentage: 'El porcentaje de fe de la isla es',
-				cooldown: 'Reutilización (activado recientemente) ',
-				to_temple: '(al templo de las ciudades)',
-				to_wonder: '(a los monumentos de las islas)',
-				favours: ['Favores','Favor'],
-				tasks: 'Tareas',
-				renew: 'Renevor',
-				zeroingtasks: 'Resetear todas las tareas',
-				zeroingvaluation: 'Tiempo restante antes de la valoración',
-				pirates: 'Piratas<br>Overview',
-				museum: 'Museo',
-				academy: 'Academia',
-				workshop: 'Taller de invenciones',
-				temple: 'Templo',
-				workers: 'Trabajadores',
-				unskilled: 'No calificado',
-				embassy: 'Embajada',
-				warehouse: 'Depósito',
-				dump: 'Almacén',
-				port: 'Puerto comercial',
-				branchOffice: 'Tienda',
-				wall: 'Muro',
-				safehouse: 'Escondite',
-				barracks: 'Cuartel',
-				shipyard: 'Astillero de Guerra',
-				forester: 'Forester\`s House',
-				carpentering: 'Carpinteria',
-				winegrower: 'Viñedo',
-				vineyard: 'Prensa de Vino',
-				stonemason: 'Cantera',
-				architect: 'Oficina del Arquitecto',
-				glassblowing: 'Mina de Cirstal',
-				optician: 'Optico',
-				alchemist: 'Torre del Alquimita',
-				fireworker: 'Area de Pruebas Pirotécnicas',
-				pirateFortress: 'Fortaleza pirata',
-				blackMarket: 'Mercado negro',
-				marineChartArchive: 'Archivo de cartas náuticas',
-				tavern_level: 'Nivel de taverna',
-				corruption: 'Corrupción',
-				cultural_treaty: 'Tratados culturales',
-				cultural: 'Bienes Culturales',
-				pCTs: ['Sin solicitud', 'Solicitud', 'Solicitudes', 'Tratado cultural'],
-				cultinfo: ['Lugares', 'Socios', 'Vacío', 'Solicitudes', 'Distribución por ciudad', 'Tratados culturales en el museo de la ciudad "{0}"','Exhibiendo bienes culturales de otras personas en su museo, complacerá a sus ciudadanos educados. Forme tratados culturales con otros jugadores para obtener más exhibiciones.','Bienes culturales en este museo','¡Sus ciudadanos están admirando los muchos tesoros del museo! <br> El índice de satisfacción en esta ciudad aumentará en: <span class="bold green">{0}</span> (<b>{1}</b> de nivel, <b>{2}</b> de socios)','Nombre de usuario','Alianza' , 'Capital', 'Acciones', 'Retirar solicitud de tratado cultural', 'Rechazar solicitud de tratado cultural', 'Socios culturales', 'Cancelar tratado cultural', 'Distribución de tratados culturales', 'Tiene un total de <b>{0}</b> tratados sobre bienes culturales. Puede distribuirlos entre sus museos dando más satisfacción a los ciudadanos de su imperio. ¡Debes distribuir todos los bienes culturales!','max','Confirmar cambios','No tratado cultural','Cumplir con bienes culturales','indignado','enojado','neutral','feliz','eufórico','¡Atención! ¡No distribuiste todos tus bienes culturales!','En el museo tus ciudadanos pueden ver cómo otras naciones intentan copiar nuestra excelente cultura. Para albergar exposiciones más grandes, debe actualizar su museo. Después de cada ampliación del museo, puede exhibir un bien cultural adicional.'],
-				cultural_r: 'De forma de gobierno',
-				ctenabled: 'Se ha establecido un tratado cultural',
-				ctrequested: ['Se le solicitó un Tratado Cultural', 'Se le solicitó un Tratado Cultural'],
-				playersearch: 'Buscar jugador',
-				Page: 'Página',
-				CompMsg: 'Redactar mensaje',
-				FriendList: 'Lista de amigos',
-				HighscoreList: 'Lista de puntuaciones más altas',
-				population: 'Población',
-				citizens: 'Ciudadanos',
-				scientists: 'Investigadores',
-				scientists_max: 'Maximo de Investigadores',
-				scientists_employed: 'Empleado',
-				options: 'Opciones',
-				help: 'Ayuda',
-				dailytasks: 'Tareas diarias',
-				agora: 'Ágora',
-				to_world: 'Mostrar Mundo',
-				to_island: 'Mostrar Isla',
-				army_cost: 'Coste del Ejército',
-				fleet_cost: 'Coste de la Flota',
-				army_supply: 'Suministro del Ejército',
-				fleet_supply: 'Suministro la Flota',
-				qltxts: ['Carga completa', 'Carga completa', 'barco', 'barcos'],
-				research_cost: 'Coste de Investigación',
-				research_hp: 'Producción por hora de la ciudad',
-				income: 'Ingresos',
-				badtax: 'Incremento (Impuesto)',
-				expenses: 'Cargos',
-				balances: 'Balances',
-				diplomacy: 'Diplomacía',
-				dammy_packages: 'Paquetes ficticios',
-				espionage: 'Mostrar Informes de espionaje',
-				send_out_spy: 'Enviar espía',
-				inventory: 'Inventorio',
-				effects: '[Effectos] - Inventario',
-				location: 'Ubicación',
-				contracts: 'Mostrar Acuerdo',
-				treaty: 'Tratado',
-				treaties_: 'Tratados',
-				sendCTsopt: 'Enviar solicitud de tratado sobre bienes culturales',
-				altreat: 'Tratados de alianza',
-				generalAllyView: ['Sin rango general en la Alianza','Rango general <br> Acciones militares de la Alianza'],
-				combat: 'Mostrar Informes de guerra',
-				dismiss_unit: 'Descartar unidad(es)',
-				dismiss_fleet: 'Descartar flota(s)',
-				edit_route: 'Crear ruta comercial',
-				satisfaction: 'Satisfacción',
-				total_: 'total',
-				total_cargo: 'Carga total',
-				currenttotal_: 'Actual<br>Total',
-				max_Level: 'Nivel máximo',
-				max_Level_complete: '¡Nivel máximo alcanzado!',
-				max_Level_tocomplete: '¡Nivel más alto a alcanzar!',
-				actionP: 'Puntos de acción',
-				researchP: 'Puntos de Investigación',
-				research: 'Investigación',
-				from_researchs: 'mediante investigación (bonificación)',
-				potion: 'Poción de sabiduría',
-				research_field: 'Campo de investigación',
-				finances_: 'Finanzas',
-				free_ground: 'Terreno libre',
-				trpart: 'Ofertas de socios comerciales',
-				wood_: 'Madera',
-				wine_: 'Vino',
-				marble_: 'Mármol',
-				crystal_: 'Cristal',
-				glass_: 'Cristal',
-				sulphur_: 'Azufre',
-				sulfur_: 'Azufre',
-				luxury_good: 'Artículos de lujo',
-				angry: 'enojado',
-				unhappy: 'infeliz',
-				neutral: 'neutro',
-				happy: 'feliz',
-				euphoric: 'eufórico',
-				bonuses: 'Resumen de bonus<br>(Satisfacción de Ciudadanos)',
-				bonustiptxt: [
-                    'Bonus básicos',
-                    'Museos (nivel+Tratados Culturales)',
-                    'de la Forma de Gobierno',
-                    'Taberna (nivel+distribución de vino)',
-                    'debido a Investigación +bonus por Capital',
-                    'debido a Sacerdotes (con Teocracia)',
-                    'debido a Corrupción','Satisfacción Total (balance)',
-                    'Población Actual',
-                    'Satisfacción Disponible',
-                    'Corrupción media'
-                ],
-				growth: 'Crecimiento',
-				housing_space: 'Espacio habitable máximo',
-				free_Citizens: 'Ciudadanos libres',
-				free_housing_space: 'Espacio habitable libre',
-				level_tavern: 'Nivel Taberna',
-				maximum: 'máximo',
-				used: 'usado',
-				foruse: 'para usar',
-				branchreserved: 'To branch office',
-				current: 'actual',
-				missing: 'desaparecido',
-				currcap: 'Capacidad<br>actual',
-				currquant: 'Cantidad<br>actual',
-				plundergold: 'Oro',
-				garrison: 'Límite de guarnición',
-				spy: 'Espionaje',
-				Sea: 'de Mar',
-				spytiptxt: [
-                    'En defensa',
-                    'En misión',
-                    'Espías',
-                    'Para entrenar',
-                    'Plazas para espías'
-                ],
-				Inland: 'de Tierra',
-				full: '0',
-				off: 'apagado',
-				currentunits: 'actuales',
-				time_to_full: 'para llenar',
-				time_to_empty: 'para vaciar',
-				sum_aftertranfer: 'after trasfer',
-				capacity: 'Capacidad',
-				safe: 'Seguro',
-				resources_lootable: 'Lootable',
-				shortbuildingtime: ['Acortar tiempo de construcción','Finalizar contrucción'],
-				training: 'Entrenando',
-				theatertxts: {
-                    active: 'Activo',
-                    inactive: 'Inactivo',
-                    status: 'Estado',
-                    resource: 'Drama<br>Wood production',
-                    tradegood: 'Comedy<br>{0} production',
-                    favour: 'Cultural<br>show',
-                    wood: 'Madera',
-                    wine: 'Vino',
-                    marble: 'Mármol',
-                    glass: 'Cristal',
-                    sulfur: 'Azufre',
-                    tip: 'Available show for +20 % {0}',
-                    luxury: 'Bien de lujo'
-                },
-				plundering: 'Saqueando',
-				constructing: 'Ampliación en progreso',
-				constructing_mine: 'En Progreso',
-				forminetitle: [
-                    'Saw mill',
-                    'Vineyard',
-                    'Quarry',
-                    'Crystal mine',
-                    'Sulphur pit'
-                ],
-				resourcelevel: 'Forest Level',
-				tradegoodlevel: 'Mine Level',
-				curwood: 'Available wood',
-				maxwood: 'Required wood',
-				diffwood: 'Rest wood',
-				next_Level: 'Necesario para<br>el nivel',
-				origin: 'Origen',
-				transport: 'Transportes',
-				from: 'from town',
-				after_transport: 'After transports',
-				in_transit: 'Transport',
-				mission: 'Mission',
-				subsum: 'Sub Sum',
-				convert: 'Conversión',
-				classify: 'Clasificación',
-				dailyreset: 'Actualización Diaria',
-				finalevaluation: 'Evaluación Final',
-				loading: 'cargando',
-				en_route: 'en marcha',
-				arrived: 'llegado',
-				arrival: 'llegada',
-				arrival_time: 'Hora de llegada',
-				speed: 'Velocidad',
-				time_: 'Tiempo de construcción',
-				time_remaining: 'Tiempo restante',
-				cargo: 'Cargo',
-				duration: 'Duration',
-				to_town_hall: 'a la Intendencia de',
-				to_saw_mill: 'Al aserradero',
-				to_mine: 'Al bien de lujo',
-				to_barracks: 'a Cuartel de',
-				to_shipyard: 'a el Astillero de',
-				resource: 'Saw Mill in Forest',
-				tradegood: 'Quarry on Mine',
-				nextlevel: 'Siguiente nivel',
-				inprogress: 'En progreso',
-				member: 'Lista de miembros',
-				friendlist: 'Ver lista de Amigos',
-				transporting: 'Transportar a',
-				transtip: 'Move to the resource town and click here<br>to transfer the resources to this town',
-				transporting_units: 'Desplegar Tropas a',
-				transporting_fleets: 'Desplegar Flotas a',
-				triton_engines: 'Propulsor de Tritón',
-				troop_movements: 'Movimientros de Tropas / Flotas',
-				station_army: 'Station troops',
-				station_fleets: 'Station fleets',
-				target: 'Objetivo',
-				today: 'hoy',
-				per_: 'por',
-				at: 'en',
-				in_: 'en',
-				tomorrow: 'mañana',
-				yesterday: 'ayer',
-				second: 's',
-				minute: 'm',
-				hour: 'h',
-				day: 'D',
-				week: 'S',
-				month: 'M',
-				year: 'A',
-				hour_long: 'Hora',
-				day_long: 'Día',
-				week_long: 'Semana',
-				ika_world: 'Buscar Ikariam-World',
-				charts: 'Mostrar Gráficos',
-				//settings
-				wonders: [
-                    'Sin Templo!',
-                    'La fragua de Hefesto',
-                    'Gruta Sagrada de Hades',
-                    'Jardines de Deméter',
-                    'Templo de Atenea',
-                    'Templo a Hermes',
-                    'Fortaleza de Ares',
-                    'Templo de Poseidón',
-                    'Coloso'
-                ],
-				//wonderstxt: [['Godly Equipment','Hephaestus, God of blacksmiths, can bless the work of his blacksmiths. Their armour becomes really strong and their swords becomes incredibly sharp for a few hours, so that it is almost as if they have been personally forged by a God.','After praying for a miracle, Hephaestus sent our high priest a blunt sword and told us that the quality of his work depends on the quality of our work. He obviously is not very happy about the inhabitants&apos; faith on this island!','All combat units receive 0 more armour and cause <b>10 %</b> more damage.','All combat units receive 1 more armour and cause <b>10 %</b> more damage.','All combat units receive 1 more armour and cause <b>15 %</b> more damage.','All combat units receive 2 more armour and cause <b>15 %</b> more damage.','All combat units receive 2 more armour and cause <b>20 %</b> more damage.'],['Gorgon Guard','The mighty Hades, ruler of the underworld, can send out terrible Gorgons, who can turn advancing enemies into stone with their stares. However, this does have the pleasant side effect that we always have enough stone at the end of a battle to rebuild our town wall.<br>Barbarians are not affected by this miracle.','It look like Elysium is still a long way away for you. After we requested a miracle from Hades, he said that it would be better for him to send his dog out to spread faith than to spend his time relying on our priests.','<b>20 %</b> of the resource costs for all units that die during fights in their own cities are credited back as marble units.','<b>30 %</b> of the resource costs for all units that die during fights in their own cities are credited back as marble units.','<b>40 %</b> of the resource costs for all units that die during fights in their own cities are credited back as marble units.','<b>50 %</b> of the resource costs for all units that die during fights in their own cities are credited back as marble units.','<b>80 %</b> of the resource costs for all units that die during fights in their own cities are credited back as marble units.'],['Blessed harvest','Demeter, Goddess of earth and crop can bless your people with a fertile ground and a fantastic harvest. Your population will also increase a lot faster - but only if there is enough housing space for more inhabitants.','Demeter, in her endless wisdom, has demanded that we sow some seeds of belief before we try harvesting miracles. She is worried that we do not know enough about agriculture to appreciate her gifts.','The population of your cities is increasing by <b>2</b> per hour.','The population of your cities is increasing by <b>4</b> per hour.','The population of your cities is increasing by <b>6</b> per hour.','The population of your cities is increasing by <b>8</b> per hour.','The population of your cities is increasing by <b>12</b> per hour.'],['Secured homeland','Athena, the tireless, the invincible, the protector. As protection goddess of your cities and of the craftsmen, she can reinforce your warehouses&apos; walls to hide more resources from pillaging enemies.','We should not aggravate goddesses like Athena. Praying for a miracle with such little faith could be interpreted as arrogance. After all, she does have the habit of turning people into animals!','<b>+ 40 %</b> secure resources in all warehouses.','<b>+ 80 %</b> secure resources in all warehouses.','<b>+ 160 %</b> secure resources in all warehouses.','<b>+ 240 %</b> secure resources in all warehouses','<b>+ 400 %</b> secure resources in all warehouses'],['Faster than lightning','Hermes, God of travelling salesmen and of transport, cannot stand the sight of stationary ships and unused goods. He fulfils your salesmen&apos;s wishes to get to places faster by giving dockworkers superhuman powers. This means that every ship only has to spend a fraction of the normal time loading its cargo at the harbour.','It is an honour that Hermes will helps us mortals if we pay homage to him, but it would even insult the God of thieves if we demanded help without giving him something in return. That kind of defraud would just be too... direct.','The goods&apos; loading speed is increased by <b>40 %</b>.','The goods&apos; loading speed is increased by <b>80 %</b>.','The goods&apos; loading speed is increased by <b>120 %</b>.','The goods&apos; loading speed is increased by <b>160 %</b>.','The goods&apos; loading speed is increased by <b>200 %</b>.'],['Massacre','Ares, the detested God of savage warfare, blood-lust and of massacre, fills the hearts of all warriors in the vicinity of your cities with pure hate. These warriors will then charge into bloody combat without a second thought to their own healths, until no man is left standing.','The priests are quivering in their boots. Nobody wants to talk to Ares at the moment, because if his attention is drawn to this small friendly island, he will overrun it with war and terror, so that the humans have to pay homage to him during battle and death.','<b>+ 100</b> morale per round for all armies stationed at your cities - even for enemy troops!','<b>+ 200</b> morale per round for all armies stationed at your cities - even for enemy troops!','<b>+ 400</b> morale per round for all armies stationed at your cities - even for enemy troops!','<b>+ 600</b> morale per round for all armies stationed at your cities - even for enemy troops!','<b>+ 2,000</b> morale per round for all armies stationed at your cities - even for enemy troops!'],['Sailors&apos; blessing','Poseidon, God of the seas, has sent many a disrespectful sailor on ludicrous odysseys. But those who render homage to him, can expect that their ship will sail over calm waters and will be led through perfect winds and onto their destination harbour. Poseidon shortens the travel time of all the ships that begin their journey while the miracle is activated .','At this moment in time, it would be foolish to aggravate Poseidon by asking him for a miracle. If an island&apos;s belief is not strong enough for him, he likes sending out terrible sea monsters to remind the inhabitants that they should respect the sea.','<b>10 %</b> increased speed for warships and transporters.','<b>30 %</b> increased speed for warships and transporters.','<b>50 %</b> increased speed for warships and transporters.','<b>70 %</b> increased speed for warships and transporters.','<b>100 %</b> increased speed for warships and transporters.'],['Stone Guard','The Colossus is a statue of the sun god Helios. He can let the sun shine out Colossus&apos; torch. The glaring, blazing light, which can be seen throughout Greece, symbolises a threat from the mighty God and ensures chaotic escape and confusion amongst your opponents.','Helios may be a competent and friendly god, but his power is equal to Zeus&apos;. If we do not put enough faith and belief in him, he probably will not continue to give us the time of day and stop his chariot of the sun just to dedicate his precious time to our requests.','<b>10 %</b> of all enemy troops and ships that are fighting against your troops in your towns have been driven away. The scatter time of <b>4h</b> has increased by <b>30m</b>.','<b>20 %</b> of all enemy troops and ships that are fighting against your troops in your towns have been driven away. The scatter time of <b>4h</b> has increased by <b>1h</b>.','<b>30 %</b> of all enemy troops and ships that are fighting against your troops in your towns have been driven away. The scatter time of <b>4h</b> has increased by <b>1h 30m</b>.','<b>50 %</b> of all enemy troops and ships that are fighting against your troops in your towns have been driven away. The scatter time of <b>4h</b> has increased by <b>2h</b>.','<b>100 %</b> of all enemy troops and ships that are fighting against your troops in your towns have been driven away. The scatter time of <b>4h</b> has increased by <b>3h</b>.']],
-				wonderViewButton: 'Ir al Monumento<br>(vista de Isla)',
-				wonderViewButton2: 'Ir al Monumento<br>(vista de Ciudad)',
-				wonderActivateButton: 'Miracle<br>activation',
-				wonderlevel: 'Monument level',
-				faithlevel: 'Faith level',
-				islandshare: 'Island Faith Share',
-				miraclecompletion: 'Miracle in action',
-				cooldowncompletion: 'Cooldown completion',
-				wonderdonations: 'Personal donations',
-				donations: 'Donations',
-				donateforexpansion: 'Donate to upgrade',
-				wonderBeliefTooltip: 'This island has a faith of {0} %.',
-				wonderBeliefInfo2: 'Island faith percentage is {0} %.',
-				cityOrder: 'Ordene las ciudades',
-				fullArmyTable: 'Mostrar todas las unidades militares',
-				hideOnWorldView: 'Ocultar al Mostrar mundo',
-				hideOnIslandView: 'Ocultar al Mostrar isla',
-				hideOnCityView: 'Ocultar al Mostrar ciudad',
-				onTop: 'Mostrar encima de las ventanas de Ikariam',
-				windowTennis: 'Mostrar arriba de las ventanas de Ikariam al posicionar el mouse',
-				autoUpdates: 'Comprobar automáticamente si hay actualizaciones',
-				smallFont: 'Utilizar una fuente más pequeña',
-				goldShort: 'Reduce total gold display',
-				defaultBuildingList: 'Use default building list',
-				alternativeBuildingList: 'Utilizar la lista de edificios alternativa',
-				compressedBuildingList: 'Usar la vista comprimida de edificios',
-				wineOut: 'Desactivar la opción de Ambrosía cuando te quedas sin vino',
-				dailyBonus: 'Confirmar automaticamente el bonus diario',
-				unnecessaryTexts: 'Eliminar descripciones innecesarias',
-				ambrosiaPay: 'Desactivar las nuevas opciones de compra de Ambrosía',
-				quantityLoads: 'View Full Loads + ships for quantities',
-				wineWarning: 'Ocultar herramienta "alerta de vino"', // Hide tooltip "wine warning"
-				wineWarningTime: 'Advertencia cuando se esté acabando el vino',
-				languageChange: 'Cambiar Idioma',
-				current_Version: 'La versión actual<b>:</b>',
-				ikariam_Version: 'La versión Ikariam<b>:</b>',
-				reset: 'Restablecer los ajustes por defecto',
-				resetbtn: 'Resetear',
-				zeroing: 'Resetear a cero',
-				remainingtime: 'Remaining time',
-				goto_website: 'Ir al sitio de greasyfork.org',
-				website: 'Sitio web',
-				Check_for_updates: 'Buscar actualizaciones',
-				check: 'Buscar actualizaciones',
-				Report_bug: 'Notificar un error en el script',
-				report: 'Informar de un error',
-				save: 'Guardar',
-				save_settings: 'Guardar cambios<b>!</b>&nbsp;',
-				newsticker: 'Ocultar noticias',
-				event: 'Ocultar eventos',
-				logInPopup: 'Ocultar la ventana de info al loguearse',
-				birdswarm: 'Ocultar las aves',
-				walkers: 'Hide animated citizens',
-				noPiracy : 'Ocultar piratería',
-				noTheater: 'Ocultar Teatro de Proyección',
-				donationButtons: 'Standard Donation Amounts Buttons',
-				donwoodlogalltitle: 'All wood units for Donation',
-				donwoodlogall: 'All available quantity',
-				donwoodlogtitle: '{0} wood units for Donation',
-				ctfinder: 'Cultural Treaties Finder',
-				ΧΥshow: 'Show island coordinates',
-				hourlyRes: 'Ocultar los recursos por hora',
-				playerInfo: 'Mostrar información sobre el jugador',
-				control: 'Ocultar barra inferior de control',
-				alert: '¡Sólo se admite una opción!',
-				alert_palace: 'Visite antes la ciudad capital, por favor.',
-				alert_palace1: 'There is still no palace present in your city.\n Please explore expansion and build a palace.',
-				alert_toast: 'Script reiniciado, recargando página en unos segundos',
-				alert_error: 'Un error ha ocurrido al comprobar actualizaciones: ',
-				alert_noUpdate: 'No hay actualizaciones disponibles para "',
-				alert_update: 'Hay una actualización para el script de Greasemonkey! "',
-				alert_update1: '¿Desea ir a la página del script?',
-				alert_daily: 'Por favor, activa \'Confirmar automaticamente el bonus diario \'',
-				alert_wine: 'Warning wine > ',
-				en: 'Inglés',
-				es: 'Español',
-				el: 'Griego',
-                de : 'Alemán',
-                it : 'Italiano',
-                fr : 'Francés',
-                ro : 'Rumano',
-                ru : 'Ruso',
-                cz : 'Checo',
-                pl : 'Polaco',
-                ar : 'Arábico',
-                ir : 'Persa',
-                pt : 'Portugués',
-                tr : 'Turco',
-                nl : 'Holandés',
-				// Units
-				phalanx: 'Hoplita',
-				steamgiant: 'Gigante a vapor',
-				spearman: 'Lancero',
-				swordsman: 'Espadachín',
-				slinger: 'Hondero',
-				archer: 'Arquero',
-				marksman: 'Fusilero',
-				ram: 'Ariete',
-				catapult: 'Catapulta',
-				mortar: 'Mortero',
-				gyrocopter: 'Girocóptero',
-				bombardier: 'Bombardero-Balón',
-				cook: 'Cocinero',
-				medic: 'Médico',
-				spartan: 'Espartano',
-				ship_transport: 'Barco Mercante',
-				ship_ram: 'Barco-espolón',
-				ship_flamethrower: 'Barco lanza-llamas',
-				ship_steamboat: 'Barco-espolón de vapor',
-				ship_ballista: 'Barco-ballesta',
-				ship_catapult: 'Barco-catapulta',
-				ship_mortar: 'Barco-mortero',
-				ship_submarine: 'Submarino',
-				ship_paddlespeedship: 'Lancha de palas',
-				ship_ballooncarrier: 'Portaglobos',
-				ship_tender: 'Barco de mantenimiento',
-				ship_rocketship: 'Barco lanzamisiles',
-				barbarian: 'Agitador de hacha de los bárbaros',
-				barbarianClub: 'Aporreador bárbaro',
-				barbarianKnive: 'Clavacuchillos bárbaro',
-				barbarianAxethrow: 'Lanzahachas bárbaro',
-				barbarianWalker: 'Unidad de guerra bárbara',
-				barbarianRam: 'Ariete bárbaro',
-				barbarianCatapult: 'Catapulta bárbara',
-				barbarianFighter: 'Caza bárbaro',
-				barbarianZeppelin: 'Dirigible bárbaro',
-				ship_barbarian_light_battleship: 'Rompeplanchas',
-				ship_barbarian_light_ranged: 'Rajavelas',
-				ship_barbarian_heavy_battleship: 'Pirobarco',
-				ship_barbarian_heavy_ranged: 'Tiraguijarros',
-				ship_barbarian_heavy_battleship_II: 'Cuña',
-				ship_barbarian_heavy_ranged_II: 'Catapulta de pólvora',
-				ship_barbarian_first_strike_I: 'Terror de las profundidades marinas',
-				ship_barbarian_first_strike_II: 'Fuego de dragón',
-				ship_barbarian_anti_carrier: 'Encendedor de zepelín',
-				ship_barbarian_carrier: 'Nido de bárbaros',
-				//settings descriptions
-				cityOrder_description: 'Orden de la descripción de ciudades',
-				fullArmyTable_description: 'Mostrar todos los tipos de unidades militares aún al no tenerlas',
-				hideOnWorldView_description: 'Ocultar por defecto cuando se ve el mundo',
-				hideOnIslandView_description: 'Ocultar por defecto cuando se ve la isla',
-				hideOnCityView_description: 'Ocultar por defecto cuando se ve la ciudad',
-				onTop_description: 'Mostrar tabla encima de las ventanas de Ikariam',
-				windowTennis_description: 'Llevar tablero sobre las ventanas de Ikariam al posar el mouse sobre el<br>Enviar Ikariam detrás de las ventanas de Ikariam al posar el mouse sobre el<br>No tiene en cuenta la opción de \'alto\'',
-				autoUpdates_description: 'Habilitar la comprobación de actualización automática<br>(Una vez cada 24 horas)',
-				smallFont_description: 'Utilice una fuente más pequeña para las tablas de datos',
-				goldShort_description: 'Total gold display shorten on the Board',
-				defaultBuildingList_description: 'Utilizar la vista de edificios por defecto',
-				alternativeBuildingList_description: 'Utilizar la lista de construcción alternativa',
-				compressedBuildingList_description: 'Usar la vista comprimida de edificios<br>Juntar los edificios de producción de recursos<br>Juntar palacio y residencias del gobernador',
-				wineOut_description: 'Desactiva el cartel de ambrosía al quedarte sin vino',
-				dailyBonus_description: 'El bonus diario se confirma automaticamente<br>y esa ventana no se mostrará más.',
-				unnecessaryTexts_description: 'Elimina las descripciones innecesarias en la lista de construcción de edificios, reduce el desplazamiento',
-				ambrosiaPay_description: 'Desactiva el cartel de compras de Ambrosía,<br>Cliquear el botón cancela la acción',
-				quantityLoads_description: 'Display the full loads and extra ships for the related quantities',
-				wineWarning_description: 'Oculta la herramienta \'alera de vino\'', //'Hide tooltip \'wine warning\''
-				wineWarningTime_description: 'Tiempo restante del vino se convierte, \'rojo\' en ese momento',
-				languageChange_description: 'Cambiar el idioma',
-				newsticker_description: 'Oculta las noticias en la barra de Gameforge',
-				event_description: 'Oculta los carteles de eventos',
-				logInPopup_description: 'Oculta la ventana de info al loguearte', //El cartel de \'Bonus Diario\' permanece activo
-				birdswarm_description: 'Oculta las aves en la vista de isla y ciudad',
-				walkers_description: 'Oculta la animación de ciudadanos y de barcos de transporte en las vistas de ciudad e isla', //Hide animated citizens and transport ships in island and city view
-				noPiracy_description: 'Elimina la Fortaleza Pirata',
-				noTheater_description: 'Elimina el Teatro de Proyección',
-				donationButtons_description: 'Adds standard amount for donation buttons (0,500,+1K,+10K,+100K,+500K,+1M) for expansion',
-				ctfinder_description: 'Displays a icon next to the player&apos;s name, if you have a CT with him/her.<br>If the player hasn&apos;t accepted your request yet, the icon is half transparent.',
-				ΧΥshow_description: 'Muestra las coordenadas ([X:Y]) de la isla junto al nombre de la ciudad.',
-				hourlyRes_description: 'Ocultar los recursos por hora en la barra de info',
-				playerInfo_description: 'Ver información de los jugadores de la opinión de la isla',
-				control_description: 'Oculta la barra de control inferior en vistas de ciudad, isla y mundo (Mantiene coordenadas)',
-				// settings categories
-				visibility_category: '<b>Visibilidad del Tablero</b>',
-				display_category: '<b>Ajustes de pantalla</b>',
-				global_category: '<b>Ajustes globales</b>',
-				army_category: '<b>Ajustes del Ejército</b>',
-				tweaks_category: '<b>Tweaks Settings</b>',
-				building_category: '<b>Ajustes de edificio</b>',
-				resource_category: '<b>Configuración de recursos</b>',
-				language_category: '<b>Configuración de idioma</b>',
-				Initialize_Board: '<b>Inicializar Tablero</b>',
-				// Helptable
-				on_your_Town_Hall: 'Vaya a la intendencia y pase por todas sus ciudades con esta vista',
-				on_the_Troops: 'Vaya a la pestaña de \"Tropas en la ciudad\" en la parte izquierda y pase por cada ciudad con esta vista',
-				on_Research_Advisor: 'Vaya al Ayudante de Investigación y pase por los 4 temas de investigación',
-				on_your_Palace: 'Vaya al Palacio',
-				on_your_Finance: 'Vaya a las finanzas (Donde se ve el oro)',
-				on_the_Ambrosia: 'Vaya a la \"Tienda de ambrosía\"',
-                helpSteps: [
-                    'en la intendencia y pase por todas sus ciudades con esta vista',
-                    'en el Ayudante de Investigación y pase por las 4 áreas de investigación en el panel de la izquierda',
-                    'en el Palacio de la Capital',
-                    'en el Museo',
-                    'en la lista de Socios Culturales',
-                    'en la lista de Miembros de la Alianza (recorra TODAS las páginas disponibles)',
-                    'en las Finanzas',
-                    'en el Inventario',
-                    'en la pestaña de \"Tropas en la ciudad\" en la parte izquierda y pase por cada ciudad con esta vista'
-                ],
-				Re_Order_Towns: '<b>Reordenar ciudades</b>',
-				Reset_Position: '<b>Restablecer Posición</b>',
-				On_any_tab: 'Sobre el ícono de recurso de cada ciudad, hágale clic y múevalo a la posición deseada',
-				Right_click: 'Haga clic derecho sobre el la pestaña de \"Empire Overview\" en el menú izquierdo de la página',
-				Navigate: '1, 2, 3 ... 0, \', + <b>:&nbsp;&nbsp;</b> Cambiar entre las ciudades 1-12',
-				Navigate_to_City: 'SHIFT + 1/2/3/4/5 <b>:&nbsp;&nbsp;</b> Vaya a Ciudad / Construcción / Ejército',
-				Navigate_to: 'Q, W, E, R <b>:&nbsp;&nbsp;</b> Vaya a Ciudades / Milicia / Investigación / Diplomacia',
-				Navigate_to_World: 'SHIFT + Q, W, E <b>:&nbsp;&nbsp;</b> Vaya a la visión del mundo / isla / ciudad',
-				Spacebar: 'Spacebar<b>:&nbsp;&nbsp;</b> Minimizar / Maximizar el tablero',
-				Hotkeys: '<b>Teclas de acceso rápido</b>',
-				// formatting
-				updated_: 'Updated',
-				tothe: 'to the',
-				//addtransport: 'Movement added',
-				zones: ['Área "Navegación"','Área "Economía"','Área "Ciencia"','Área "Milicia"'],
-				researchzones: ['Navegación','Economía','Ciencia','Milicia'],
-				movements: 'Movements',
-				shop: 'Shop',
-				cinetheatre: 'al Teatro de la Proyección',
-				Cinetheatre: 'Teatro de Proyección',
-				fulldatelong: 'ddd D MMMM YYYY H:mm:ss', // based on momentjs (untranslated)
-				fulldateshort: 'ddd D/M/YYYY H:mm', // based on momentjs (untranslated)
-				dateformat: 'ddd D MMMM YYYY', // based on momentjs (untranslated)
-				dateformatshort: 'ddd D/M/YYYY', // based on momentjs (untranslated)
-				timeformat: 'H:mm:ss', // based on momentjs (untranslated)
-				timeformatshort: 'H:mm', // based on momentjs (untranslated)
-				thousandSeperator: ',',
-				decimalPoint: '.',
-				leftquot: '&quot;',
-				rightquot: '&quot;',
-				ordinal: ['th','st','nd','rd'],
-				pirtxt: [
-                    'Pirate Fortress',
-                    'Capture Run',
-                    'Crew Strength',
-                    'Capture Points',
-                    'Time remaining before valuation',
-                    'Base Crew Strength',
-                    'Crew Strength Bonus',
-                    'Position',
-                    'Daily highscore for capture points, next update at {0}',
-                    'Send crew out on a capture run',
-                    'Your crew is carring out a {0}. While this is the case, you cannot order another raid or capture run.',
-                    'Duration',
-                    'Cancel',
-                    'Target',
-                    'Reward',
-                    'Action',
-                    'Capture',
-                    'Available from level',
-                    'Smugglers',
-                    'Fishing Boat',
-                    'Wine Transport',
-                    'Merchant Ship',
-                    'Ram Ship',
-                    'Diving Boat',
-                    'Diplomat Ship',
-                    'Castaways',
-                    'Phoenicians',
-                    'Convert capture points into crew strength',
-                    'Requires at least 10 capture points',
-                    'Conversion has a basic duration',
-                    'As long as you have at least {0} capture points in your account, you will receive {1} bonus to your crew strength.',
-                    'Confirm',
-                    'A threatening pirate banner flies over your town&apos;s Pirate Fortress. The pirate who accumulates the most loot during a capture run can secure grandiose rewards. So that your capture points are not robbed from you until the day of the position calculation, you should strengthen your crew.',
-                    'There is a base time of {0} for the conversion',
-                    'Please enter the security word into the box below to carry out the activity. You do not need to take upper and lower case spelling into account when entering it. It&apos;s a security measure against dishonest pirates.',
-                    'Security word',
-                    'raid',
-                    'capture run',
-                    'Range for Raids',
-                    'New Capture Run',
-                    'Smugglers&apos; mission auto-repeat',
-                    'No change',
-                    'Position',
-                    'Positions',
-                    'Out of range from<br>{0} "<b>{1}</b>"',
-                    'Current',
-                    'Previous',
-                    'Position difference',
-                    'Time to reach target',
-                    'Total raid time',
-                    'Reach',
-                    'Return',
-                    'No reward',
-                    'Rewards with current highscore list',
-                    'Highscore difference',
-                    'Current difference',
-                    'Missions',
-                    'Missions duration',
-                    'Player',
-                    'Copies to clipboard the current Pirate Highscore list.','The Pirate Highscore list has been copied to clipboard!'
-                ],
-				financestxt: [
-                    'Balances',
-                    'Amount of gold',
-                    'Increased Gold Receipts',
-                    'Amount'
-                ],
-				//researchtxt: {1010:'Deck Weapons',1020:'Ship maintenance',1030:'Expansion',1040:'Foreign Cultures',1050:'Pitch',1060:'Greek Fire',1070:'Counterweight',1080:'Diplomacy',1090:'Sea maps',1100:'Paddle Wheel Engine',1110:'Mortar Attachment',1120:'Architecture',1130:'Draft',1140:'Caulking',1150:'Massive Ram',1160:'Offshore Base',1170:'Piracy',1999:'Seafaring Future',2010:'Conservation',2020:'Pulley',2030:'Wealth',2040:'Wine culture',2050:'Culinary Specialities',2060:'Geometry',2070:'Market',2080:'Relaxation holiday',2090:'Helping hands',2100:'Spirit Level',2110:'Bureaucracy',2120:'Utopia',2130:'Improved resource gathering',2140:'Wine Press',2150:'Carpentry',2160:'Depot',2170:'Legislation',2180:'Soldier Exchange',2999:'Economic Future',3010:'Well construction',3020:'Paper',3030:'Espionage',3040:'Polytheism',3050:'Ink',3060:'Cultural Exchange',3070:'Anatomy',3080:'Optics',3081:'Experiments',3090:'Mechanical Pen',3100:'Bird`s Flight',3110:'Letter Chute',3120:'Pressure Chamber',3130:'The Archimedean Principle',3140:'Invention',3150:'Government Formation',3160:'State Religion',3170:'Archiving',3999:'Scientific Future',4010:'Dry-Dock',4020:'Maps',4030:'Professional Army',4040:'Siege',4050:'Code of Honour',4060:'Ballistics',4070:'Law of the Lever',4080:'Governor',4090:'Logistics',4100:'Gunpowder',4110:'Robotics',4120:'Cannon Casting',4130:'Pyrotechnics',4999:'Militaristic Future'},
-				//branchOfficetxt: ['Merchants and traders do their business at the trading post. There is always a deal to make or a bargain to hunt. Merchants from far away usually head for big and well known trading posts! Range and capacity of your trading post are increased with every second expansion.','Goods Trade','Soldier Exchange','Trade Treaty','Own Offers','Bargain hunter','Buy goods','Sell goods','Search radius','Islands within radius','Town','Goods per minute','Piece','Resource','Purchase price','Distance','Trade?','per piece','There are no offers at the moment.','Search for','Currency','Land Units','Sea Units','All','All','Unit','Offers from trade partners','Resources','Offer type','Quantity','Price','Limits','Buy','Sell','Reserved gold for acquisitions','Update offers','Current capacity','Capacity for level {0}'],
-				servertimetip: '<b>World time (server)</b><br>{0}<br><b>Local time</b><br>{1}',
-				summertime: 'Hora de verano',
-				wintertime: 'Hora de invierno',
-				viewCityMenu: {image_troops:'Troops in town',image_espionage:'Espionage',image_resourceShop:'Î›Î®ÏˆÎ· Î±Î³Î±Î¸ÏŽÎ½!',image_trader:'Premium trader',image_friends:'Invite friends',image_constructionlist:'Building construction list',image_fireunit:'Dismiss units',image_toggle:'Display building names',empire_Menu:'Empire overview'},
-				//dipladvtxt: ['Messages ({0})','Agora ({0})','Treaties','Alliance ({0})','Search player','Ignored players','Alliance','Inbox','Outbox','Inbox Archive','Outbox Archive','Inbox Archive','Outbox Archive','Action','Sender','Subject','Town','Date','Click here to expand/hide the message','Go to sender&aposs town','Reply to sender','Reply','Delete','Report','Ignore','Reply to all','This function forwards insults and offences to the Game Operator.\nDo you really want to forward this message to the GO?','Messages sent by this player will no longer be displayed.','Sure?','Yes','Cancel','No messages.','next','previous','All','Unread','Read','None','Mark as read','Delete','Influence','Diplomacy points: {0}','Receiver','New post','Agora','There are no messages on the Agora at the moment. Contact your town neighbours now by creating a new post.','Accept','Reject','Trade treaties','Partner','Cities','Status','Action','Cancel trade treaty','{0} towns','{0} town','Location','Name','Luxury<br>good','Cultural treaties {0}','Go to museum','Distribute cultural goods ({0})','Alliance forum','Alliance forum ({0})','Alliance information','Alliance information','Menbers list','Search alliance','Subforum','Threads','Last thread','Actions','Threads: {0}','Title','Replies','Create thread','Reply','Return to top','Report','Quote','Title','Submit','<b>{0}</b> characters remain','<b>{0}</b> character remains','No more characters are remaining','Username','Search','Î˜Î­ÏƒÎ·','Title','Username','Alliance','Ranks','Actions','No player found on this research.','Players you ignore','No entries','Title','Name','Alliance','Action','Player will no longer be ignored.','Delete','You can write a new post for the Agora here, which all islanders will be able to read.','Subject','Message','Create new thread','Back','{0} characters','{0} character','No more characters'],
-				action: 'Acción',
-				//museumlvl: 'Museum level',
-				//embassytxt: ['The embassy is a busy place: diplomats from all over the world negotiate contracts here, forge treaties and found alliances. In order to get a larger alliance you need to upgrade your embassy. Every expansion level of your embassy increases your diplomacy points.','Diplomacy Points','Alliance','Members list','Alliance Internal Page','Search alliance','Founding date (Age)','Members','Short description','Placement (Points)','Alliance homepage','Diplomatic Influence','Your rank','Founding an Alliance','In the embassy you can manage and lead your alliance or redistribute your ranks.','Tag (up to <b>5</b> characters)','Alliance name (up to <b>15</b> characters)','Become a member of an existent alliance','An alliance can be suggested that suits your place on the highscore list.','Alliance suggestion','Name','Abbreviation','Abbreviation','Name','Members','Points','Actions','Display Alliance page','Join the alliance','Last connection','Name','Towns','Rank','Points','Actions','Actions','Send message to the members of your alliance','Alliance treaties','Withdraw','You are not a member of an alliance','Alliance information'],
-				//resadvtxt: ['No scientist available','Available in {0}','Available','per Hour','Basic production','Premium Bonus','Not enough research points','Already researched.','Immediately','Requirement(s)','Costs','Available in'],
-				//researchshortdesc: {1010:'Building of ballista ships in the shipyard',1020:'2 % less upkeep for ships',1030:'Building of palaces, founding of colonies, overseas trading',1040:'Construction of Embassies.',1050:'4 % less upkeep for ships',1060:'Building of flame ships in the shipyard',1070:'Building of catapult-ships at the shipyard',1080:'Garrison right',1090:'8 % less upkeep for ships',1100:'Construction of paddle speedboats in the shipyard',1110:'Building of mortar ships in the shipyard.',1120:'Building of an architect&aposs office.',1130:'Quicker ships with a lighter load.',1140:'Construction of tenders in the shipyard',1150:'Construction of steam rams in the shipyard',1160:'Construction of balloon carriers in the shipyard.',1170:'Construction of Pirate Fortresses, Capture Runs, Raids, participation in the Capture Points Highscores',1999:'2 % ess upkeep for ships for each future level.',2010:'Building of warehouses.',2020:'2 % less building costs.',2030:'Allows the production of luxury goods, the construction of trading posts and gives you 130 units of each luxury good.',2040:'Building of taverns.',2050:'Training of chefs in the barracks.',2060:'4 % less building costs.',2070:'Treaties, form of government: Democracy.',2080:'Increases the satisfaction and maximum population in all towns.',2090:'Overloading of resources.',2100:'8 % less cost for the construction of buildings.',2110:'An additional building space in the towns.',2120:'+200 housing space, +200 satisfaction in the capital.',2130:'Construction of Forester Houses, Stonemasons, Wineries, Glassblowers and Alchemists&apos Towers.',2140:'Building of wine cellars.',2150:'Building of Carpentries.',2160:'Allows you to build depots.',2170:'Form of government: Nomocracy.',2180:'Building the Black Market.',2999:'+10 satisfaction and +20 max. inhabitants in every town for each future level.',3010:'+50 housing space, +50 happiness in the capital.',3020:'2 % more research points.',3030:'Building of hideouts.',3040:'Temples and Miracles.',3050:'4 % more research points.',3060:'Building of museums, cultural goods treaties, Phoenician merchant ships.',3070:'Recruiting of doctors in the barracks.',3080:'Building of an optician&aposs.',3081:'Purchase of research points for crystal glass, form of government: technocracy.',3090:'8 % more research points.',3100:'Construction of Gyrocopter in the barracks.',3110:'3 Gold upkeep cost less per scientist.',3120:'Building of submersibles in the shipyard.',3130:'Building of bombardiers in the barracks.',3140:'Building of workshops.',3150:'Start of a revolution, forms of government: dictatorship and oligarchy.',3160:'Form of government: theocracy.',3170:'Building a Sea Chart Archive.',3999:'2 % more research points for each future level.',4010:'Construction of a second trading port, shipyard.',4020:'2 % less upkeep for soldiers.',4030:'Recruiting of swordsmen and hoplites at the barracks.',4040:'Building of battering rams in the barracks.',4050:'4 % less upkeep costs and allows the form of government: aristocracy.',4060:'Training of archers in the barracks.',4070:'Building of catapults in the barracks.',4080:'Occupation.',4090:'8 % less upkeep for soldiers.',4100:'Construction of carabineers in the barracks and rocket ships in the shipyard.',4110:'Building of steam giants in the barracks.',4120:'Building of mortars in the barracks.',4130:'Building of firework test area.',4999:'2 % less upkeep for units for each future level.'},
-				//researchdesc: {1010:'A rotating attachment for our warships on which we can mount huge weapons! For a start our inventors have mounted a huge crossbow on it. But we assume that the attachment will be able to bear other machines, too. So as soon as one of our scientists has an idea we can install it on our ships without a problem.<br><br><b>Allows:</b> Building of [[v:u,s:213,h:10|ballista ships]] in the [[v:b,b:5,h:1|shipyard]].',1020:'If we always keep our ships nice and clean, they won&apos;t have to be repaired that often. It will also keep up the morale of the crew when they sing songs together from time to time while scrubbing the deck or mending the sail cloths.<br><br><b>Effect:</b> 2 % less upkeep for [[v:u,s:210,h:10|ships]].',1030:'There is a lot more than just an ocean out there! More islands await being discovered. We are not alone! We can gain ground on one of the newly discovered islands, tap new resources and get to know other nations! Our clerks are eager to administer even more, our traders ready to travel to new lands!<br><br><b>Allows:</b> Building of [[v:b,b:11,h:1|palaces]], founding of [[v:i,h:0,sh:6|colonies]], [[v:i,h:0,sh:3|overseas trading]].',1040:'If we get to know other nations, it will help us to make progress ourselves. Regular talks and warm exchanges can work true wonders and lead to new alliances and friendships. Of course we need a pretty and comfortable building for all the ambassadors and the feasts we will hold in their honour!<br><br><b>Allows:</b> Construction of [[v:b,b:12,h:1|Embassies]].',1050:'That is some tough and bad smelling liquid our scientists have found there! But since we have started sticking it onto our ships there are hardly any holes we have to mend!<br><br><b>Effect:</b> 4 % less upkeep for [[v:u,s:210,h:10|ships]].',1060:'A fire that can&apos;t be extinguished with water! With this mixture from many secret ingredients we can now set fire to ships and sink them! Soon we will conquer the seas with ships that have the breath of a dragon!<br><br><b>Allows:</b> Building of [[v:u,s:211,h:10|flame ships]] in the [[v:b,b:5,h:1|shipyard]].',1070:'Our scientists have improved the weapon attachment for our ships, so that they don&apos;t tear apart when we fling huge rocks towards our enemies. And thanks to the counterweight our catapult stays on board now and doesn&apos;t launch itself anymore.<br><br><b>Allows:</b> Building of [[v:u,s:214,h:10|catapult-ships]] at the [[v:b,b:5,h:1|shipyard]].',1080:'One of our philosophers has written down wise things about war and peace. He has advised us to confederate with other nations so that we can fight our enemies together!<br><br><b>Allows:</b> [[v:i,h:14|Garrison right]].',1090:'Our voyages will be much safer if we write down where all the dangerous currents and treacherous shallows are! Then our seamen won&apos;t have to be afraid of any jagged rocks, deadly maelstroms or seductive sirens any more.<br><br><b>Effect:</b> 8% less upkeep for [[v:u,s:210,h:10|ships]].',1100:'Great news for our seamen: A steam driven paddle wheel allows our ships to move much faster than they ever could with oarsmen. Now we can teach our enemies to fear us with our mighty paddle wheel rams.<br><br><b>Allows:</b> Construction of [[v:u,s:218,h:10|paddle speedboats]] in the [[v:b,b:5,h:1|shipyard]].',1110:'This mortar is so huge, that not even Hercules could drag it along. Only an armoured steam ship is strong enough to carry it and all the huge cannon balls it can fire at our enemies.<br><br><b>Allows:</b> Building of [[v:u,s:215,h:10|mortar ships]] in the [[v:b,b:5,h:1|shipyard]].',1120:'A good house can withstand the harshest elements. It can withstand them even better when a clever mind takes care of it with a lot of drawings and a little mathematics before hand, so that all the walls are straight and the roof is tight. Thanks to angles and compasses our buildings will be much more stable and well protected from the rain. An architect&apos;s office would spare us a lot of marble, just think about the savings we could make in constructing a new building!<br><br><b>Allows:</b> Building of an [[v:b,b:24,h:1|architect&apos;s office]].',1130:'Our scientists have found out that our ships have less water resistance when their load is smaller. This means that we can put larger sails on the mast and travel more quickly.<br><br><b>Allows:</b> Quicker ships with a lighter load.',1140:'With this technology, our engineers can seal leaky ships. Caulking in and in front of the port is a complicated undertaking, but gives our fleets the chance to get ready for battle between two attacks.<br><br><b>Allows:</b> Construction of [[v:u,s:220,h:10|tenders]] in the [[v:b,b:5,h:1|shipyard]].',1150:'One of the most dangerous sea units can be built with the ram. This masterpiece of engineering ingenuity is attached to the ship&apos;s bow and can inflict massive amounts of damage onto other ships.<br><br><b>Allows:</b> Construction of [[v:u,s:216,h:10|steam rams]] in the [[v:b,b:5,h:1|shipyard]].',1160:'We can use this research to build some of the largest ships in the shipyard. These are equipped with balloons that bomb opponents on the high seas.<br><br><b>Allows:</b> Construction of [[v:u,s:219,h:10|balloon carriers]] in the [[v:b,b:5,h:1|shipyard]].',1170:'A powerful Pirate Fortress with a strong crew eager for your orders. They are looking to loot capture points and gold. Fame and enormous amounts of resources beckon the most successful pirates. From here you can start raids on other Pirate Fortresses.<br><br><b>Allows:</b> construction of [[v:b,b:30,h:1|Pirate Fortresses]], [[v:i,h:19,sh:2|Capture Runs]], [[v:i,h:19,sh:5|Raids]], participation in the [[v:i,h:19,sh:6|Capture Points Highscores]].',1999:'The secrets of the oceans are finally ours! Our ships are constantly becoming tougher and faster! There are almost no ships on this ocean capable of competing with ours.<br><br><b>Effect:</b> 2% less upkeep for [[v:u,s:210,h:10|ships]].',2010:'We have learned how to store and protect our resources in the long term from wind and weather. Additionally a part of our resources is safe from pirates and other villains, who might want to steal from us!<br><br><b>Allows:</b> Building of [[v:b,b:7,h:1|warehouses]].',2020:'A brilliant idea: A rope that is pulled over a roll gives a simple man the strength of Hercules. So now our workers can lift up huge blocks of stone on their own and construct our buildings even faster!<br><br><br><b>Effect:</b> 2% less building costs.',2030:'The earth is full of valuable treasures! We have learned how to mine sulphur and crystal and how to chisel marble off rocks. We are also growing wonderful vines on the fertile land on our hills which produce delicious wine!<br>A new era of prosperity will dawn on us when we start using these treasures. We can then sell goods at a trading post and buy what we need from foreign traders.<br><br><b>Effect:</b> Allows the production of [[v:i,h:6|luxury goods]], the construction of [[v:b,b:13,h:1|trading posts]] and gives you 130 units of each luxury good.',2040:'A happy population needs festivals in which they can spend hours revelling and drinking our fantastic free-flowing wine. Dionysus loves seeing us enjoying what he has given us!<br><br><b>Allows:</b> Building of [[v:b,b:9,h:1|taverns]].',2050:'Our culture is truly rich in delicious treats! If we have cooks joining our soldiers in battle the delicious smell will be enough to remind them of their kitchen at home and surely strengthen their fighting spirit. And it shouldn&apos;t be forgotten, that a hearty meal has always brought a man back onto his feet. And of course a cook has a sharp knife that he can jump into the fight with.<br><br><b>Allows:</b> Training of [[v:u,u:310,h:9|chefs]] in the [[v:b,b:6,h:1|barracks]].',2060:'Right angles, triangles, circles â€“ a few bright minds can calculate how we can construct our buildings even better and more beautifully. And soon our towns will serve as examples to the whole world!<br><br><b>Effect:</b> 4% less building costs.',2070:'The most unusual goods arrive at the market here from distant islands. You can form treaties with merchants here so that we get all the resources that we need.<br><br><b>Allows:</b> [[v:i,h:14|treaties]], [[v:i,h:18,sh:0|form of government:]] [[v:f,f:2,h:18,sh:3|democracy]].',2080:'A worker who has had a good rest is much more eager to work than an exhausted one. That&apos;s why every citizen should have one day off per week. This will make all our citizens happier!<br><br><b>Effect:</b> Increases the [[v:i,h:3|satisfaction]] and maximum population in all towns.',2090:'If our citizens help out a little underground instead of tanning themselves on the beach, weâ€™ll get more raw materials and theyâ€™ll get less sunburn. Thereâ€™s always a need for help down the mines, saw mills and vineyards.<br><br><b>Allows:</b> Overloading of [[v:i,h:5|resources]].',2100:'Water is always even. We should use this knowledge so that our buildings become even, too! Our town will become even more beautiful and we will use less stone and wood for constructing our buildings!<br><br><b>Effect:</b> 8% less cost for the construction of buildings.',2110:'Now our palace has even more shelves, boxes and drawers, more piles of records and forms as well as clerks who can understand it all. Finally we can afford to build and administer an additional building in our towns!<br>But due to the increased administration burden and the meticulous documentation of all processes, we cannot smuggle goods in or out of occupied towns anymore, as our occupier is also well informed about our records.<br><br><b>Allows:</b> An additional [[v:i,h:0,sh:1|building space]] in the towns.',2120:'Our citizens are living in wealth and prosperity. They are happy and healthy and have very little to worry about. Yes, one could say we are living in one of those places that you can only find in the scriptures from one of the great philosophers.<br><br><b>Effect:</b> +200 housing space, +200 satisfaction in the capital.',2130:'Some time has passed since we learned how to use the treasures of our island for our own needs. We should now educate our workers and let every forest, quarry or vineyard, every sulphur pit or crystal mine be administered by men who are not only strong but also skilful. This way we will gather even more income and our civilization will get richer than ever!<br><br><b>Allows:</b> Construction of [[v:b,b:18,h:1|Forester Houses]], [[v:b,b:19,h:1|Stonemasons]], [[v:b,b:21,h:1|Wineries]], [[v:b,b:20,h:1|Glassblowers]] and [[v:b,b:22,h:1|Alchemists&apos; Towers]].',2140:'What an event those annual wine fÃªtes are! The whole town is there when the best grapes in town are stomped into wine and when the liquid gold splashes around, the kids have the most fun! With a wine press though, handled by an experienced winemaker, we would lose much less. The winemaker could also organise proper storage that allows us to let the wine age and mature well!<br><br><b>Allows:</b> Building of [[v:b,b:26,h:1|wine cellars]].',2150:'Our island&apos;s forests provide us with excellent building material so that we can create strong woodwork for the roofs of our buildings. But to ensure that this is the case, lumber must be carefully selected and handled properly! A carpenter in our town would take care of this and would use up a lot less building material!<br><br><b>Allows:</b> Building of [[v:b,b:23,h:1|Carpentries]].',2160:'As our warehouses cannot handle the increasing amount of goods, we will need alternatives in the long run. Advanced methods of sealed tarpaulins and covers should enable us to store large amounts of goods in the open air.<br><br><b>Effect:</b> Allows you to build [[v:b,b:29,h:1|depots]].',2170:'We think it&apos;s a good idea to define the rules of living together on paper. This means that every island inhabitant can look up what&apos;s allowed and what isn&apos;t - meaning they&apos;ll be no more room for excuses!<br><br><b>Allows:</b> [[v:i,h:18,sh:0|Form of government]]: [[v:f,f:4,h:18,sh:5|Nomocracy]].',2180:'Our battle-tested warriors in their shiny armour, and our progressive war machines have become legendary. Now it&apos;s time to make a profit from them. Other leaders will be eager to purchase these troops.<br><br><b>Allows:</b> building the [[v:b,b:31,h:1|Black Market]].',2999:'Our citizens are wealthy and the marketplace is spilling over with delicacies from all over the world! The streets are clean and developed, making it easier for building material to reach the building site more quickly.<br><br><b>Effect:</b> +10 [[v:i,h:3|satisfaction]] and +20 max. inhabitants in every town per level of this future research.',3010:'Eureka! A well in our settlement! Now we don&apos;t have to wait for it to rain all the time. Our citizens will be much better off and the fields won&apos;t have to stay dry for very long!<br><br><b>Effect:</b> +50 housing space, +50 [[v:i,h:3|happiness]] in the capital.',3020:'We have found a better way to archive our knowledge! Now we have scriptures made from the papyrus plant, so we don&apos;t have to chisel our words into the heavy stones anymore in order to fill our library!<br><br><b>Effect:</b> 2% more research points.',3030:'When some of our citizens settle down in other towns, they can help us to keep an eye on our neighbours. We could keep ourselves informed when a neighbour makes a discovery or what kind of resources he has in stock.<br><br><b>Allows:</b> Building of [[v:b,b:16,h:1|hideouts]].',3040:'Man cannot rationally explain everything that happens in the world. And whenever he cannot explain it, the answer is sought from the gods. Gods are like humans on the one hand, but are very different on the other hand. After all, what other kind of rational explanation can the unexplainable have?<br><br><b>Allows:</b> [[v:b,b:28,h:1|Temples]] and [[v:i,h:15,sh:3|Miracles]].',3050:'Nature gives us everything we need to write: The birds give us their feathers and eight-armed fish out of the sea provide us with their black ink! Now we can write down our ideas even more easily!<br><br><br><b>Effect:</b> 4% more research points.',3060:'Our citizens should really have the chance to look at the cultural achievements of other people. And surely, in exchange, they will be interested in learning from us and exhibiting some of our great works of art in their museums.<br><br><b>Allows:</b> Building of [[v:b,b:10,h:1|museums]], [[v:i,h:14|cultural goods treaties]], Phoenician merchant ships.',3070:'We have learned a lot about the human body! Now we can send doctors into battle to help the wounded soldiers to quickly get back on their feet again. Of course they can mix the right tinctures and some doctors even know a secret recipe for a mixture that makes our fighters even braver.<br><br><b>Allows:</b> Recruiting of [[v:u,u:311,h:9|doctors]] in the [[v:b,b:6,h:1|barracks]].',3080:'When our scientists invent new things, many a glass can break. Or it gets lost in the infinite vastness of our laboratories, as keeping them tidy isn&apos;t really the primal virtue of the academy. If an optician would take care of not only the quality, but also that all the lenses and glasses are put back where they belong, we would use far less crystal glass!<br><br><b>Allows:</b> Building of an [[v:b,b:25,h:1|optician&apos;s]].',3081:'Our scientists would like to test their theories in practice. These kinds of attempts will probably accelerate the research, but it does mean we will need a certain amount of additional laboratory equipment. <br><br><b>Allows:</b> Purchase of research points for crystal glass, [[v:i,h:18,sh:0|form of government]]: [[v:f,f:6,h:18,sh:7|technocracy]].',3090:'A brilliant little apparatus: A smart inventor has managed to teach writing to a machine. Now we can copy our scriptures easily and our academies can quickly exchange their ideas with each other! <br><br><b>Effect:</b> 8% more research points.',3100:'We have learned how to fly like the birds! Now we can build a machine that can lift a man up into the skies and can whizz above the heads of our enemies with breath-taking speed, shooting arrows far behind the front lines.<br><br><b>Allows:</b> Construction of [[v:u,u:312,h:9|Gyrocopter]] in the [[v:b,b:6,h:1|barracks]].',3110:'A marvel: We can now shoot scrolls through pipes, so that they reach our scientists even faster! This saves us long errands and we have to pay less gold for our scientists!<br><br><b>Effect:</b> 3 Gold upkeep cost less per scientist.',3120:'Now we can let our ships sail under water, without them sinking! The oceans are ours! No enemy will see us, when we stalk them under water and sink them before they notice us!<br><br><b>Allows:</b> Building of [[v:u,s:212,h:10|submersibles]] in the [[v:b,b:5,h:1|shipyard]].',3130:'We have managed to get a machine to fly! Now even the sky isn&apos;t a limit anymore! We can let huge balloons fly over the heads of our enemies and throw fire or bee-hives at them from above!<br><br><b>Allows:</b> Building of [[v:u,u:309,h:9|bombardiers]] in the [[v:b,b:6,h:1|barracks]].',3140:'There has recently been a number of incidents relating to exploding powder and other substances. That&apos;s why we have set up an own workshop for all the nosy scientists, so that all the explosions don&apos;t disturb the work in the academy any more. It also has stronger walls and can&apos;t burn down as easily.<br><br><b>Allows:</b> Building of [[v:b,b:15,h:1|workshops]].',3150:'We have been thinking about the fact that a different form of government could give us special advantages. To do so there would be quite a lot to organise and we would possibly have to cut down on some staff, but it would be great to have that kind of government. <br><br><b>Allows:</b> Start of a revolution, [[v:i,h:18,sh:0|forms of government]]: [[v:f,f:3,h:18,sh:4|dictatorship]] and [[v:f,f:5,h:18,sh:6|oligarchy]].',3160:'Actually we don&apos;t need any secular laws - the religious ones are more than enough. And while we&apos;re at it: we don&apos;t actually need all our civil servants. <br><br><b>Allows:</b> [[v:i,h:18,sh:0|Form of government]]: [[v:f,f:7,h:18,sh:8|theocracy]].',3170:'We should probably archive our treasured sea charts. This will allow our sailors to always find the maps they need and save time on their journeys.<br><br><b>Allows:</b> building a [[v:b,b:32,h:1|Sea Chart Archive]].',3999:'The smartest brains in the world are working to answer the big question: Why are we here? Why is everything the way it is? And once again we are one step closer to enlightenment.<br><br><b>Effect:</b> 2% more research points.',4010:'A basin at the sea where water can be drained makes it so much easier for us to build ships and set sail. May a mighty fleet arise that teaches our enemies the true meaning of fear! <br><br><b>Allows:</b> Construction of a second [[v:b,b:3,h:1|trading port]], [[v:b,b:5,h:1|shipyard]].',4020:'These long marches over the hills and through the swamps mean that our material will wear out very fast. If we write down, how our soldiers can travel over land without always getting stuck in the undergrowth or sinking into the mud, the soldiers will have to mend their uniforms a lot less often.<br><br><b>Effect:</b> 2% less upkeep for [[v:u,u:301,h:9|soldiers]].',4030:'Chasing away pirates, barbarians and other villains will be much easier with some professional soldiers! It might be more expensive than just making our citizens into soldiers in the event of war, but in exchange our troops will be able to handle sword, spear and shield much better!<br><br><b>Allows:</b> Recruiting of [[v:u,u:302,h:9|swordsmen]] and [[v:u,u:303,h:9|hoplites]] at the [[v:b,b:6,h:1|barracks]].',4040:'With a ram&apos;s head made of metal and the strength of ten men we can even tear down town walls. Now it will be easy for our soldiers to conquer other towns!<br><br><b>Allows:</b> Building of [[v:u,u:307,h:9|battering rams]] in the [[v:b,b:6,h:1|barracks]].',4050:'Our soldiers are proud of serving their unit and their island kingdom. They are even taking better care of their uniforms, so that we don&apos;t have to mend and repair them as often.<br><br><b>Effect:</b> 4% less upkeep costs and allows the [[v:i,h:18,sh:0|form of government]]: [[v:f,f:1,h:18,sh:2|aristocracy]].',4060:'Now we know how to shoot arrows at our enemies. We should start right now to train our soldiers with these skills, so we can have archers joining our army in battle soon!<br><br><b>Allows:</b> Training of [[v:u,u:313,h:9|archers]] in the [[v:b,b:6,h:1|barracks]].',4070:'With this technology we can unleash powers that can even let huge rocks fly through the air! And if the rocks are large enough, they can even tear down town walls!<br><br><b>Allows:</b> Building of [[v:u,u:306,h:9|catapults]] in the [[v:b,b:6,h:1|barracks]].',4080:'If we employ a civil servant, we can then not only pillage our enemies&apos; towns, but also use and manage them. In no time we will be able to occupy foreign towns with our army from which we can then carry out further missions to increase our wealth and prosperity.<br><br><b>Allows:</b> [[v:i,h:8,sh:8|Occupation]].',4090:'Our soldiers can fight much better if they don&apos;t have to drag that much. And their equipment will last much longer on the long marches, so we won&apos;t have to mend it that often.<br><br><b>Effect:</b> 8% less upkeep for [[v:u,u:301,h:9|soldiers]].',4100:'This black mixture from the alchemist&apos;s kitchen can spark a fire with a loud bang and do truly devilish things! Now we can fill iron pipes with this powder to shoot heavy cannon balls through the air. <br><br><b>Allows:</b> Construction of [[v:u,u:304,h:9|carabineers]] in the [[v:b,b:6,h:1|barracks]] and [[v:u,s:217,h:10|rocket ships]] in the [[v:b,b:5,h:1|shipyard]].',4110:'Our scientists have built a mechanical giant with muscles made of metal and a steaming heart! Only the keenest and most skilled soldiers can steer such a colossus, but it will strike fear into everyone on the battlefield!<br><br><b>Allows:</b> Building of [[v:u,u:308,h:9|steam giants]] in the [[v:b,b:6,h:1|barracks]].',4120:'Our iron is getting heavier and harder: now we can even build barrels through which we can fire huge cannon balls at our enemies! If we can even fire bombs from a long distance our enemies and their town walls will tremble in fear!<br><br><b>Allows:</b> Building of [[v:u,u:305,h:9|mortars]] in the [[v:b,b:6,h:1|barracks]].',4130:'Sulphur is a really is a work of the devil! And with every new mixture, we can get even more impact from this precious resource. A safe practice ground would allow our blasters to test their inventions, without including the surrounding buildings as involuntary targets into their experiments.<br><br><b>Allows:</b> Building of [[v:b,b:27,h:1|firework test area]].',4999:'Our war machines are stronger and mightier than ever before and our armies are perfectly organised! Our civil servants managing the military have everything under control and thus the upkeep costs can be lowered.<br><br><b>Effect:</b> 2% less upkeep for [[v:u,u:301,h:9|units]].'},
-				//troopstxt: ['Troops in town','Inspect troops that are stationed in the town.','Inland garrison limit','Sea garrison limit','Units','Ships','Garrison','Defender','There are no allied units stationed in this town!','Occupying Forces','There are no units from an enemy occupation force stationed here!','Blocking fleets','There are no enemy troops stationed in this town.',''],
-				//barrackstxt: ['In the barracks the boisterous youth is instructed to become keen fighters. Your soldiers know how to handle swords, spears and slings and are also able to lead the mightiest war machines safely over the field. The troops are trained more quickly when you expand your barracks.','Occupation disadvantage','This town is being occupied by foreign troops.<br>New units can only be trained for double the cost!','Units Scheduled for Training','No units have been selected','No citizens are required','citizens','citizen','No unit is required','units','unit','No upkeep is required','No training duration',{wood:'wood',wine:'wine',marble:'marble',crystal:'crystal',sulfur:'sulfur',upkeep:'upkeep',time:'Required training duration'},'Completion:','Population Pack','Dummy packages','The different dummy packages allow you to fool opposing spies about your real troop strength.','Select a package','Recruit Units','To the description of unit "{0}"','Reset entry','Recruit as many as possible','max','Upkeep cost per hour. Can be reduced through forms of government and research.','Upkeep cost per hour','Training time','What would an island empire be without its fleet? At the shipyard, mighty warships are launched and made ready for long journeys over the oceans. May the seven seas tremble before them! Larger shipyards can build ships more quickly.','This town is being occupied by foreign troops. New units can only be trained for double the cost!','Ships Scheduled for Construction','No ships have been selected','No construction duration','Required construction duration','Ships construction','To the description of ship "{0}"','Reset entry','Construction duration per ship','Training','Construction','The building is upgrading!','Level <b>{0}</b> of building is required','Quantities not enough'],
-				//regGiftstxt: ['Registration Gifts','To welcome you as you deserve it, your citizens have collected some donations. You can collect a gift from here every day for a week. Welcome to Ikariam.','{0} Day','{0} Gold','{0} Research Points','{0} Spearmen',['{0} Gold','{0} Research Points'],'{0} Wine','{0} Crystal','{0} Gold','Receive!','Received!','You still have <b>{0}</b> ({1}) to receive your gifts.','You have received all the gifts. The window will remain available for <b>{0}</b> ({1}).','Ends at {0} ({1})'],
-				//wondertxt: ['Monument upgrade','Upgrade in progress','Next Level','Level','Required for next Level','Donated','Donated resources','Donations','Donate maximum quantity','maximum','Donate to upgrade','Maximum upgrade is completed!','Required resources','Wonder monument','Faith barometer','Level','Effect','Active duration','Cooldown duration','instantly','Players on this island','Player','Town','Donation quantity','Priests','Conve<br>rsion','Share','Go to','Actions'],
-				//forminetxt: ['Wood from the nearby forest is sawed into boards at the saw mill. It is then used as a material for constructing buildings and much more. The saw mill is extended by all inhabitants of the island together. The larger it is, the more workers you can employ there.','Assign Workers','Capacity','per hour','Town income','Overload!','No worker','Minimum','Maximum number of workers','Maximum','Confirm','Workers production','Unskilled production','Technocracy','Premium Bonus','Cinetheater','Helios Tower','Corruction','Total','{0} Citizens','Increased {0} Production',['wood','wine','marble','crystal','sulphur'],'{0} Days','Motivated workers','Motivate your workers in the Cinetheatre.','+ 20 % for 12 hours','Inactive','Go to Cinetheater','Players on this island','Player','Town','Level','Workers','Donated wood','Actions','Level {0}','{0} Workers','{0} Worker','Ambrosia Donation','Tutorial Ambrosia cannot be used on its own for this function. The donation will be displayed as a normal wood donation in the donation list.','Donate as much as possible','max',''],
-				//townhalltxt: ['Rename town','Old town name','New town name','Apply town name','Eename','Housing space','Inland garrison limit','Sea garrison limit','Action Points','Growth','per hour','Net Gold','{0} Citizens','Population and production','Notices','There are no special incidents! Congratulations, everything in your town is going fine!','There is corruption in this town!','The productivity and satisfaction in this town are reduced! Upgrade {0} to reduce corruption.','your Governor&apos;s Residence','your Palace','Your town&apos;s satisfaction is composed of lots of different elements. This chart can help you to identify problems and possibilities.','Bonuses','Basic bonuses','basic bonus','Form of Government','from research','capital bonus','Event bonus','Event bonus','Extra bonus','Still active for','from account transfer','Wine','from tavern level','from serving wine','There is no tavern available in this town yet.','Culture','from museum level','from cultural treaties','There is no museum available in this town.','Deductions','Population','Revolt','Form of Government','Total satisfaction','Abandon colony','You can give up your colony. However, all resources, citizens and units will be lost.'],
-				//taverntxt: ['After a hard day&apos;s work there is nothing more pleasant than a cool jug of wine. That&apos;s why your citizens love to meet at the tavern. And when the last old songs have been sung at the end of the day, they set out merrily and cheerful to their homes. Every expansion of your tavern allows you to serve more wine.','Serving of drinks','Serve wine','You can determine exactly how much wine is served to your population. The more wine you provide at the tavern, the happier your citizens will be. Attention: Every time you reallocate a large amount of wine you&apos;ll have to give your innkeeper an hour&apos;s ration.','Reset <br>entry','Serve as much<br>as possible','satisfied citizens','satisfied citizen','No wine','{0} craters of wine / hour','{0} crater of ÎºÏÎ±ÏƒÎ¹Î¿Ï / ÏŽÏÎ±','The wine press saves you','craters of wine per hour','wine per hour','Cheers!','There is no Wine Press in the city!'],
-				//academytxt: ['The academy is a sublime place full of knowledge which combines old traditions with modern technology. The wisest heads of your town await entrance! Consider that every scientist needs his own laboratory which costs money. The larger the academy the more scientists you can employ at the same time.','Assign Scientists','Research achievement','per Hour','Town income','Basic Production','Premium Bonus','Research','Form of Government','Corruption','Total','Overloaded','No<br>Scientists','maximum amount<br>of Scientists','Confirm','Conduct experiment','Our scientists have been experimenting for a long time and have finally discovered a way to create {0} research points. We need {1} crystal to conduct the experiments. But beware! The chemical reactions that happen during these experiments are quite loud and impressive. Thus the scientists need <b>4h</b> to clear up their laboratory afterwards so that they can carry on experimenting with crystal.','Current quantity is not enough','Research achievement','Cost','Conduct experiment','The scientists are still in the process of clearing up the mess that occurred after the last experiment.<br>Cleaning process:','To conduct the experiment<br>you need {0} more.','With the current quantity of crystal,<br>you can conduct up to {0}.','crystal','crystals','experiment','experiments','Each experiment, with current production, reduces<br>the duration for the availability of researches by <br><b>{0}<b>','The experiment is in progress','The quantity can be produced as follows:{0}','You have no crystal production in the crystal {0} you own!','You have no crystal towns!','{0}<br>of crystal','Hourly<br>production','Production<br>duration'],
-				//mayortxt: ['Mayor','Town News','Trade Routes','Current events ({0})','All','Military','Goods','Production','Espionage','Diplomacy','News','Piracy','Location','Date','Subject','Jump to the town "{0}"','previous 10...','...next 10'],
-				//porttxt: ['The port is your gateway to the world. You can hire merchant ships and get them ready for long journeys here. You can also receive precious goods from far away places. Larger ports can load ships faster. You can build another port that increases your loading speed as soon as you have researched the Dry-Dock.','Transport','Buy Merchant Ships','Trade Routes','Send out merchant ship','Transport to {0} {1}','Your up to 11 towns will be displayed here during the course of the game. You can select a town and choose how many goods should be sent to each town with your merchant ships.','How can I found new towns?','Fleets being loaded','Own merchant ships','Foreign ships','Incoming Traders','Raids','No ships registered with the port master.','Target town','Quantity','Mission','Status','Cargo on board','Transport','is being loaded','Accelerate loading process','Origin','Quantity','Mission','Arrival','Withdraw fleet!','','','','','','Loading speed','The loading speed shows how fast merchant ships can be loaded and unloaded in your port.','Trading Port (Level {0})','{0} Goods per minute','Form of Government','Temple of Hermes','Buy Merchant Ships','Merchant ships are your island kingdom&apos;s most important asset. You use them to transport your goods and units.','Learn more about Merchant Ships...','Maximum reached','Cost','Buy Merchant Ships','You don&apos;t have enough gold! You still need <b>{0}</b> Gold!','Maximum reached!','You are purchasing one of 40 additional Phoenician merchant ships. Every ship can transport up to 500 goods or a corresponding amount of land units. With every purchase of a Phoenician merchant ship, the Ambrosia price of the next one changes.','Purchase Phoenician Merchant Ship','{0} Ambrosia is missing','{0} Ambrosia is missing','Acquire now!!','Bonus Merchant Ships','Friend list','Form of Government','7 day bonus','Merchant ships','Phoenician Merchant Ships','Edit trade routes','Maximum reached','<p>A trade route allows you to send transports between two of your kingdom&apos;s towns every day. This way you can supply all of your settlements with wine or other goods. You have one free trade route available and can add more for a bit of Ambrosia.<br><br>Please make sure that there are always enough goods and merchant ships available at the allotted times during all trips on the trading routes and that the involved towns&apos; harbours are free of enemy fleets.</p>','Trade Route','Duration: 7 days','Not active','activate','Save changes','Delete','create new trade route','Another<br>{0}','extend','Extend automatically','You can automatically extend this feature by ticking the box. In the last three hours of the seven day runtime it will be extended by another 7 days.','End extension','If you untick the box the automatic extension will end immediately.','',''],
-				//traderoutestxt: ['Trade Routes','Choose source town','Choose destination town'],
-				//palacetxt: ['The palace is an excellent place to lead your empire into the future! It also provides a gorgeous view of the sea. Every expansion of your capital&apos;s palace allows you to set up an additional colony.','Current form of government: {0}','Towns in your empire',{anarchie:'Anarchy is a situation where there is no ruler. This form of government is established only during revolution period.',ikakratie:'Ikacracy is the leadership of the benevolent island ruler.',aristokratie:'Aristocracy is a government ruled by elite noble families.',demokratie:'Democracy is a government ruled by the people.',diktatur:'Dictatorship is a government ruled by a single military commander.',nomokratie:'Nomocracy is a form of government ruled by law in which the rulers themselves cannot easily change the laws.',oligarchie:'Oligarchy is a form of government in which power rests with a small number of people. In Ikariam these are the rich merchant families.',technokratie:'Technocracy is a government ruled by experts - at Ikariam these are the scientists and researchers.',theokratie:'Theocracy is a government ruled by the clergy.'},'Change form of government',{anarchie:['','25% additional corruption in all towns|All land units and warships will return home if they are stationed in foreign towns or are en route. If they are in the middle of a battle, they will automatically be scattered (exception: fights in own towns or ports).|No unit movements possible|No unit training possible|No espionage missions possible'],ikakratie:['None','None'],aristokratie:['-20% Building construction time|+20% Counter-espionage','+3% Corruption in all towns, apart from the capital city'],demokratie:['+75 Satisfaction in all towns|+1 Research point per hour for each cultural goods treaty issued','-20% Counter-espionage|+5% Building time for land units'],diktatur:['-2% Upkeep costs for land units|-2% Upkeep costs for navy units|-2% Building time for land units|-2% Building time for navy units|+2 Additional merchant ships','-75 Satisfaction in all towns'],nomokratie:['-5% Corruption in all towns|+20% Counter-espionage','+5% Building time for land units.|+5% Building time for navy units|+50% Loading time in your own ports'],oligarchie:['+5 Range of all trading posts|+10% speed for merchant ships|-2% Upkeep costs for navy units|+2 Additional merchant ships','+20% Building construction time|+3% Corruption in all towns'],technokratie:['+5% Research points per hour|+20% Unskilled labourers productivity','+1 Upkeep per scientist'],theokratie:['-20% Miracle cooldown|Satisfaction in all towns with a temple is increased by +2 times the conversion rate.<br>The maximum bonus is +150.|+1 gold production per priest','-5% Research points per hour|-20 Satisfaction in all towns without temples']},'Advantages','Disadvantages','Occupied cities','Occupied ports','You have not occupied any cities.','You have not occupied any ports.','If you want to switch your form of government, it will cost you <b>{0}</b> Gold for every town that you own (in total: <b>{1}</b> Gold). Until the new form of government is established, anarchy will rule. This will last for a certain time (<b>{2}</b> times the number of towns that you own, in total: <b>{3}</b>).','Researched forms of government','Not enough gold','Change form of government to',''],
-				//island: 'Island',
-				//luxres: 'Luxury resource',
-				//palaceColonytxt: ['A governor in your colony guarantees that all the daily administrative tasks are done properly. He also lowers the level of corruption in your colony. The governor&apos;s residence can be upgraded to a palace if you ever want to move your capital.','Towns in your empire','Relocate capital','You can declare this colony to your capital. With it, your governor&apos;s residence will be transformed into a palace of the same level and therefore this town will become your empire&apos;s capital. However, the palace in your old capital will be completely destroyed - so you will have to regain law and order by building a new governor&apos;s residence!','<p>You <b>can&apos;t</b> declare this colony your capital yet - the governor&apos;s residence needs to have the same level as your <b>amount of colonies</b> is first in order to be able to manage all colonies!</p><p class="red">You have to expand your governor&apos;s residence by another <b>{0}</b> in order to move your capital here.</p>','Declare this town your capital','The building is upgrading!'],
-				//levelcnt: ['levels','level'],
-				incr: '#',
-				//workshoptxt: ['The most skilled men of our town serve at the workshop. They use the latest inventions to improve the equipment of our troops and warships, such that they become even better and stronger! Every expansion level allows you to get more upgrades for troops and ships.','Units','Ships','Improve offensive power','Improve defence strength','Cost: {0} units of Gold','Cost: {0} units of crystal','Duration: {0}','Damage: {0}','Armour: {0}','Improve!','Get resources!','Highest level reached!','The building is upgrading!','Insufficient building level!','Insufficient gold quantity!','Insufficient crystal quantity!','Insufficient gold and crystal quantity!','','',''],
-				//militaryupgrades: {Units: {archer:[['Iron Arrowhead','Steel Arrowhead','Fire Arrowhead'],['Leather Armour','Reinforced Leather Armour','Studded Leather Armour']],bombardier:[['Fire-Bomb','HellFire-Bomb','Inferno-Bomb'],['Leather Basket','Reinforced Leather Basket','Studded Leather Basket']],catapult:[['Fire-Missile','HellFire-Missile','Inferno-Missile'],['Bronze Plating','Iron Plating','Steel Plating']],gyrocopter:[['Crossbow','Double Crossbow','Rapid Fire Crossbow'],['Bronze Plating','Iron Plating','Steel Plating']],marksman:[['Bronze Musket','Iron Musket','Steel Musket'],['Leather Armour','Reinforced Leather Armour','Studded Leather Armour']],mortar:[['Thunder Grenade','Great Thunder Grenade','Armageddon Grenade'],['Bronze Wall','Iron Wall','Steel Wall']],phalanx:[['Steel Spear','Iron Spear','Steel Spear'],['Bronze Shield','Iron Shield','Steel Shield']],ram:[['Bronze Head','Iron Head','Steel Head'],['Bronze Roof','Iron Roof','Steel Roof']],slinger:[['Bronze Balls','Iron Balls','Steel Balls'],['Leather Clothing','Reinforced Leather Clothing','Studded Leather Clothing']],spearman:[['Steel Spear','Iron Spear','Steel Spear'],['Leather Armour','Reinforced Leather Armour','Studded Leather Armour']],steamgiant:[['Bronze Fist','Iron Fist','Steel Fist'],['Bronze Plating','Iron Plating','Steel Plating']],swordsman:[['Bronze Sword','Iron Sword','Steel Sword'],['Bronze Helmet','Iron Helmet','Steel Helmet']]},Ships: {ballista:[['Ballista','Double Ballista','Triple Ballista'],['Bronze Plating','Iron Plating','Steel Plating']],ballooncarrier:[['Fire-Bomb','Hellfire Bomb','Inferno-Bomb'],['Single Bulkhead','Double Bulkhead','Triple Bulkhead']],catapult:[['Fire-Missile','Hellfire-Missile','Inferno Missile'],['Single Bulkhead','Double Bulkhead','Triple Bulkhead']],flamethrower:[['Fire-Spewer','HellFire Spewer','Inferno Spewer'],['Bronze Plating','Iron Plating','Steel Plating']],mortar:[['Thunder-Grenade','Great Thunder Grenade','Armageddon Grenade'],['Single Bulkhead','Double Bulkhead','Triple Bulkhead']],paddlespeedship:[['Bronze spur','Iron spur','Steel spur'],['Bronze Plating','Iron Plating','Steel Plating']],ram:[['Bronze spur','Iron spur','Steel spur'],['Bronze Plating','Iron Plating','Steel Plating']],rocketship:[['Fire Rocket','Hellfire Rocket','Inferno Rocket'],['Single Bulkhead','Double Bulkhead','Triple Bulkhead']],steamboat:[['Bronze ram spur','Iron ram spur','Steel ram spur'],['Single Bulkhead','Double Bulkhead','Triple Bulkhead']],submarine:[['Clockwork Torpedoes','Automaton Torpedoes','Machine Torpedoes'],['Single Bulkhead','Double Bulkhead','Triple Bulkhead']]}},
-				//templetxt: ['The temple is a place of faith, belief and reflection. Priests live here, paying homage to their God and spreading his word throughout the island. You can also request a miracle from him, if you pay him enough respect.','Faith Barometer','This island has a faith of {0} %.','Island faith percentage is {0} %.','Assign priests','Conversion rate of your population','Island conversion percentage','Town income','per Hour','{0} priests','{0} priest','No priest','Maximum number of priests','Confirm','Miracle','{0} (Level {1}/{2})','Duration: {0}','Cooldown: {0}','Completion of miracle effect','Completion of cooldown'],
-				//warehousetxt: ['A depot enables you to store large amounts of goods. Every extension level of the depot can hold 32,000 units of each type of good. However, the depot is not protected from pillagers.','Some of your supplies are protected from pillagers at the warehouse. It keeps rain, birds and other pests away. The warehouse keeper is also always well informed about your supplies. Expanding your warehouse allows you to protect and store more resources.','Town goods overview','100% increased theft security','Not active','Active','100% increased storage capacity','Safe','Resource','Safe<br>quantity','Capacity'],
-				//lootable: 'Lootable',
-				//blackmarkettxt: ['The Black Market allows you to sell military units for gold or another resource. Upgrade the building to enable you to sell more types of units and reduce the tax rate for this trade. Other leaders will see your offers in their Trading Post.','Offer units','My offers','Offer units: {0} / {1}','Tax break: {0} %','Your current tax rate is <b>{0} %</b>. The taxes are deducted from each of your sales.','While there is combat going on at the city, no soldier exchange is possible.','As a member of an alliance, you can put <b>4</b> additional offers up for sale.','Unit type','Amount','Currency','Limits','Price per unit','max','Add','My offers: {0} / {1}','You currently have no offers on sale in the Black Market.','Units','Amount','Price / unit','Tax','Profit / unit','Action','Cancel offer'],
-				//SCAtxt: ['Valuable sea charts are archived in the Sea Chart Archive. This allows our sailors to navigate the seven seas even faster. The higher the building level and the more distant the destination, the greater the time saving for the journey there and back.','5 Islands','20 Islands','50 Islands','Distance','Current duration (next level&apos;s saving / current saving)'],
-				//walltxt: ['The town wall protects your citizens against your enemies and the sun. Beware! Enemies will try to tear holes into your wall or to climb over it. Every level increases the resistance of your town wall.','Information','Ballista|Catapult|Bombs','Damage','Accuracy','Hit points','Armour','Garrison limit'],
-				//safehousetxt: ['A wise leader always keeps an eye on both his allies and his enemies. The hideout allows you to hire spies who can provide you with information from inside other towns. A larger hideout provides space for more spies.','Espionage reports','Archive','Train spy','This citizen is loyal and discreet. An ideal candidate for a spy. Training time for a spy:','{0} are currently working in the defence','Maximum number of spies has been reached!','Î‘Î½ÎµÏ€Î±ÏÎºÎ®Ï‚ Ï€Î¿ÏƒÏŒÏ„Î·Ï„Î± Î±Î³Î±Î¸ÏŽÎ½','Î•ÎºÏ€Î±Î¯Î´ÎµÏ…ÏƒÎ·','Î•Ï€Î±Î½Î±Ï†Î¿ÏÎ¬<br>Î±ÏÎ¹Î¸Î¼Î¿Ï<br>ÎºÎ±Ï„Î±ÏƒÎºÏŒÏ€Ï‰Î½','Î•ÎºÏ€Î±Î¯Î´ÎµÏ…ÏƒÎ·<br>Î¼Î­Î³Î¹ÏƒÏ„Î¿Ï… Î±ÏÎ¹Î¸Î¼Î¿Ï<br>ÎºÎ±Ï„Î±ÏƒÎºÏŒÏ€Ï‰Î½','Info','You can train {0} spies','You can train {0} spy','<b>{0}</b> are waiting for their training','<b>{0}</b> is waiting for his training','No citizen is waiting for training','<b>{0}</b> are currently working in the defence','<b>{0}</b> is currently working in the defence','No spy is currently working in the defence','<b>{0}</b> are currently on a mission','<b>{0}</b> is currently on a mission','No spy on a mission','Spy on a mission','None of your spies are currently on a mission!','Owner','Target','Mission','Results','Agents','Decoys','Date','No espionage reports!'],
-				//unitdescs: {slinger:'Slings are light and cheap weapons. They cannot inflict much damage on well-armed opponents, but at least their munition is readily available.',swordsman:'Sword fighters are usually barely armoured and fight without shields to retain their mobility. Thus they can circulate around the immobile Phalanx formation and attack from the flanks.',phalanx:'Hoplites are heavily armoured spearmen from the towns&apos; middle classes. They form the heart of every Greek army. In the so-called "Phalanx" formation they push forward in an unstoppable wall of spears and shields.',marksman:'Shots from the sulphur carbine can penetrate even the most durable armour. However, due to its sight line, only a single row of carabineers can fire, while the rest have to reload.',mortar:'The mortar fires explosive shells against the walls of a besieged city. No building can withstand this destructiveness. However, the rare munition for it has to be brought along additionally, so shots fired need to be very well-targeted.',catapult:'Catapults sling huge rocks against opponents&apos; defence facilities and thus they can destroy even the strongest stone walls. However they are less useful for defence against enemy armed forces.',ram:'Powerful men swing the massive tree trunk against the enemy gates, until they give way and the men run for cover under the roof. It might only be useful for gates and walls, but at least it does not need any munition.',steamgiant:'This powerful machine moves like a person on the battlefield, but has a superhuman hit strength. Stones, arrows and swords simply bounce off it. Woe betide anyone who dares to oppose it!',bombardier:'Our inventors have discovered that the sun is so hot because it attracts warm air. That is why a balloon filled with hot air also rises in direction of the sun and our soldiers can throw explosive shells down on our enemies from up there.',cook:'Your army&apos;s cooks know exactly how to give new courage to the warriors and heroes in the encampment: A glass of wine and a stew, just like mum used to make! If they take the evening to remember what they are fighting for, enemies will find it very hard to wear them down.',medic:'These doctors have voluntarily enlisted to help tend to the wounds of those on the battle front. They can remove arrow heads, bandage up sword wounds and have enough ice available for soldiers&apos; heads should enemies attack with slingshots.',gyrocopter:'A novel flying machine that is fast, versatile and not dependant on the direction of the wind - we can hunt cowardly enemies that want to attack us from the skies with it!',archer:'Bows are a very popular hunting equipment, so it is very easy to recruit archers amongst citizens. Military training turns simple citizens into formidable long-range combat troops.',spearman:'Spearmen are conscripts from the rural population, that go into battle with light armour and basic spears. They do not usually have a chance against professional soldiers.',spartan:'He is born for battle. His trade is that of war. He only fights on the front line on the field.',ship_ram:'Equipped with a simple ram at the stable bow, this ship is the primary warship of the navy. A dozen strong rowers power it in order to ram the spur against the opposing hull. That alone is often enough to make an enemy ship sink.',ship_flamethrower:'At the fire ship&apos;s bow there is flame thrower, which sprays Greek fire over the sea. Even on the ocean&apos;s surface, the mixture keeps on burning and creates a bed of flames. A terrifying close combat ship',ship_submarine:'A boat that sails below the water&apos;s surface is the ultimate sea weapon. It can slip past enemy lines almost unnoticed and cause massive amounts of damage.',ship_ballista:'This ship contains a ballista, which was originally meant for firing grappling hooks. However, the ballista is also very valuable as a precise long-range combat weapon, as it hits the enemy under the waterline, even though it does not cause a large amount of damage.',ship_catapult:'The catapult at the deck of the ship is smaller than its counterpart on land due to a lack of space. The ocean waves make it very imprecise, but it does fire clay jugs of burning oil, which leave dangerous little oil slicks behind at sea.',ship_mortar:'The mortar ship has an especially large hull with a high water displacement, so that it can withstand the enormous recoil of the mortar. If the fuse of a missile is correctly measured, the powerful projectile explodes just over the enemy deck.',ship_steamboat:'Just like the ram ship, the steam ram is fully equipped with a ram spur at its bow. However, it is a considerably more advanced version. Due to its steam engine, this ship can accelerate even more speedily and can therefore inflict a larger amount of damage on the enemy. The steam ram is probably the most dangerous ship at the front line.',ship_rocketship:'Thanks to our research, our scientists have managed to store large amounts of explosive power in wooden devices that can be blasted several hundred meters over the water&apos;s surface and can cause a huge explosion if thrust on opposing ships. The enemy should be afraid - very afraid - of this lethal weapon!',ship_paddlespeedship:'An invention that would have even astounded Heron: the paddle speedboat uses the impulse of a giant aeolipile as well as paddle wheels to drive into opposing ships with a huge amount of power and speed. The ship barely needs any crew.',ship_ballooncarrier:'The balloon carrier is an enormous floating stronghold. With the balloons on it we can attack our enemy in the skies at sea too.',ship_tender:'Tenders are designed for the support and maintenance of ships. Trained engineers and divers can repair minor damage in the dock immediately, allowing these units to return to the front lines. They also supply the sailors with food and wine.'},
-				//prodBuildtxt: [{forester:'The strong lumberjacks can chop down even the largest trees. But they also know that a forest must be cultivated and new trees planted so that we can continue to use only the best timber for our houses. The production of building material is increased by <b>2 %</b> for every level of expansion.',winegrower:'A winegrower only chooses the most sunny hills of the surrounding area to cover them with the comforting green of the vines. That&apos;s how the vineyards produce plump fruits that make for a much better harvest. Every level of the winegrower&apos;s expansion increases your wine production by <b>2 %</b>.',stonemason:'A trained stonemason always quarries the right blocks of marble with his strong arms. Thus less is broken and our builders always have the material they need. For every level of expansion this building increases the marble production by <b>2 %</b>.',glassblowing:'True masters of their art create sparkling pieces at the glassblower&apos;s house. The blow tubes, glass and all sorts of other apparatuses are only understood by our scientists. And they are so nimble, that barely anything ever gets broken. Every level of expansion increases your production of crystal glass by <b>2 %</b>.',alchemist:'When the wind blows from the west, a smell fills the streets around the tower and not many citizens are seen leaving the house without a peg on their nose. Our alchemists work restlessly on finding the perfect mixture and ensuring that we can get the maximum amount of sulphur from the pit. For every level of the building your sulphur production is increased by <b>2 %</b>.'},'{0} production','Basic Production','Premium Bonus','Cinetheater','Helios&apos; Tower','ÎžÏ…Î»Î¿ÎºÏŒÏ€Î¿Ï‚','Corruption','Resource','Bonus','There is corruption in this town!','Productivity and satisfaction in this town are rapidly decreasing! Upgrade {0} to reduce the corruption.','your Governor&apos;s Residence','your Palace',{forester:'Wood',winegrower:'Wine',stonemason:'Marble',glassblowing:'Crystal',alchemist:'Sulphur'}],
-				//reductBuildtxt: [{carpentering:'Only the best lumber is used at the carpenter&apos;s workshop. Therefore our handy craftsmen are able to build a solid framework and our houses do not have to be repaired all the time. Every level of the carpenter&apos;s workshop lowers your demand for building material by <b>1 %</b> of the basic value.',vineyard:'Only the purest wines mature in the town&apos;s deep and cool cellars. The cellarer ensures that not a drop goes to waste and that all the wine can run down the throats of your citizens. The demand for wine in your town will be reduced by <b>1 %</b> for each building level.',architect:'Angle, Compass and Yardstick: The architects&apos; office provides everything you need for building straight walls and stable roofs. And a well-planned house needs a lot less marble than a skew one. The demand for marble in your town will be reduced by <b>1 %</b> for each building level.',optician:'Lenses and magnifying glasses don&apos;t just help our scientists to see clearly and to find important papers on their desk, but they are also necessary in order to invent all those new technologies that make us so proud. The optician keeps everything we need carefully stored in boxes, so that less things get lost. The demand for crystal glass is reduced by <b>1 %</b> per building level.',fireworker:'Constant tests with fireworks don&apos;t just light up the skies but sometimes also the surrounding buildings. However our scientists can only optimise the demand for sulphur, when they keep testing new mixtures. The demand for sulphur in your town will be reduced by <b>1 %</b> for each building level.'},{carpentering:'Wood',vineyard:'Wine',architect:'Marble',optician:'Crystal',fireworker:'Sulphur'},'{0} cost reduction for building','{0} cost reduction for Units','{0} cost reduction for Ships','{0} cost reduction for Experiments','{0} cost reduction for Unit and Ship Improvements','Basic Cost','Research','Cost','{0} cost reduction','Resource'],
-				//militarytxt: ['Troop movements ({0})','Combat reports ({0})','Gauntlet Wars','Current battles','Fleet / Troop Movements','All','Mission','Arrival time','Speed','Units','Origin','Target','Action','Currently there are no troop movements for you to see!','Combat reports','There are no combat reports available at the moment.','Type','Last round','Rounds','Town','Owner','Action',{groundfight:['Battle','Display battle'],seafight:['Sea battle','Display sea battle']},'All','Reverse selection','-- Select action --','Delete','Mark as read','OK','Alliance Gauntlet Wars','Concluded Gauntlet Wars','Concluded Alliance Gauntlet Wars','You aren&apos;t currently involved in any Gauntlet Wars','Your alliance isn&apos;t currently involved in any Gauntlet Wars'],
-				//dismissunits: ['Dismiss units-ships','Dismiss unit(s)','Dismiss ship(s)','Reset entry','Dismiss as many as possible','Dismiss!','Costs',{citizens:'Citizens',wood:'Wood',wine:'Wine',sulfur:'Sulfur',upkeep:'Upkeep cost per hour',glass:'Crystal'},'Confirm','Number of units to dismiss','Yes','Cancel'],
-				//dailytaskstxt: ['Here you can find the list of tasks which you can complete to please the gods each day.<br>For each task completed, you&apos;ll receive a certain amount of favour. You can then select one or more rewards for this favour.<br><br>The tasks are available again every day, whilst the favour earned expires each week.','Tasks','Rewards','Tasks completed today: {0} / {1} ({2})','Successfully raid barbarian village','Trade goods','Spend Ambrosia','Improve something in the workshop','Conduct capture runs','Produce warships','Research something','Donate to upgrade a miracle','Donate to upgrade of resource deposit','Train troops','Commission building work','Pillage another player&apos;s town','Start pirate raid','Unlock an achievement','Screen the cultural feature in the Cinetheatre','Resources',{wood:'wood',wine:'wine',marble:'marble',glass:'crystal',sulfur:'sulphur',gold:'gold',research:'research points',spearman:'spearmen',slinger:'slingers',phalanx:'hoplites',swordsman:'swordsmen',archer:'archers',steamgiant:'Steam Giants',marksman:'Sulphur Carabineers',bombardier:'Ballon-Bombardier',premium:'24 hours Premium Account',resourceBonus:'24 hours Steam Saw',wineBonus:'24 hours Steam Wine Press',marbleBonus:'24 hours Steam Hammer',sulfurBonus:'24 hours Steam Sulphur Paddle Wheel',crystalBonus:'24 hours Steam Crystal Drill'},'Redeem','Not enought favours.','Display Cinetheater'],
-				//cinetheatretxt: ['The comedies and dramas of the Cinetheatre make your workers happy and motivate them. Afterwards they will labour all the more. The cultural feature does not interest your workers in the slightest, yet it is the most favourite of the Gods! They will give you favour for it.','Should you have any <b>problems</b> displaying a video or activating your bonus, please check whether you currently have an <b>ad-blocker</b>, <b>script blocker</b> or other <b>script</b> active in your browser. Let the video play through completely so that you can be certain of receiving your bonus. You will receive a <b>town advisor message</b> once it activates.','Did you enjoy that?','Play now!','Your bonus is now active.','Which feature would you like to show?','No feature available<br>at this time.','Drama','Comedy','Cultural Feature','Wood Production','{0} Production',{wine:'Wine',marble:'Marble',crystal:'Crystal',sulfur:'Sulphur'},'+20 % for 12 hrs','50 Favours','Show feature','You can earn production bonuses and favour here by watching videos from other Gameforge titles.','You must watch the video to the end in order to get the bonus.','The production bonuses last <b>12 hours</b> and only apply to the town where you watched the video. So think carefully about where you&apos;re going to visit the theatre.','You can only earn favour here once per day. It resets every midnight (server time).'],
-				//abandoncitytxt: ['Abandon of {0} {1}','Abandon colony','You can give up your colony. However, all resources, citizens and units will be lost. So make sure that all are safe before making this step. Are you sure you want to abandon your colony?','Please enter the security word from the picture below into the box provided to confirm the colony&apos;s deletion.','Security word'],
-				//chrcnt: ['characters','character'],
-				am: 'am',
-				pm: 'pm',
-				ambrosia: 'Ambrosía',
-				//ambrosiaFountain: 'Divine Ambrosia Fountain',
-				//ambrosiaFountaintxt: ['{0} Ambrosia is missing','{0} Ambrosia is missing','Acquire now!!','This palatial fountain incorporates the effigies of two deities holding aloft a cornucopia. Ambrosia once flowed unabated from this horn into the pool below, but since then the fountain seems to have dried up.','This spring has divine origins. If we pay homage to the gods and offer them gifts, we can make this fountain shine in great splendour once more.','If we pray at the fountain often enough and regularly empty the pool of Ambrosia, our efforts will be well rewarded!','If you log in several days in a row, the amount of Ambrosia to be collected will continuously increase. From <b>8<sup>th</sup></b> day, the amounts will repeat those from days <b>5<sup>th</sup></b> to <b>7<sup>th</sup></b>.','The fountain can be used on <b>365</b> consecutive days.','If you don&apos;t log in for a day, you won&apos;t receive any Ambrosia and the count will start again from scratch.'],
-				//deploying_troops: 'Deploying troops',
-				//deploymentarmy: 'Deploying units',
-				//deploymentfleet: 'Deploying ships',
-				//army_movement: 'Army movement',
-				//capture: 'Capture',
-				//raid: 'Raid',
-				//demolitiontxt: ['Confirm downgrading of building','Attention','By confirming this action your building will be downgraded by one level. Should it reach level 0 it will then be completely torn down and the building space will become available again. Are you really sure you want to reduce the building level by one level?','The following resources will be returned by demolishing','Yes, I am sure','No, better not'],
-				//deploying: 'Deploying',
-				//invfriendtxt: ['Invite friends','You can get in touch with players that are in your friend list more quickly and you can also both see when the other is online. If a player founds a colony, all his friends will receive a gold bonus. If a player completes a research topic, all his friends will receive a small bonus from the invested research points.','Add Ikariam players','Username','Add','Existing invitations'],
-				//takeoffertxt: ['Offer management','Choose which goods or units you want to buy from the player with name {0}. Also, set the amount of gold you intend to pay.','From here you can send fleets to sell goods on player with name {0}. The exchange will be completed only when your fleets arrive to their destination. For this, you can set the minimum price for your goods, if the owner reduces the offer meanwhile.'],
-				//notEnCap: ['Insufficient storage capacity','Go to the {0}','Go to the {0}','Go to<br>the {0} or the {1}'],
-				//speeduptxt: ['Shorten building time','Complete instantly','Do you want to halve (<b>&frac12;</b>) the building time<br>{1}<br>of the specific building (<b>{0}</b>);','Do you want to complete instantly<br>the specific building (<b>{0}</b>);','Cancel','Activate','<b>{0}</b> Ambrosia is required','<b>{0}</b> Ambrosia are requiredÏ‚','Buy Ambrosia'],
-				click_: '<b>Clic</b>'
 			},
 			el:
 			{
@@ -12792,6 +13061,7 @@
 				buildings: 'Κτήρια',
 				economy: 'Οικονομία',
 				military: 'Στράτευμα',
+				worldmap: 'Χάρτης',
 				greek: 'Ελληνική',
 				empire: 'Αυτοκρατορία',
 				overview: 'Επισκόπηση',
@@ -12809,6 +13079,7 @@
 				palace: 'Παλάτι',
 				palaceColony: 'Κυβερνείο',
 				tavern: 'Ταβέρνα',
+				renew: 'Απομένων χρόνος<br>σημερινών αποστολών',
 				museum: 'Μουσείο',
 				academy: 'Ακαδημία',
 				workshop: 'Εργαστήριο',
@@ -12851,10 +13122,12 @@
 				to_wonder: '(προς τα μνημεία των νήσων)',
 				favours: ['Εύνοιες','Εύνοια'],
 				tasks: 'Αποστολές',
+				dailytasks: 'Ημερήσιες Αποστολές',
 				renew: 'Απομένων χρόνος <br> σημερινών αποστολών',
 				pirates: 'Επισκόπιση<br>Πειρατείας',
 				zeroingtasks: 'Επαναφορά όλων των αποστολών',
 				zeroingvaluation: 'Υπόλοιπος Χρόνος<br>Ως την Αξιολόγηση',
+				remainingtime: 'Απομένων χρόνος',
 				corruption: 'Διαφθορά',
 				cultural_treaty: 'Πολιτιστικές Συνθήκες',
 				cultural: 'Πολιτιστικά αγαθά',
@@ -12977,7 +13250,7 @@
 				resources_lootable: 'Λεηλατήσιμα',
 				training: 'Εκπαίδευση',
 				theatertxts: {active: 'Ενεργό',inactive: 'Ανενεργό',status: 'Κατάσταση',resource: 'Δράμα<br>Παραγωγή ξύλου',tradegood: 'Κωμωδία<br>Παραγωγή {0}',favour: 'Πολιτιστική<br>παράσταση',wood: 'ξύλου',wine: 'κρασιού',marble: 'μαρμάρου',glass: 'κρύσταλλου',sulfur: 'θείου',tip: 'Διαθέσιμη προβολή για +20 % {0}',luxury: 'πόρου πολυτελείας'},
-				shortbuildingtime: ['Μείωση χρόνου κατασκευής','Μηδενισμός διάρκειας κατασκευής'],
+				shortbuildingtime: ['Μείωση χρόνου κατασκευής','Μηδενισμός διάρκειας κατασκευής','Θέση έναρξης τελευταίου 5λέπτου!'],
 				deploying: 'Εγκατάσταση',
 				plundering: 'Λεηλασίες',
 				constructing: 'Κατασκευή σε εξέλιξη!',
@@ -13129,7 +13402,8 @@
 				donwoodlogall: 'Όλο το απόθεμα',
 				donwoodlogtitle: '{0} μονάδες ξυλείας για Δωρεά',
 				ctfinder: 'Ανίχνευση Πολιτιστικών Συνθηκών',
-				ΧΥshow: 'Προβολή συντεταγμένων νήσου',
+				XYshow: 'Προβολή συντεταγμένων νήσου',
+				worldmapshow: 'Show the tab worldmap',
 				hourlyRes: 'Απόκρυψη ωριαίας παραγωγής αγαθών',
 				playerInfo: 'Προβολή πληροφοριών για τον παίκτη',
 				control: 'Απόκρυψη κέντρου Ελέγχου',
@@ -13223,7 +13497,8 @@
 				hourlyRes_description: 'Αποκρύπτει την ωριαία παραγωγή των πόρων στη γραμμή πληροφοριών',
 				donationButtons_description: 'Προσθέτει κουμπιά με σταθερά ποσά δωρεάς (0,+500,+1K,+10K,+100K,+500K,+1M) για αναβάθμιση.',
 				ctfinder_description: 'Εμφανίζει ένα εικονίδιο δίπλα στο όνομα του/της παίκτη/τριας, αν έχετε συνάψει μαζί του/της Πολιτιστική συνθήκη.<br>Αν ο/η παίκτης/τρια δεν έχει αποδεχτεί ακόμα το αίτημα σας το εικονίδιο είναι ημιδιαφανές.',
-				ΧΥshow_description: 'Εμφανίζει τις συντεταγμένες ([X:Y]) της νήσου δίπλα στο όνομα της πόλης.',
+				XYshow_description: 'Εμφανίζει τις συντεταγμένες ([X:Y]) της νήσου δίπλα στο όνομα της πόλης.',
+				worldmapshow_description: 'Displays worldmap tab',
 				playerInfo_description: 'Προβολή πληροφοριών από τους παίκτες στη νησιωτική προβολή',
 				control_description: 'Απόκρυψη του κέντρου Ελέγχου σε παγκόσμια, νησιωτική και αστική προβολή',
 				visibility_category: '<b>Ορατότητα πίνακα</b>',
@@ -13279,8 +13554,8 @@
 				researchtxt: {1010:'Όπλα Καταστρώματος',1020:'Συντήρηση πλοίων',1030:'Επέκταση',1040:'Ξένοι Πολιτισμοί',1050:'Πίσσα',1060:'Υγρό Πυρ',1070:'Αντίβαρο',1080:'Διπλωματία',1090:'Θαλάσσιοι Χάρτες',1100:'Μηχανή ατμοκίνητων τροχών',1110:'Εγκατάσταση κανονιού',1120:'Αρχιτεκτονική',1130:'Βύθισμα',1140:'Καλαφάτισμα',1150:'Συμπαγής Κριός',1160:'Πλωτή βάση',1170:'Πειρατεία',1999:'Ναυτικό Μέλλον',2010:'Συντήρηση',2020:'Τροχαλία',2030:'Πλούτος',2040:'Κρασί',2050:'Μαγειρικές ειδικότητες',2060:'Γεωμετρία',2070:'Αγορά',2080:'Διακοπές',2090:'Χέρια βοηθείας',2100:'Αλφάδι',2110:'Γραφειοκρατία',2120:'Ουτοπία',2130:'Βελτιωμένη συλλογή προμηθειών',2140:'Αποστακτήριο',2150:'Ξυλουργική Τέχνη',2160:'Αλάνα',2170:'Νομοθεσία',2180:'Εμπόριο στρατιωτών',2999:'Οικονομικό Μέλλον',3010:'Κατασκευή Πηγαδιού',3020:'Χαρτί',3030:'Κατασκοπεία',3040:'Πολυθεϊσμός',3050:'Μελάνι',3060:'Πολιτιστική Ανταλλαγή',3070:'Ανατομία',3080:'Οπτική',3081:'Πειράματα',3090:'Μηχανικό στυλό',3100:'Πέταγμα Πουλιού',3110:'Ρίψη Επιστολών',3120:'Αίθουσα πίεσης',3130:'Η Αρχιμήδεια Αρχή',3140:'Εφεύρεση',3150:'Σχηματισμός κυβέρνησης',3160:'Θρησκεία κράτους',3170:'Αρχειοθέτηση',3999:'Επιστημονικό μέλλον',4010:'Δεξαμενή καθαρισμού',4020:'Χάρτες',4030:'Επαγγελματικός στρατός',4040:'Πολιορκία',4050:'Κώδικας Τιμής',4060:'Βαλλιστική',4070:'Νόμος του μοχλού',4080:'Κυβερνήτης',4090:'Οργάνωση',4100:'Πυρίτιδα',4110:'Ρομποτική',4120:'Χυτήριο κανονιών',4130:'Πυροτεχνουργία',4999:'Στρατιωτικό μέλλον'},
 				researchdesc: {1010:'Ένα περιστρεφόμενο εξάρτημα για τα πολεμικά σκάφη σας, στο οποίο μπορείτε να τοποθετήσετε τεράστια όπλα! Για αρχή οι εφευρέτες σας τοποθέτησαν σε αυτό μια τεράστια βαλλίστρα. Υποτίθεται ότι το εξάρτημα θα αντέξει και άλλες μηχανές. Έτσι, μόλις ένας από τους επιστήμονές σας έχει μια ιδέα, μπορείτε να την εγκαταστήσετε στα σκάφη σας χωρίς πρόβλημα.<br><br><b>Επιτρέπει:</b> Κατασκευή [[v:u,s:213,h:10|βαλλιστροφόρων]] στο [[v:b,b:5,h:1|Ναυπηγείο]].',1020:'Αν κρατάτε πάντα σε τάξη τα σκάφη σας, δεν είναι απαραίτητο να τα επισκευάζετε συχνά. Το ηθικό του πληρώματος είναι επίσης καλύτερο όταν τραγουδάνε πού και πού όλοι μαζί σφουγγαρίζοντας το κατάστρωμα ή ράβοντας τα πανιά.<br><br><b>Επίδραση:</b> 2% μικρότερο κόστος συντήρησης για τα [[v:u,s:210,h:10|πλοία]].',1030:'Πέρα από το νησί σας υπάρχει κάτι περισσότερο από τη θάλασσα! Υπάρχουν κι άλλα νησιά που περιμένουν να ανακαλυφθούν. Δεν είσαστε μόνοι! Μπορείτε να κερδίσετε έδαφος σε ένα από τα πρόσφατα ανακαλυφθέντα νησιά, να ανακαλύψετε νέους πόρους και να γνωρίσετε άλλους λαούς! Οι υπάλληλοί σας είναι πρόθυμοι να διαχειριστούν ακόμη περισσότερα και οι έμποροι να ταξιδέψουν σε μακρινές χώρες!<br><br><b>Επιτρέπει:</b> Χτίσιμο [[v:b,b:11,h:1|παλατιών]], ίδρυση [[v:i,h:0,sh:6|αποικιών]], [[v:i,h:0,sh:3|εμπόριο με μακρινές χώρες]].',1040:'Αν γνωρίσετε καλύτερα τους άλλους λαούς, θα προοδέψετε κι εσείς. Οι συχνές συζητήσεις και τα θερμά λόγια μπορούν να κάνουν θαύματα και να οδηγήσουν σε νέες συμμαχίες και φιλίες. Φυσικά χρειαζόσαστε ένα όμορφο και άνετο κτίριο για όλους τους πρέσβεις και τις γιορτές που θα κάνετε προς τιμήν τους!<br><br><b>Επιτρέπει:</b> Κατασκευή [[v:b,b:12,h:1|Πρεσβειών]].',1050:'Οι επιστήμονές σας εφηύραν ένα παχύρρευστο και βρωμερό υγρό. Από τότε που αλείφετε τα πλοία σας με αυτό, δεν υπάρχουν πια τρύπες για μπάλωμα.<br><br><b>Επίδραση:</b> 4% λιγότερη συντήρηση για [[v:u,s:210,h:10|πλοία]].',1060:'Μια φωτιά που δεν μπορεί να σβηστεί με το νερό! Με αυτό το μείγμα από πολλά μυστικά συστατικά μπορείτε να βάλετε φωτιά σε σκάφη και να τα βυθίσετε! Σύντομα θα κατακτήσετε τις θάλασσες με το σκάφος που έχει την αναπνοή ενός δράκου!<br><br><b>Επιτρέπει:</b> Κατασκευή [[v:u,s:211,h:10|Φλογοβόλων]] στο [[v:b,b:5,h:1|Ναυπηγείο]].',1070:'Οι επιστήμονές σας έχουν βελτιώσει τη σύνδεση όπλων στα σκάφη σας, έτσι ώστε να μη διαλύονται όταν πετάτε τεράστιους βράχους στους εχθρούς σας. Χάρη στο αντίβαρο, ο καταπέλτης σας τώρα μένει στο σκάφος αντί να τινάζεται προς τα πίσω.<br><br><b>Επιτρέπει:</b> Κατασκευή [[v:u,s:214,h:10|καταπελτοφόρων]] στο [[v:b,b:5,h:1|Ναυπηγείο]].',1080:'Ένας από τους φιλοσόφους σας έχει γράψει σοφά πράγματα για τον πόλεμο και την ειρήνη. Σας συμβουλεύει να συμμαχήσετε με άλλους λαούς, ώστε να πολεμήσετε τους κοινούς εχθρούς μαζί!<br><br><b>Επιτρέπει:</b> [[v:i,h:14|Στρατιωτικές Συνθήκες]].',1090:'Τα ταξίδια σας θα είναι πολύ ασφαλέστερα αν καταγράφατε όλα τα επικίνδυνα ρεύματα και αβαθή! Έτσι οι ναυτικοί σας δεν θα χρειάζεται να φοβούνται τους υφάλους, τις θανάσιμες δίνες και τις σαγηνευτικές σειρήνες.<br><br><b>Επίδραση:</b> 8% λιγότερη συντήρηση για [[v:u,s:210,h:10|πλοία]].',1100:'Μεγάλες ειδήσεις για τους ναυτικούς σας: Ένας ατμοκίνητος τροχός επιτρέπει στα καράβια σας να κινούνται γρηγορότερα απ΄ ό,τι με κουπιά. Τώρα μπορείτε να κάνετε τους εχθρούς σας να τρέμουν με τις Κωπήλατες τορπιλάκατους!<br><br><b>Επιτρέπει:</b> Κατασκευή [[v:u,s:218,h:10|Κωπήλατων τορπιλάκατων]] στο [[v:b,b:5,h:1|Ναυπηγείο]].',1110:'Αυτό το κανόνι είναι τόσο τεράστιο, που ούτε ο Ηρακλής δε θα μπορούσε να το σύρει. Μόνο ένα θωρακισμένο ατμόπλοιο είναι αρκετά ισχυρό για να μεταφέρει αυτό και όλες τις τεράστιες σφαίρες που μπορεί να εκτοξεύσει στους εχθρούς σας.<br><br><b>Επιτρέπει:</b> Ναυπήγηση των κανονιοφόρων στο [[v:b,b:5,h:1|Ναυπηγείο]].',1120:'Ένα γερό σπίτι μπορεί να αντέξει ακόμα και στα πιο άγρια φαινόμενα της φύσης. Μπορεί να αντέξει ακόμα καλύτερα, όταν έναν έξυπνος νους έχει φροντίσει, μέσα από πολλά σχέδια και λίγα μαθηματικά, ότι όλοι του οι τοίχοι είναι ίσιοι και η στέγη του σταθερή. Ευτυχώς με τα μοιρογνωμόνια και τους διαβήτες τα κτίριά σας θα είναι πολύ πιο σταθερά και πιο προστατευμένα από τη βροχή. Ένα αρχιτεκτονικό γραφείο θα σας βοηθούσε να κάνετε οικονομία στο μάρμαρο στην κατασκευή νέων κτιρίων!<br><br><b>Επιτρέπει:</b> Κατασκευή [[v:b,b:24,h:1|Αρχιτεκτονικού Γραφείου]].',1130:'Οι επιστήμονές σας ανακάλυψαν ότι τα σκάφη σας έχουν μικρότερη αντίσταση στο νερό, όταν έχουν μικρότερο φορτίο. Έτσι μπορείτε να βάλετε μεγαλύτερα πανιά στο κατάρτι και να πλεύσετε πιο γρήγορα.<br><br><b>Επιτρέπει&gt;</b> γρηγορότερα καράβια με μικρότερο φορτίο.',1140:'Με τη βοήθεια αυτής της τεχνικής οι μηχανικοί σας μπορούν να σφραγίσουν πλοία που δεν είναι στεγανά. Το καλαφάτισμα είναι μια δύσκολη υπόθεση εντός λιμανιού ή και έξω από το λιμάνι, αλλά δίνει στους στόλους σας τη δυνατότητα να ετοιμάζουν τα πλοία για τη μάχη μεταξύ δυο επιθέσεων.<br><br><b>Επιτρέπει:</b> την κατασκευή [[v:u,s:220,h:10|Βοηθητικών]] στο [[v:b,b:5,h:1|Ναυπηγείο]].',1150:'Με τη βοήθεια του Κριού μπορεί να κατασκευαστεί η πιο επικίνδυνη θαλάσσια μονάδα. Αυτό το αριστοτέχνημα της μηχανολογίας εγκαθίσταται στην πλώρη του πλοίου και μπορεί να προκαλέσει μεγάλες ζημιές σε άλλα πλοία.<br><br><b>Επιτρέπει:</b> κατασκευή [[v:u,s:216,h:10|Εμβόλων ατμού]] στο [[v:b,b:5,h:1|Ναυπηγείο]].',1160:'Με τη βοήθεια αυτής της έρευνας θα μπορείτε να κατασκευάσετε στο ναυπηγείο τα μεγαλύτερα πλοία. Αυτά θα έχουν αερόστατα με τα οποία θα βομβαρδίζουν τους εχθρούς στα ανοιχτά.<br><br><b>Επιτρέπει:</b> την κατασκευή [[v:u,s:219,h:10|Μεταφορικών αερόστατων]] στο [[v:b,b:5,h:1|Ναυπηγείο]].',1170:'Ένα ισχυρό πειρατικό φρούριο με ένα δυνατό πλήρωμα που περιμένει τις διαταγές σας. Θέλει να αποκτήσει χρυσό και πόντους κουρσέματος. Οι πιο πετυχημένοι πειρατές θα αποκτήσουν φήμη και τεράστιες ποσότητες πρώτων υλών. Από εδώ μπορείτε να ξεκινήσετε εφόδους σε άλλα πειρατικά φρούρια.<br><br><b>Επιτρέπει:</b> Χτίσιμο [[v:b,b:30,h:1|πειρατικού φρουρίου]], [[v:i,h:19,sh:2|ταξίδια κουρσέματος]], [[v:i,h:19,sh:5|εφόδους]], συμμετοχή στην [[v:i,h:19,sh:6|κατάταξη πόντων κουρσέματος]].',1999:'Τα μυστικά των ωκεανών είναι επιτέλους δικά σας! Τα σκάφη σας γίνονται συνεχώς δυνατότερα και γρηγορότερα! Δεν υπάρχει σχεδόν κανένα σκάφος σε αυτόν τον ωκεανό που να είναι ικανότερο από τα δικά σας.<br><br><b>Επίδραση:</b> 2% μικρότερο κόστος συντήρησης [[v:u,s:210,h:10|πλοίων]].',2010:'Μάθατε πώς να αποθηκεύετε τους πόρους σας για να προστατεύονται καλά και μακροπρόθεσμα. Επίσης, ένα μέρος των πόρων σας είναι ασφαλές από τους πειρατές και άλλους κακοποιούς που θέλουν να κλέψουν από σας!<br><br><b>Επιτρέπει:</b> Οικοδόμηση των [[v:b,b:7,h:1|αποθηκών εμπορευμάτων]].',2020:'Μια λαμπρή ιδέα: Ένα σχοινί που τραβιέται πάνω από ένα ρολό, δίνει σε ένα απλό άτομο τη δύναμη του Ηρακλή. Έτσι τώρα οι εργαζόμενοί σας μπορούν να ανυψώσουν τεράστια κομμάτια πέτρας από μόνοι τους και να κατασκευάσουν τα κτίριά σας ακόμα γρηγορότερα!<br><br><br><b>Επίδραση:</b> 2% μικρότερες δαπάνες κτιρίου.',2030:'Η γη είναι γεμάτη από πολύτιμους θησαυρούς! Έχετε μάθει πώς να σκάβετε για θείο και κρύσταλλο και πώς να λαξεύετε το μάρμαρο από τους βράχους. Επίσης, καλλιεργείτε όμορφα αμπέλια στα εύφορα εδάφη των λόφων σας, τα οποία παράγουν απολαυστικό κρασί!<br>Μία νέα εποχή ευημερίας θα ανατείλει για σας όταν αρχίσετε να χρησιμοπείτε αυτούς τους θησαυρούς. Μετά θα μπορείτε να πουλάτε αγαθά στη θέση εμπορικών συναλλαγών και να αγοράζετε ό,τι χρειαζόσαστε από ξένους εμπόρους.<br><br><b>Επίδραση:</b> Επιτρέπει την παραγωγή [[v:i,h:6|αγαθών πολυτελείας]], την κατασκευή [[v:b,b:13,h:1|θέσεων εμπορικών συναλλαγών]] και δίνει 130 από κάθε αγαθό πολυτελείας.',2040:'Ένας ευτυχής πληθυσμός χρειάζεται φεστιβάλ, στα οποία μπορεί να περάσει την ώρα του διασκεδάζοντας και πίνοντας το φανταστικό κρασί σας που ρέει άφθονο. Στο Διόνυσο αρέσει να σας βλέπει να απολαμβάνετε όσα σας έχει δώσει!<br><br><b>Επιτρέπει:</b> Οικοδόμηση των [[v:b,b:9,h:1|ταβερνών]].',2050:'Ο πολιτισμός σας είναι πλούσιος σε εύγευστες απολαύσεις! Αν οι μάγειρες συνοδεύουν τους στρατιώτες σας στη μάχη, οι μυρωδιές θα τους θυμίζουν την εγχώρια κουζίνα και το ηθικό τους θα ενισχύεται. Μην ξεχνάτε ότι ένα καλό γεύμα δίνει και δύναμη... Και φυσικά κάθε μάγειρας έχει ένα αιχμηρό μαχαίρι, με το οποίο μπορεί να πάρει μέρος στη μάχη, αν χρειαστεί.<br><br><b>Επιτρέπει:</b> Εκπαίδευση [[v:u,u:310,h:9|Μαγείρων]] στους [[v:b,b:6,h:1|Στρατώνες]].',2060:'Ορθές γωνίες, τρίγωνα, κύκλοι... Μερικά φωτεινά μυαλά μπορούν πλέον να υπολογίσουν πώς να κατασκευάσετε τα κτίριά σας ακόμα καλύτερα και ομορφότερα. Σύντομα οι πόλεις σας θα είναι παραδείγματα για όλο τον κόσμο!<br><br><b>Επίδραση:</b> 4% μικρότερες δαπάνες για την οικοδόμηση κτιρίων.',2070:'Στις αγορές σας φτάνουν τα πιο περίεργα αγαθά από μακρινά νησιά. Εδώ μπορείτε να κλείσετε εμπορικές συνθήκες με εμπόρους, ώστε να προμηθευόσαστε με ασφάλεια όλα τα υλικά που χρειαζόσαστε.<br><br><b>Επιτρέπει:</b> [[v:i,h:14|Εμπορικές συνθήκες]], [[v:i,h:18,sh:0|Πολίτευμα:]] [[v:f,f:2,h:18,sh:3|Δημοκρατία]].',2080:'Ένας ξεκούραστος εργαζόμενος είναι προθυμότερος να εργαστεί από έναν εξαντλημένο, γι&apos; αυτό κάθε πολίτης πρέπει να έχει μια ημέρα αδείας την εβδομάδα. Αυτό θα κάνει όλους τους πολίτες σας πιο ευτυχισμένους!<br><br><b>Επίδραση:</b> Αυξάνει την [[v:i,h:3|ικανοποίηση]] και το μέγιστο όριο πολιτών σε όλες τις πόλεις.',2090:'Αν οι πολίτες σας βοηθήσουν λίγο στα ορυχεία αντί να μαυρίζουν στην παραλία, θα έχετε περισσότερες πρώτες ύλες και οι πολίτες λιγότερα εγκαύματα από τον ήλιο. Υπάρχει πάντα ανάγκη για μια χείρα βοηθείας στα ορυχεία, τα πριονιστήρια και τα αμπέλια.<br><br><b>Επιτρέπει:</b> Υπερφόρτωση των [[v:i,h:5|πηγών πρώτων υλών]].',2100:'Το νερό είναι πάντα επίπεδο. Μπορετε να χρησιμοποιήσετε αυτήν την ιδιότητα για να κάνετε και τα κτίριά σας επίπεδα! Η πόλη σας θα γίνει ομορφότερη και θα χρησιμοποιείτε λιγότερη πέτρα και ξύλο στο χτίσιμο!<br><br><b>Επίδραση:</b> 8% μικρότερες δαπάνες για την οικοδόμηση κτιρίων.',2110:'Τώρα το παλάτι σας έχει ακόμα περισσότερα ράφια, παράθυρα και συρτάρια, ακόμα περισσότερους σωρούς από αρχεία και έγγραφα και υπαλλήλους που τα καταλαβαίνουν κιόλας. Επιτέλους μπορείτε να χτίσετε και να διαχειριστείτε ένα ακόμη σημαντικό κτίριο στις πόλεις σας! Λόγω της περίπλοκης διαχείρισης και του ακριβέστερου καθορισμού όλων των διαδικασιών, το λαθρεμπόριο από κατειλημμένες πόλεις είναι πλέον αδύνατο, επειδή και οι κατακτητές αποκτούν λεπτομερείς πληροφορίες μέσω των αρχείων σας.<br><br><b>Επιτρέπει:</b> Έναν πρόσθετο [[v:i,h:0,sh:1|οικοδομικό χώρο]] στις πόλεις.',2120:'Οι πολίτες σας ζουν στον πλούτο και την ευημερία. Είναι ευτυχείς και υγιείς και έχουν πολύ λίγα προβλήματα. Ναι, θα μπορούσατε να πείτε ότι ζείτε σε ένα από εκείνα τα μέρη που βρίσκει κανείς σε γραφές των μεγάλων φιλοσόφων.<br><br><b>Επίδραση:</b> χώρος στέγασης +200, ικανοποίηση στην πρωτεύουσα +200.',2130:'Ξέρετε εδώ κι αρκετό καιρό πώς να εκμεταλλευόσαστε τους θησαυρούς του νησιού σας για να καλύψετε τις ανάγκες σας. Πρέπει τώρα να μορφώσετε τους πολίτες σας ώστε κάθε πριονιστήριο, λατομείο, αμπελώνας, ορυχείο κρυστάλλου ή λάκκος θείου να διοικείται από άντρες δυνατούς αλλά και επιδέξιους. Με αυτό τον τρόπο θα έχετε μεγαλύτερη παραγωγή και ο πολιτισμός σας θα γίνει πιο πλούσιος από ποτέ!<br><br><b>Επιτρέπει:</b> Οικοδόμηση [[v:b,b:18,h:1|Σπιτιών Ξυλοκόπου]], [[v:b,b:19,h:1|Κτιρίων Λατομείου]], [[v:b,b:21,h:1|Οινοποιείων]], [[v:b,b:20,h:1|Υαλουργείων]] και [[v:b,b:22,h:1|Πύργων Αλχημιστή]].',2140:'Αυτές οι γιορτές κρασιού είναι το γεγονός της χρονιάς! Μαζεύεται όλη η πόλη όταν πατιούνται τα καλύτερα σταφύλια της πόλης και τα παιδιά χαίρονται πολύ όταν ο «υγρός χρυσός» ρέει άφθονος! Με ένα πιεστήριο σταφυλιών, χειριζόμενο από έναν έμπειρο οινοποιό, θα είχατε όμως λιγότερη ζημία. Ο οινοποιός θα φρόντιζε και για την κατάλληλη αποθήκευση, που θα επέτρεπε στο κρασί να ωριμάσει καλύτερα!<br><br><b>Επιτρέπει:</b> Κατασκευή [[v:b,b:26,h:1|Αποστακτηρίων]].',2150:'Τα δάση των νησιών σας προσφέρουν ιδανικό οικοδομικό υλικό. Μπορείτε να κατασκευάσετε σταθερά δοκάρια για τις σκεπές των πιο μεγαλοπρεπών κτιρίων σας. Για να γίνει αυτό, πρέπει να γίνει σωστή επιλογή και επεξεργασία του ξύλου. Ένας ξυλουργός στην πόλη θα φροντίσει να καταναλώνετε λιγότερο οικοδομικό υλικό!<br><br><b>Επιτρέπει:</b> Κατασκευή [[v:b,b:23,h:1|Ξυλουργείων]].',2160:'Εφόσον οι αποθήκες σας δεν μπορούν να ανταπεξέλθουν μακροπρόθεσμα στις προμήθειες που αυξάνονται, χρειαζόσαστε εναλλακτικές λύσεις. Με μοντέρνα αδιάβροχα σκεπάσματα θα μπορέσετε να αποθηκεύσετε μεγάλες ποσότητες αγαθών έξω.<br><br><b>Επίδραση:</b> Επιτρέπει την κατασκευή [[v:b,b:29,h:1|αλάνας]].',2170:'Εϊναι μια καλή ιδέα το να καταγράψετε όλους τους κανόνες της συμβίωσης. Έτσι οι κάτοικοι του νησιού θα μπορούν να διαβάζουν ανά πάσα στιγμή τι επιτρέπεται και τι απαγορεύεται. Δεν υπάρχει πια λόγος για φθηνές δικαιολογίες!<br><br><b>Επιτρέπει:</b> [[v:i,h:18,sh:0|πολίτευμα]] [[v:f,f:4,h:18,sh:5|Νομοκρατία]].',2180:'Οι δοκιμασμένοι πολεμιστές σας, με τις γυαλιστερές πανοπλίες και τις εξελιγμένες πολεμικές σας μηχανές, είναι πλέον θρυλικοί. Ήρθε η ώρα να βγάλετε κέρδος από αυτούς. Οι άλλοι κυρίαρχοι θα έκαναν τα πάντα για να αποκτήσουν τις στρατιές σας.<br><br><b>Επιτρέπει:</b> Χτίσιμο της [[v:b,b:31,h:1|Μαύρης αγοράς]].',2999:'Οι πολίτες σας ζουν σε ευημερία και οι αγορές είναι γεμάτες από πολύτιμα αγαθά από όλον τον κόσμο! Οι δρόμοι είναι αναπτυγμένοι και καθαροί κι έτσι το οικοδομικό υλικό φτάνει στα εργοτάξια πιο γρήγορα.<br><br><b>Επίδραση:</b> +10 [[v:i,h:3|Ικανοποίηση]] και +20 μέγιστο όριο πολιτών σε κάθε πόλη ανά επίπεδο της έρευνας «Οικονομικό Μέλλον».',3010:'Εύρηκα! Ένα πηγάδι στην πόλη σας! Τώρα δεν χρειάζεται να περιμένετε να βρέξει. Οι πολίτες σας νιώθουν καλύτερα και τα χωράφια δεν μένουν ξερά για πολύ!<br><br><b>Επίδραση:</b> χώρος στέγασης +50, [[v:i,h:3|ικανοποίηση]] στην πρωτεύουσα +50.',3020:'Έχετε βρει έναν τρόπο να αρχειοθετήσετε καλύτερα τη γνώση σας! Χάρη στους παπύρους, δεν είναι πια απαραίτητο να κοπιάζετε σμιλεύοντας τις λέξεις σας στις βαριές πέτρες για να γεμίσετε τη βιβλιοθήκη σας!<br><br><b>Επίδραση:</b> 2% περισσότεροι πόντοι έρευνας.',3030:'Όταν μερικοί από τους πολίτες σας εγκαθίστανται σε άλλες πόλεις, μπορούν να σας βοηθούν για να προσέχετε τους γείτονές σας. Μπορείτε να μένετε ενημερωμένοι για το πότε ένας γείτονας κάνει μια ανακάλυψη ή ποιους πόρους έχει.<br><br><b>Επιτρέπει:</b> Χτίσιμο [[v:b,b:16,h:1|κρησφύγετων]].',3040:'Ο άνθρωπος δεν μπορεί πάντα να εξηγήσει με τη λογική ό,τι συμβαίνει στον κόσμο και τότε η απάντηση αναζητείται στους θεούς. Οι θεοί από την μία πλευρά είναι σαν τους ανθρώπους, αλλά από την άλλη είναι και πολύ διαφορετικοί. Εξάλλου, τι είδους λογική εξήγηση μπορεί να έχει το ανεξήγητο;<br><br><b>Επιτρέπει:</b> [[v:b,b:28,h:1|Ναούς]] και [[v:i,h:15,sh:3|Θαύματα]].',3050:'Η φύση σας δίνει ό,τι χρειαζόσαστε για να γράψετε: Τα πουλιά σας δίνουν τα φτερά τους και οι σουπιές από τη θάλασσα το μαύρο μελάνι τους! Τώρα μπορείτε να καταγράψετε τις ιδέες σας ακόμα πιο εύκολα!<br><br><b>Επίδραση:</b> 4% περισσότεροι πόντοι έρευνας.',3060:'Οι πολίτες σας πρέπει να μπορούν να ρίξουν μια ματιά στα πολιτιστικά επιτεύγματα άλλων λαών. Και σίγουρα θα ενδιαφερθούν και οι άλλοι λαοί να μάθουν από σας και να εκθέσουν μερικά από τα μεγάλα έργα τέχνης σας στα μουσεία τους.<br><br><b>Επιτρέπει:</b> Οικοδόμηση [[v:b,b:10,h:1|μουσείων]], [[v:i,h:14|Εμπορική συνθήκη]], Φοινικικά εμπορικά πλοία.',3070:'Έχετε μάθει πολλά για το ανθρώπινο σώμα! Τώρα μπορείτε να στείλετε τους γιατρούς στη μάχη για να βοηθήσετε τους πληγωμένους στρατιώτες για να σταθούν γρήγορα στα πόδια τους. Μπορούν να αναμείξουν τα σωστά βάμματα και μερικοί γιατροί ξέρουν ακόμα και μια μυστική συνταγή για ένα μείγμα που κάνει τους μαχητές σας ακόμα γενναιότερους.<br><br><b>Επιτρέπει:</b> Στρατολόγηση [[v:u,u:311,h:9|γιατρών]] στους [[v:b,b:6,h:1|Στρατώνες]].',3080:'Όταν οι ερευνητές σας εφευρίσκουν νέα αντικείμενα, μπορεί να σπάσει πολύ κρύσταλλο. Μπορεί να χαθεί και πολύ κρύσταλλο, επειδή η τάξη δεν είναι η ανώτατη αρετή στην ακαδημία σας. Όταν ένας οπτικός φροντίζει να έχετε την καλύτερη ποιότητα, αλλά και να επιστρέφετε το κρύσταλλο και τους φακούς στη θέση τους, καταναλώνετε πολύ λιγότερο κρύσταλλο.<br><br><b>Επιτρέπει:</b>Κατασκευή [[v:b,b:25,h:1|Εργαστηρίου Οπτικού]].',3081:'Οι ερευνητές σας έχουν την επιθυμία να δοκιμάζουν τις θεωρίες τους και στην πράξη. Αυτά τα πειράματα σίγουρα θα επιταχύνουν κατά πολύ τις έρευνες, συνεπάγονται όμως και επιπλέον εξοπλισμό εργαστηρίου. <br><br><b>Επιτρέπει:</b> Αγορά πόντων έρευνας έναντι κρυστάλλου, [[v:i,h:18,sh:0|πολίτευμα:]] [[v:f,f:6,h:18,sh:7|Τεχνοκρατία]].',3090:'Μια λαμπρή συσκευή: Ένας έξυπνος εφευρέτης κατάφερε να διδάξει το γράψιμο σε μια μηχανή. Τώρα μπορείτε να αντιγράψετε τις γραφές σας ευκολότερα και οι ακαδημίες σας μπορούν να ανταλλάσσουν ιδέες γρηγορότερα!<br><br><b>Επίδραση:</b> 8% περισσότεροι ερευνητικοί πόντοι.',3100:'Έχετε μάθει να πετάτε σαν πουλιά! Τώρα μπορείτε να κατασκευάσετε μια μηχανή που μπορεί να υψώσει ένα άτομο στον ουρανό και να σφυρίζει πάνω από τα κεφάλια των εχθρών πετώντας τα μεγάλης ταχύτητας βέλη πίσω από τις πρώτες γραμμές.<br><br><b>Επιτρέπει:</b> Κατασκευή [[v:u,u:312,h:9|Γυροκόπτερων]] στους [[v:b,b:6,h:1|Στρατώνες]].',3110:'Ένα θαύμα: Μπορείτε πλέον να εκτοξεύσετε τους παπύρους από σωλήνες, ώστε να φτάνουν στους επιστήμονές σας ακόμα γρηγορότερα! Αυτό κάνει περιττές τις διαδρομές αγγελιοφόρων και πιο οικονομικές τις έρευνες!<br><br><b>Επίδραση:</b> -3 κόστος συντήρησης σε χρυσό ανά επιστήμονα.',3120:'Τώρα μπορείτε να αφήσετε τα σκάφη σας να πλεύσουν κάτω από το νερό, χωρίς να βυθίζονται! Οι ωκεανοί είναι δικοί σας! Κανένας εχθρός δε σας βλέπει, όταν τον καταδιώκετε κάτω από το νερό και τον βυθίζετε προτού σας παρατηρήσει!<br><br><b>Επιτρέπει:</b> Κατασκευή [[v:u,s:212,h:10|υποβρυχίων]] στο [[v:b,b:5,h:1|Ναυπηγείο]].',3130:'Έχετε κατορθώσει να κάνετε μια μηχανή να πετάξει! Τώρα, ούτε ο ουρανός δεν είναι πια όριο! Μπορείτε να αφήσετε τα τεράστια μπαλόνια να πετάξουν πάνω από τα κεφάλια των εχθρών σας και να τους ρίξουν φωτιά ή κυψέλες με μέλισσες από ψηλά!<br><br><b>Επιτρέπει:</b> Κατασκευή των [[v:u,u:309,h:9|βομβαρδιστικών]] στους [[v:b,b:6,h:1|Στρατώνες]].',3140:'Υπήρξαν τώρα τελευταία διάφορα γεγονότα με την εκρηκτική σκόνη και άλλες ουσίες. Έχετε οργανώσει ένα εργαστήριο για όλους τους περίεργους επιστήμονες, έτσι ώστε οι συχνές εκρήξεις να μην ενοχλούν πια τη διδασκαλία στην ακαδημία. Το εργαστήριο έχει και ισχυρότατους τοίχους και δεν μπορεί να καεί εύκολα.<br><br><b>Επιτρέπει:</b> Οικοδόμηση των [[v:b,b:15,h:1|εργαστηρίων]].',3150:'Σκεφτήκατε ότι μια άλλη μορφή πολιτεύματος θα μπορούσε να σας προσφέρει προτερήματα. Για να γίνει αυτό, πρέπει να οργανωθούν κάποια πράγματα και ίσως και να διοριστούν κάποια άτομα, όμως μια κυβέρνηση είναι κάτι πολύ ωραίο.<br><br><b>Επιτρέπει:</b> Επανάσταση, [[v:i,h:18,sh:0|πολιτεύματα]] [[v:f,f:3,h:18,sh:4|Δικτατορία]] και [[v:f,f:5,h:18,sh:6|Ολιγαρχία]].',3160:'Δεν χρειαζόσαστε νόμους, οι θρησκευτικοί νόμοι είναι παραπάνω από αρκετοί. Και με την ευκαιρία, δεν χρειαζόσαστε ούτε όλους αυτούς τους υπαλλήλους. <br><br><b>Επιτρέπει:</b> [[v:i,h:18,sh:0|μορφή πολιτεύματος]] [[v:f,f:7,h:18,sh:8|Θεοκρατία]].',3170:'Καλύτερα να αρχειοθετήσετε τους πολύτιμους ναυτικούς χάρτες σας. Έτσι οι ναύτες σας θα έχουν πάντα τον σωστό χάρτη, που θα εξοικονομεί χρόνο στα ταξίδια τους.<br><br><b>Επιτρέπει:</b> Χτίσιμο του [[v:b,b:32,h:1|Αρχείου ναυτικών χαρτών]].',3999:'Οι πιο έξυπνοι εγκέφαλοι στον κόσμο δουλεύουν για να απαντήσουν τις μεγάλες ερωτήσεις: Γιατί είσαστε εδώ; Γιατί είναι όλα έτσι όπως είναι; Πλησιάσατε άλλο ένα βήμα στο Διαφωτισμό.<br><br><b>Επίδραση:</b> 2% περισσότεροι πόντοι έρευνας.',4010:'Μια δεξαμενή στη θάλασσα, την οποία μπορείτε να αδειάζετε. Τώρα είναι απλό να φτιάξετε πλοία και να τα ρίχνετε στη θάλασσα. Ας δημιουργηθεί λοιπόν ένας δυνατός πολεμικός στόλος, που θα μάθει στους εχθρούς σας να τρέμουν!<br><br><b>Επιτρέπει:</b> κατασκευή δεύτερου [[v:b,b:3,h:1|εμπορικού λιμανιού]], [[v:b,b:5,h:1|ναυπηγείου]].',4020:'Αυτές οι μεγάλες πορείες πάνω από τα βουνά και μέσα από τα έλη σημαίνουν ότι το υλικό σας θα φθαρεί πολύ γρήγορα. Αν καταγράψετε πώς κάνουν πορείες οι στρατιώτες σας χωρίς να πεδικλώνονται στα χαμόκλαδα ή να βυθίζονται στη λάσπη, οι στρατιώτες θα πρέπει να επιδιορθώνουν τις στολές τους πιο σπάνια.<br><br><b>Επίδραση:</b> 2% λιγότερη συντήρηση για τους [[v:u,u:301,h:9|στρατιώτες]].',4030:'Η αναχαίτιση των πειρατών, των βαρβάρων και άλλων κακοποιών θα είναι πολύ ευκολότερη με επαγγελματίες στρατιώτες! Μπορεί να είναι ακριβότερο από το να κάνετε τους πολίτες σας στρατιώτες μόνο σε περίπτωση πολέμου, αλλά ως αντάλλαγμα, τα στρατεύματά σας θα εκπαιδευτούν πολύ καλύτερα στο ξίφος, τη λόγχη και την ασπίδα!<br><br><b>Επιτρέπει:</b> Στρατολόγηση [[v:u,u:302,h:9|ξιφομάχων]] και [[v:u,u:303,h:9|οπλιτών]] στους [[v:b,b:6,h:1|Στρατώνες]].',4040:'Με το κεφάλι ενός κριού φτιαγμένο από μέταλλο και τη δύναμη δέκα ατόμων μπορείτε να γκρεμίσετε ακόμη και τα τείχη μιας πόλης. Τώρα θα είναι εύκολο για τους στρατιώτες σας να κατακτήσουν άλλες πόλεις!<br><br><b>Επιτρέπει:</b> Κατασκευή [[v:u,u:307,h:9|κριών]] στους [[v:b,b:6,h:1|Στρατώνες]].',4050:'Οι στρατιώτες σας είναι περήφανοι που μπορούν να υπηρετούν το στρατό και την πατρίδα τους. Φροντίζουν καλύτερα και τις στολές τους κι έτσι δεν χρειάζεται να τις ράβετε και να τις μπαλώνετε συχνά.<br><br><b>Επίδραση:</b> 4% μικρότερο κόστος συντήρησης και επιτρέπει το [[v:i,h:18,sh:0|πολίτευμα]] [[v:f,f:1,h:18,sh:2|Αριστοκρατία]].',4060:'Τώρα ξέρετε πώς να πετυχαίνετε με βέλη τους εχθρούς σας. Πρέπει να ξεκινήσετε αμέσως να εκπαιδεύσετε τους στρατιώτες σας σε αυτήν τη δεξιότητα, ώστε να έχετε σύντομα τοξότες στη μάχη!<br><br><b>Επιτρέπει:</b> Εκπαίδευση [[v:u,u:313,h:9|Τοξοτών]] στους [[v:b,b:6,h:1|Στρατώνες]].',4070:'Με αυτήν την τεχνολογία έχετε τη δύναμη να πετάξετε στον αέρα ακόμη και τεράστιους βράχους! Αν οι βράχοι είναι αρκετά μεγάλοι, μπορούν ακόμη και να γκρεμίσουν τα τείχη μιας πόλης!<br><br><b>Επιτρέπει:</b> Κατασκευή [[v:u,u:306,h:9|καταπελτών]] στους [[v:b,b:6,h:1|Στρατώνες]].',4080:'Αν προσλάβετε έναν δημόσιο υπάλληλο, μπορείτε όχι μόνο να λεηλατήσετε τις πόλεις των εχθρών σας, αλλά και να τις διαχειριστείτε, ώστε να τις χρησιμοποιήσετε για τον εαυτό σας. Σύντομα θα μπορείτε να καταλάβετε άλλες πόλεις με τον στρατό σας και από &apos;κει να αυξήσετε τον πλούτο σας εκτελώντας αποστολές.<br><br><b>Επιτρέπει:</b> [[v:i,h:8,sh:8|Κατάληψη]].',4090:'Οι στρατιώτες σας μπορούν να πολεμήσουν πολύ καλύτερα αν δεν χρειάζεται να κουβαλάνε τόσα πολλά. Ο εξοπλισμός τους θα αντέχει πολύ περισσότερο στις μακρινές πορείες, έτσι δεν θα χρειάζεται να τον επιδιορθώνετε τόσο συχνά.<br><br><b>Επίδραση:</b> 8% λιγότερη συντήρηση για τους [[v:u,u:301,h:9|στρατιώτες]].',4100:'Αυτό το μαύρο μείγμα από την κουζίνα των αλχημιστών μπορεί να προκαλέσει πυρκαγιά με έναν δυνατό κρότο και να δημιουργήσει χάος. Τώρα μπορείτε να γεμίσετε με αυτό σιδερένιους σωλήνες και να εκτοξεύσετε βαριές σφαίρες.<br><br><b>Επιτρέπει:</b> Εκπαίδευση [[v:u,u:304,h:9|Πυροβολητών]] στους [[v:b,b:6,h:1|Στρατώνες]] και κατασκευή [[v:u,s:217,h:10|Πυραυλάκατων]] στο [[v:b,b:5,h:1|Ναυπηγείο]].',4110:'Οι επιστήμονές σας έχουν χτίσει έναν μηχανικό γίγαντα με μυς φτιαγμένους από μέταλλο και καρδιά από ατμό! Μόνο οι πιο δυνατοί και πιο ειδικευμένοι στρατιώτες μπορούν να οδηγήσουν έναν τέτοιο κολοσσό, αλλά θα προκαλέσει φόβο και τρόμο στο πεδίο της μάχης!<br><br><b>Επιτρέπει:</b> Εκπαίδευση [[v:u,u:308,h:9|γιγάντων ατμού]] στους [[v:b,b:6,h:1|Στρατώνες]].',4120:'Το σίδερό σας γίνεται βαρύτερο και σκληρότερο. Τώρα μπορείτε να φτιάξετε και κάννες μέσω των οποίων μπορείτε να εκτοξεύσετε τεράστιες σφαίρες στους εχθρούς σας! Αν μπορείτε να εκτοξεύσετε βόμβες από μεγάλη απόσταση, οι εχθροί σας και τα τείχη της πόλης τους θα τρέμουν από φόβο!<br><br><b>Επιτρέπει:</b> Κατασκευή [[v:u,u:305,h:9|κανονιών]] στους [[v:b,b:6,h:1|Στρατώνες]].',4130:'Το Θείο είναι πραγματικό έργο του διαβόλου! Με κάθε νέο μείγμα μπορείτε να έχετε και καλύτερα αποτελέσματα με αυτό το πολύτιμο αγαθό. Ένας χώρος για ασφαλή πειράματα θα επέτρεπε στους πυροτεχνουργούς σας να δοκιμάζουν τις εφευρέσεις τους, χωρίς να χρησιμοποιούν άθελά τους ως στόχους τα τριγύρω κτίρια!<br><br><b>Επιτρέπει:</b> Κατασκευή [[v:b,b:27,h:1|Εργαστηρίου Πυροτεχνουργού]].',4999:'Οι πολεμικές μηχανές σας είναι ισχυρότερες και δυνατότερες από ποτέ άλλοτε και ο στρατός σας είναι τέλεια οργανωμένος! Οι δημόσιοι υπάλληλοι που διαχειρίζονται τους στρατιωτικούς τα έχουν όλα υπό έλεγχο και έτσι χαμηλώνουν τις δαπάνες συντήρησης.<br><br><b>Επίδραση:</b> 2% λιγότερη συντήρηση για [[v:u,u:301,h:9|μονάδες]].'},
 				researchshortdesc: {1010:'Επιτρέπει την κατασκευή βαλλιστροφόρων στο Ναυπηγείο.',1020:'2 % λιγότερο κόστος συντήρησης για τα πλοία.',1030:'Επιτρέπει το χτίσιμο παλατιών, την ίδρυση αποικιών και το εμπόριο με μακρινές χώρες.',1040:'Επιτρέπει την κατασκευή Πρεσβειών.',1050:'4 % λιγότερο κόστος συντήρησης για τα πλοία.',1060:'Επιτρέπει την κατασκευή Φλογοβόλων στο Ναυπηγείο.',1070:'Επιτρέπει την κατασκευή καταπελτοφόρων στο Ναυπηγείο.',1080:'Επιτρέπει τις Στρατιωτικές Συνθήκες.',1090:'8 % λιγότερο κόστος συντήρησης για τα πλοία.',1100:'Επιτρέπει την κατασκευή Κωπήλατων τορπιλακάτων στο Ναυπηγείο.',1110:'Επιτρέπει την κατασκευή Κανονιοφόρων στο Ναυπηγείο.',1120:'Επιτρέπει την κατασκευή Αρχιτεκτονικού Γραφείου.',1130:'Επιτρέπει γρηγορότερα καράβια με μικρότερο φορτίο.',1140:'Επιτρέπει την κατασκευή Βοηθητικών στο Ναυπηγείο.',1150:'Επιτρέπει την κατασκευή Εμβόλων ατμού στο Ναυπηγείο.',1160:'Επιτρέπει την κατασκευή Μεταφορικών αερόστατων στο Ναυπηγείο.',1170:'Επιτρέπει το χτίσιμο πειρατικού φρουρίου, τα ταξίδια κουρσέματος, τις εφόδους, τη συμμετοχή στην κατάταξη πόντων κουρσέματος.',1999:'2 % λιγότερο κόστος συντήρησης για τα πλοία για κάθε επίπεδο μέλλοντος.',2010:'Επιτρέπει την κατασκευή των αποθηκών εμπορευμάτων.',2020:'2 % λιγότερες ποσότητες υλικών για την κατασκευή κτιρίων.',2030:'Επιτρέπει την παραγωγή αγαθών πολυτελείας, την κατασκευή θέσεων εμπορικών συναλλαγών και δίνει 130 από κάθε αγαθό πολυτελείας.',2040:'Επιτρέπει την κατασκευή ταβερνών.',2050:'Επιτρέπει την εκπαίδευση Μαγείρων στους Στρατώνες.',2060:'4 % λιγότερες ποσότητες υλικών για την κατασκευή κτιρίων.',2070:'Επιτρέπει τις Εμπορικές συνθήκες και το Πολίτευμα «Δημοκρατία».',2080:'Αυξάνει την ικανοποίηση και το μέγιστο όριο πολιτών σε όλες τις πόλεις.',2090:'Επιτρέπει την Υπερφόρτωση των πηγών πρώτων υλών.',2100:'8 % λιγότερες ποσότητες υλικών για την κατασκευή κτιρίων.',2110:'Δημιουργεί ένα πρόσθετο οικοδομικό χώρο στις πόλεις.',2120:'Χώρος στέγασης +200, ικανοποίηση στην πρωτεύουσα +200.',2130:'Επιτρέπει την κατασκευή Σπιτιών Ξυλοκόπου, Κτιρίων Λατομείου, Οινοποιείων, Υαλουργείων και Πύργων Αλχημιστή.',2140:'Επιτρέπει την κατασκευή Αποστακτήριων.',2150:'Επιτρέπει την κατασκευή Ξυλουργείων.',2160:'Επιτρέπει την κατασκευή Αλάνας.',2170:'Επιτρέπει το πολίτευμα Νομοκρατία.',2180:'Επιτρέπει την κατασκευή Μαύρης αγοράς.',2999:'+10 Ικανοποίηση και +20 μέγιστο όριο πολιτών σε κάθε πόλη για κάθε επίπεδο μέλλοντος.',3010:'Χώρος στέγασης +50, ικανοποίηση στην πρωτεύουσα +50.',3020:'2 % περισσότεροι πόντοι έρευνας.',3030:'Επιτρέπει την κατασκευή κρησφύγετων.',3040:'Επιτρέπει την κατασκευή Ναών και τη χρήση Θαυμάτων.',3050:'4 % περισσότεροι πόντοι έρευνας.',3060:'Επιτρέπει την κατασκευή μουσείων, τη σύναψη Εμπορικών Συνθηκών και την αγορά Φοινικικών εμπορικών πλοίων.',3070:'Επιτρέπει την εκπαίδευση γιατρών στους Στρατώνες.',3080:'Επιτρέπει την κατασκευή Εργαστηρίου Οπτικού.',3081:'Επιτρέπει την Αγορά πόντων έρευνας έναντι κρύσταλλου και το πολίτευμα Τεχνοκρατία.',3090:'8 % περισσότεροι πόντοι έρευνας.',3100:'Επιτρέπει την κατασκευή Γυροκόπτερων στους Στρατώνες.',3110:'-3 κόστος συντήρησης σε χρυσό ανά επιστήμονα.',3120:'Επιτρέπει την κατασκευή υποβρυχίων στο Ναυπηγείο.',3130:'Επιτρέπει την κατασκευή βομβαρδιστικών στους Στρατώνες.',3140:'Επιτρέπει την κατασκευή εργαστηρίων.',3150:'Επιτρέπει την Επανάσταση και τα πολιτεύματα Δικτατορία και Ολιγαρχία.',3160:'Επιτρέπει το πολίτευμα Θεοκρατία.',3170:'Επιτρέπει την κατασκευή Αρχείου ναυτικών χαρτών.',3999:'2 % περισσότεροι πόντοι έρευνας για κάθε επίπεδο μέλλοντος.',4010:'Επιτρέπει την κατασκευή δεύτερου εμπορικού λιμανιού ή ναυπηγείου.',4020:'2 % λιγότερο κόστος συντήρησης για τους στρατιώτες.',4030:'Επιτρέπει την εκπαίδευση ξιφομάχων και οπλιτών στους Στρατώνες.',4040:'Επιτρέπει την κατασκευή κριών στους Στρατώνες.',4050:'4 % λιγότερο κόστος συντήρησης για τους στρατιώτες και επιτρέπει το πολίτευμα Αριστοκρατία.',4060:'Επιτρέπει την εκπαίδευση Τοξοτών στους Στρατώνες.',4070:'Επιτρέπει την κατασκευή καταπελτών στους Στρατώνες.',4080:'Επιτρέπει την Κατάληψη.',4090:'8 % λιγότερο κόστος συντήρησης για τους στρατιώτες.',4100:'Επιτρέπει την εκπαίδευση Πυροβολητών στους Στρατώνες και την κατασκευή Πυραυλάκατων στο Ναυπηγείο.',4110:'Επιτρέπει την εκπαίδευση Γιγάντων ατμού στους Στρατώνες.',4120:'Επιτρέπει την κατασκευή κανονιών στους Στρατώνες.',4130:'Επιτρέπει την κατασκευή Εργαστηρίου Πυροτεχνουργού.',4999:'2 % λιγότερο κόστος συντήρησης για τους στρατιώτες για κάθε επίπεδο μέλλοντος.'},
-				resadvtxt: ['Κανένας διαθέσιμος επιστήμονας','Διαθέσιμη σε {0}','Διαθέσιμη','ανά Ώρα','Βασική παραγωγή','Προνομιούχα Επιβράβευση','Ανεπαρκής ποσότητα πόντων έρευνας','Έχει ήδη ερευνηθεί.','Άμεσα','Απαίτηση(εις)','Κόστη','Διαθέσιμη σε'],
-				dipladvtxt: ['Μηνύματα ({0})','Αγορά ({0})','Συνθήκες','Συμμαχία ({0})','Αναζήτηση παίκτη','Αγνοημένοι παίκτες','Συμμαχία','Εισερχόμενα','Εξερχόμενα','Αρχείο εισερχομένων','Αρχείο εξερχομένων','Αρχείο εισερχ.','Αρχείο εξερχ.','Ενέργεια','Αποστολέας','Θέμα','Πόλη','Ημερομηνία','Πατήστε για εμφάνιση/απόκρυψη του μηνύματος','Μετάβαση στην πόλη του αποστολέα','Απάντηση στον αποστολέα','Απάντηση','Διαγραφή','Αναφορά','Αγνόηση','Απάντηση σε όλους','Αυτή η λειτουργία προωθεί προσβολές και επιθέσεις στον Διαχειριστή του παιχνιδιού (GO).\nΘέλετε να προωθήσετε αυτό το μήνυμα στον Διαχειριστή του παιχνιδιού (GO);','Τα μηνύματα που θα αποστέλλονται από τον συγκεκριμένο παίκτη, δεν θα προβάλλονται πλέον.','Σίγουρα;','Ναι','Ακύρωση','Κανένα διαθέσιμο΄μήνυμα.','επόμενα','προηγούμενα','Όλα','Μη αναγνωσμένα','Αναγνωσμένα','Κανένα','Σήμανση ως αναγνωσμένα','Διαγραφή','Επίδραση','Πόντοι διπλωματίας: {0}','Παραλήπτης','Νέα δημοσίευση','Αγορά','Δεν υπάρχουν στην Αγορά μηνύματα επί του παρόντος. Επικοινωνήστε με τους γείτονές σας τώρα δημιουργώντας μια νέα δημοσίευση.','Αποδοχή','Απόρριψη','Εμπορικές συνθήκες','Συνέταιρος','Πόλεις','Κατάσταση','Ενέργεια','Ακύρωση εμπορικής συνθήκης','{0} πόλεις','{0} πόλη','Θέση','Ονομασία','Πόρος<br>πολυτελείας','Πολιτιστικές συνθήκες {0}','Μετάβαση στο μουσείο','Κατανομή πολιτιστικών αγαθών ({0})','Συζήτηση συμμαχίας','Συζ. συμμαχίας ({0})','Πληροφορίες συμμαχίας','Πληρ. συμμαχίας','Λίστα μελών','Αναζήτηση συμμαχίας','Υποσυζήτηση','Θέματα','Τελευταία δημοσίευση','Ενέργειες','Θέματα: {0}','Τίτλος','Απαντήσεις','Δημιουργία θέματος','Απάντηση','Επιστροφή στην κορυφή','Αναφορά','Παράθεση','Τίτλος','Υποβολή','Απομένουν <b>{0}</b> χαρακτήρες','Απομένει <b>{0}</b> χαρακτήρας','Δεν απομένει κανένας χαρακτήρας','Όνομα χρήστη','Αναζήτηση','Θέση','Τίτλος','Όνομα χρήστη','Συμμαχία','Βαθμοί','Ενέργειες','Κανένας παίκτης δεν βρέθηκε για αυτή την αναζήτηση.','Παίκτες που αγνοείτε','Καμιά εισαγωγή','Τίτλος','Όνομα','Συμμαχία','Ενέργεια','Δεν θα αγνοείτε πλέον αυτόν τον παίκτη.','Διαγραφή','Εδώ μπορείτε να γράψετε μια νέα δημοσίευση στην αγορά του νησιού, η οποία θα μπορεί να διαβαστεί από όλους τους κατοίκους του.','Θέμα','Μήνυμα','Δημιουργία νέας δημοσίευσης','Επιστροφή','{0} χαρακτήρες','{0} χαρακτήρας','Κανένας χαρακτήρας'],
+				resadvtxt: ['Κανένας διαθέσιμος επιστήμονας','Διαθέσιμη σε {0}','Διαθέσιμη','ανά Ώρα','Βασική παραγωγή','Προνομιούχα Επιβράβευση','Ανεπαρκής ποσότητα πόντων έρευνας','Έχει ήδη ερευνηθεί.','Άμεσα','Απαίτηση(εις)','Κόστη','Διαθέσιμη σε','Το μέγιστο επιτεύχθηκε!'],
+				dipladvtxt: ['Μηνύματα ({0})','Αγορά ({0})','Συνθήκες','Συμμαχία ({0})','Αναζήτηση παίκτη','Αγνοημένοι παίκτες','Συμμαχία','Εισερχόμενα','Εξερχόμενα','Αρχείο εισερχομένων','Αρχείο εξερχομένων','Αρχείο εισερχ.','Αρχείο εξερχ.','Ενέργεια','Αποστολέας','Θέμα','Πόλη','Ημερομηνία','Πατήστε για εμφάνιση/απόκρυψη του μηνύματος','Μετάβαση στην πόλη του αποστολέα','Απάντηση στον αποστολέα','Απάντηση','Διαγραφή','Αναφορά','Αγνόηση','Απάντηση σε όλους','Αυτή η λειτουργία προωθεί προσβολές και επιθέσεις στον Διαχειριστή του παιχνιδιού (GO).\nΘέλετε να προωθήσετε αυτό το μήνυμα στον Διαχειριστή του παιχνιδιού (GO);','Τα μηνύματα που θα αποστέλλονται από τον συγκεκριμένο παίκτη, δεν θα προβάλλονται πλέον.','Σίγουρα;','Ναι','Ακύρωση','Κανένα διαθέσιμο΄μήνυμα.','επόμενα','προηγούμενα','Όλα','Μη αναγνωσμένα','Αναγνωσμένα','Κανένα','Σήμανση ως αναγνωσμένα','Διαγραφή','Επίδραση','Πόντοι διπλωματίας: {0}','Παραλήπτης','Νέα δημοσίευση','Αγορά','Δεν υπάρχουν στην Αγορά μηνύματα επί του παρόντος. Επικοινωνήστε με τους γείτονές σας τώρα δημιουργώντας μια νέα δημοσίευση.','Αποδοχή','Απόρριψη','Εμπορικές συνθήκες','Συνέταιρος','Πόλεις','Κατάσταση','Ενέργεια','Ακύρωση εμπορικής συνθήκης','{0} πόλεις','{0} πόλη','Θέση','Ονομασία','Πόρος<br>πολυτελείας','Πολιτιστικές συνθήκες {0}','Μετάβαση στο μουσείο','Κατανομή πολιτιστικών αγαθών ({0})','Συζήτηση συμμαχίας','Συζ. συμμαχίας ({0})','Πληροφορίες συμμαχίας','Πληρ. συμμαχίας','Λίστα μελών','Αναζήτηση συμμαχίας','Υποσυζήτηση','Θέματα','Τελευταία δημοσίευση','Ενέργειες','Θέματα: {0}','Τίτλος','Απαντήσεις','Δημιουργία θέματος','Απάντηση','Επιστροφή στην κορυφή','Αναφορά','Παράθεση','Τίτλος','Υποβολή','Απομένουν <b>{0}</b> χαρακτήρες','Απομένει <b>{0}</b> χαρακτήρας','Δεν απομένει κανένας χαρακτήρας','Όνομα χρήστη','Αναζήτηση','Θέση','Τίτλος','Όνομα χρήστη','Συμμαχία','Βαθμοί','Ενέργειες','Κανένας παίκτης δεν βρέθηκε για αυτή την αναζήτηση.','Παίκτες που αγνοείτε','Καμιά εισαγωγή','Τίτλος','Όνομα','Συμμαχία','Ενέργεια','Δεν θα αγνοείτε πλέον αυτόν τον παίκτη.','Διαγραφή','Εδώ μπορείτε να γράψετε μια νέα δημοσίευση στην αγορά του νησιού, η οποία θα μπορεί να διαβαστεί από όλους τους κατοίκους του.','Θέμα','Μήνυμα','Δημιουργία νέας δημοσίευσης','Επιστροφή','{0} χαρακτήρες','{0} χαρακτήρας','Κανένας χαρακτήρας','Προώθηση στη συμμαχία'],
 				forminetxt: ['Το ξύλο από το κοντινό δάσος πριονίζεται σε κομμάτια στο πριονιστήριο. Έπειτα χρησιμοποιείται ως υλικό για την κατασκευή των κτηρίων και πολλών άλλων. Το πριονιστήριο επεκτείνεται από όλους τους κατοίκους του νησιού. Όσο μεγαλύτερο είναι, τόσο περισσότερους εργαζόμενους μπορείτε να απασχολήσετε εκεί.','Διορισμός εργατών','Χωρητικότητα','ανά ώρα','Εισόδημα πόλης','Υπερφόρτωση!','Κανένας εργάτης','Ελάχιστο','Μέγιστος αριθμός εργατών','Μέγιστο','Επιβεβαίωση','Παραγωγή εργατών','Παραγωγή ανειδίκευτων','Τεχνοκρατία','Προνομιούχα Επιβράβευση','Κινηματοθέατρο','Πύργος του Ήλιου','Διαφθορά','Σύνολο','{0} Πολίτες','Επαυξημένη παραγωγή {0}',['ξύλου','κρασιού','μαρμάρου','κρύσταλλου','θείου'],'{0} Ημέρες','Παρακινημένοι εργάτες','Δώστε κίνητρο στους εργάτες σας στο Κινηματοθέατρο.','+ 20 % για 12 ώρες','Ανενεργή','Προβολή','Παίκτες σε αυτό το νησί','Παίκτης','Πόλη','Επίπεδο','Εργάτες','Δωρηθέν ξύλο','Ενέργειες','Επίπεδο {0}','{0} Εργάτες','{0} Εργάτης','Δωρεά Αμβροσίας','Αυτή η λειτουργία δεν μπορεί να χρησιμοποιηθεί αν έχετε Αμβροσία που προέρχεται μόνο από τον οδηγό. Η δωρεά εμφανίζεται στη λίστα δωρητών ως κανονική δωρεά ξυλείας.','Μέγιστη δωρεά','μέγ.',''],
 				academytxt: ['Η ακαδημία είναι ένας θαυμάσιος τόπος γνώσης, που συνδυάζει τις παλιές παραδόσεις με τη σύγχρονη τεχνολογία. Τα σοφότερα κεφάλια της πόλης σας περιμένουν πώς και πώς να μπουν μέσα! Έχετε υπόψη ότι κάθε επιστήμονας χρειάζεται το εργαστήριό του, που κοστίζει χρήματα. Όσο μεγαλύτερη είναι η ακαδημία, τόσο περισσότεροι επιστήμονες μπορούν να απασχολούνται συγχρόνως.','Διορισμός επιστημόνων','Επίτευγμα έρευνας','ανά Ώρα','Έσοδα πόλης','Βασική Παραγωγή','Προνομιούχα Επιβράβευση','Έρευνα','Μορφή Πολιτεύματος','Διαφθορά','Σύνολο','Υπερφόρτωση','Κανένας<br>επιστήμονας','Μέγιστος αριθμός<br>επιστημόνων','Επιβεβαίωση','Διενέργεια πειράματος','Οι επιστήμονες σας πειραματίζονται εδώ και πολύ καιρό και επιτέλους ανακάλυψαν έναν τρόπο να δημιουργήσουν {0} πόντους έρευνας. Χρειαζόσαστε {1} κρύσταλλο για να διεξάγετε το κάθε πείραμα. Αλλά προσέξτε! η χημική αντίδραση που συμβαίνει κατά την διάρκεια αυτών των πειραμάτων είναι δυνατή και εντυπωσιακή. Γι&apos; αυτό και οι επιστήμονες χρειάζονται <b>4 ώρες</b> για να καθαρίσουν το εργαστήριο τους έτσι ώστε να μπορέσουν να συνεχίσουν να πειραματίζονται με τον κρύσταλλο.','Η διαθέσιμη χωρητικότητα δεν επαρκεί','Επίτευγμα πειράματος','Κόστος','Εκτέλεση πειράματος','Οι επιστήμονες είναι ακόμα στη διαδικασία καθαρισμού του εργαστηρίου μετά την εκτέλεση του πειράματος. Ολοκλήρωση του καθαρισμού:','Για να εκτελέσετε το πείραμα<br>απαιτούνται ακόμα {0}.','Με την τρέχουσα ποσότητα κρυστάλλου που έχετε,<br>μπορείτε να πραγματοποιήσετε έως και {0}.','κρύσταλλο','κρύσταλλα','πείραμα','πειράματα','Κάθε πείραμα, με την τρέχουσα παραγωγή,<br>μειώνει το χρόνο ολοκλήρωσης των ερευνών κατά<br><b>{0}<b>','Το πείραμα είναι σε εξέλιξη','Η ποσότητα μπορεί να παραχθεί ως εξής:{0}','Έχετε μηδενική παραγωγή στις {0} κρυστάλλου που έχετε!','Δεν έχετε πόλεις κρυστάλλου!','{0}<br>κρυστάλλου','Ωριαία<br>παραγωγή','Διάρκεια<br>παραγωγής'],
 				barrackstxt: ['Η ατίθαση νεολαία εκπαιδεύεται στους στρατώνες για να αποτελέσει ένα δυνατό στρατιωτικό δυναμικό. Οι στρατιώτες σας ξέρουν πώς να χειριστούν τα ξίφη, τις λόγχες και τους καταπέλτες και είναι επίσης ικανοί να οδηγήσουν τις δυνατότερες πολεμικές μηχανές με ασφάλεια στο πεδίο της μάχης. Τα στρατεύματα εκπαιδεύονται γρηγορότερα όταν επεκτείνετε τους στρατώνες σας.','Μειονέκτημα κατοχής','Αυτή η πόλη είναι υπό κατοχή από ξένα στρατεύματα.<br>Νέες μονάδες μπορούν να εκπαιδευτούν αλλά με διπλάσιο κόστος!','Μονάδες προγραμματισμένες για εκπαίδευση','Δεν έχουν επιλεγεί μονάδες','Δεν απαιτείται κανένας πολίτης','πολίτες','πολίτης','Δεν απαιτείται καμία μονάδα','μονάδες','μονάδα','Δεν απαιτείται κόστος συντήρησης','Δεν υπάρχει διάρκεια εκπαίδευσης',{wood:'ξύλου',wine:'κρασιού',marble:'μαρμάρου',crystal:'κρύσταλλου',sulfur:'θείου',upkeep:'Κόστος συντήρησης',time:'Απαιτούμενη διάρκεια εκπαίδευσης'},'Ολοκλήρωση:','Πακέτο πληθυσμού','Πακέτα ομοιωμάτων','Τα πακέτα ομοιωμάτων σας επιτρέπουν να εξαπατάτε τους κατασκόπους των άλλων παικτών σχετικά με τον πραγματικό αριθμό των μονάδων που έχετε στο στρατό σας.','Επιλογή πακέτου','Εκπαίδευση μονάδων','Στην περιγραφή της μονάδας «{0}»','Επαναφορά (μηδενισμός) αριθμού μονάδων','Επιλογή όλων των διαθέσιμων πολιτών','Μέγιστο','Κόστος συντήρησης ανά ώρα. Μπορεί να μειωθεί με την αλλαγή πολιτεύματος και την έρευνα.','Κόστος συντήρησης ανά ώρα','Διάρκεια εκπαίδευσης ανά μονάδα','Τι θα ήταν μια αυτοκρατορία νησιών χωρίς τον στόλο της; Στο ναυπηγείο κατασκευάζονται δυνατά σκάφη μάχης και ρίχνονται στο νερό για μακρινά ταξίδια. Ας τα τρέμουν οι επτά θάλασσες! Μεγαλύτερα ναυπηγεία μπορούν να ναυπηγήσουν τα σκάφη γρηγορότερα.','Αυτή η πόλη είναι υπό κατοχή από ξένα στρατεύματα.<br>Νέα πλοία μπορούν να κατασκευαστούν αλλά με διπλάσιο κόστος!','Πλοία προγραμματισμένα για κατασκευή','Δεν έχουν επιλεγεί πλοία','Δεν υπάρχει διάρκεια κατασκευής','Απαιτούμενη διάρκεια κατασκευής','Κατασκευή πλοίων','Στην περιγραφή του πλοίου «{0}»','Επαναφορά (μηδενισμός) αριθμού πλοίων','Διάρκεια κατασκευής ανά πλοίο','Εκπαίδευση','Κατασκευή','Το κτήριο αναβαθμίζεται!','Απαιτείται επίπεδο κτηρίου <b>{0}</b>','Οι ποσότητες δεν επαρκούν'],
@@ -13289,7 +13564,7 @@
 				warehousetxt: ['Η αλάνα σας επιτρέπει να αποθηκεύετε μεγάλες ποσότητες αγαθών. Κάθε επίπεδο της αλάνας προσφέρει χώρο για 32.000 τεμάχια ανά αγαθό. Η αλάνα δεν προστατεύεται από λαφυραγωγούς.','Ένα μέρος των προμηθειών σας φυλάσσεται στην αποθήκη εμπορευμάτων, όπου προστατεύεται από λεηλασίες, πουλιά, παράσιτα και βροχή. Ο αποθηκάριος είναι πάντα καλά ενημερωμένος για τους πόρους σας. Η επέκταση της αποθήκης εμπορευμάτων σας επιτρέπει να προστατεύετε περισσότερες προμήθειες.','Επισκόπηση αποθηκευμένων αγαθών','100% αυξημένη ασφάλεια κλοπής','Ανενεργή','Ενεργή','100% αυξημένη ασφαλισμένη χωρητικότητα','Ασφαλή από κλοπή','Πόρος','Ασφαλής<br>ποσότητα','Χωρητικότητα'],
 				embassytxt: ['Στην πρεσβεία συμβαίνουν πολλά: Οι διπλωμάτες από όλο τον κόσμο διαπραγματεύονται συμβάσεις, προωθούν συνθήκες και ιδρύουν συμμαχίες. Για να αποκτήσετε μια μεγάλη συμμαχία, πρέπει να αναβαθμίσετε την πρεσβεία σας Κάθε επίπεδο της πρεσβείας σας αυξάνει τους πόντους διπλωματίας σας.','Πόντοι διπλωματίας','Συμμαχία','Λίστα μελών','Εσωτερική σελίδα συμμαχίας','Αναζήτηση συμμαχίας','Ημερομηνία ίδρυσης (Ηλικία)','Μέλη','Περιληπτική περιγραφή','Θέση (Βαθμοί)','Ιστοσελίδα συμμαχίας','Διαθέσιμοι πόντοι διπλωματίας συμμαχίας','Ο βαθμός σας','Ίδρυση Συμμαχίας','Στην πρεσβεία μπορείτε να διαχειριστείτε και να ηγηθείτε της συμμαχίας σας ή να επαναδιανείμετε τους βαθμούς.','Ετικέτα (έως <b>5</b> χαρακτήρες)','Ονομασία συμμαχίας (έως <b>15</b> χαρακτήρες)','Γίνετε μέλος μιας υπάρχουσας συμμαχίας','Μπορεί να σας προταθεί μια συμμαχία που ταιριάζει με τη θέση σας στη βαθμολογία.','Πρόταση συμμαχίας','Ονομασία','Ετικέτα','Συντομογραφία','Ονομασία','Μέλη','Βαθμοί','Ενέργειες','Προβολή σελίδας συμμαχίας','Συμμετοχή στη συμμαχία','Τελευταία σύνδεση','Όνομα','Πόλεις','Βαθμός','Πόντοι','Ενέργειες','Ενέργειες','Αποστολή μηνύματος συμμαχίας','Συνθήκες συμμαχίας','Παραίτηση','Δεν είστε μέλος κάποιας συμμαχίας','Πληροφορίες συμμαχίας'],
 				palaceColonytxt: ['Ένας κυβερνήτης, στην αποικία σας, εγγυάται ότι όλα τα καθημερινά διοικητικά θέματα εκτελούνται σωστά. Έτσι μειώνει τη διαφθορά στην αποικία σας. Το Κυβερνείο μπορεί επίσης να αναβαθμιστεί σε Παλάτι, αν θελήσετε ποτέ να μεταφέρετε την πρωτεύουσά σας.','Οι πόλεις της αυτοκρατορίας σας','Μετεγκατάσταση πρωτεύουσας','Μπορείτε να κάνετε αυτήν την αποικία πρωτεύουσα. Έτσι, το Κυβερνείο θα μετατραπεί σε παλάτι ίδιου επιπέδου και η πόλη θα γίνει η πρωτεύουσα της αυτοκρατορίας σας. Το παλάτι στην παλιά σας πρωτεύουσα θα καταστραφεί εντελώς, γι&apos;αυτό θα πρέπει να αποκαταστήσετε την τάξη χτίζοντας εκεί ένα καινούριο Κυβερνείο!','<p><b>Δεν</b> μπορείτε ακόμη να κάνετε αυτήν την αποικία πρωτεύουσά σας. Το επίπεδο του Κυβερνείου πρέπει να αντιστοιχεί στον <b>αριθμό των αποικιών σας</b>, ώστε να μπορείτε να διαχειριστείτε όλες τις αποικίες.</p><p class="red">Πρέπει να επεκτείνετε το Κυβερνείο ακόμη <b>{0}</b> προκειμένου να μεταφέρετε την πρωτεύουσά σας εδώ.</p>','Ανακήρυξη της πόλης ως πρωτεύουσα','Το κτήριο αναβαθμίζεται!'],
-				palacetxt: ['Το παλάτι είναι ένα εξαιρετικό μέρος για να οδηγήσετε την αυτοκρατορία σας στο μέλλον! Παρέχει επίσης μια πανέμορφη θέα στη θάλασσα. Κάθε επέκταση του παλατιού στην πρωτεύουσά σας σας επιτρέπει να ιδρύσετε μια επιπλέον αποικία.','Τρέχον πολίτευμα: {0}','Οι πόλεις της αυτοκρατορίας σας',{anarchie:'Η αναρχία είναι μια κατάσταση στην οποία δεν υπάρχει συγκεκριμένος κυβερνήτης. Αυτό το πολίτευμα τίθεται σε ισχύ μόνο κατά τη διάρκεια της επανάστασης.',ikakratie:'Η Ικακρατία είναι το πολίτευμα της κυριαρχίας του καλόβουλου αφέντη του νησιού. Με αυτό το πολίτευμα ξεκινάτε το παιχνίδι.',aristokratie:'Η Αριστοκρατία είναι το πολίτευμα της κυριαρχίας των ευγενών, μιας ομάδας ελίτ.',demokratie:'Η Δημοκρατία είναι το πολίτευμα της κυριαρχίας του λαού.',diktatur:'Η Δικτατορία είναι το πολίτευμα της κυριαρχίας του ενός, αυτού που διατάζει.',nomokratie:'Η Νομοκρατία είναι το πολίτευμα της κυριαρχίας των νόμων, που οι εξουσιαστές δεν μπορούν να αλλάξουν εύκολα.',oligarchie:'Η Ολιγαρχία είναι το πολίτευμα της κυριαρχίας μιας μειοψηφίας. Στο Ikariam αυτή η μειοψηφία είναι οι πλούσιες οικογένειες εμπόρων.',technokratie:'Η Τεχνοκρατία είναι το πολίτευμα της κυριαρχίας των ειδικών. Στο Ikariam αυτοί οι ειδικοί είναι επιστήμονες και ερευνητές.',theokratie:'Η Θεοκρατία είναι το πολίτευμα της κυριαρχίας των ιερέων.'},'Αλλαγή πολιτεύματος',{anarchie:['','25 % πρόσθετη διαφθορά σε όλες τις πόλεις.|Όλες οι μονάδες ξηράς και τα πολεμικά πλοία επιστρέφουν στη βάση τους, αν ήταν σταθμευμένα σε ξένες πόλεις ή καθ&apos;οδόν. Αν βρίσκονταν σε μάχη, σκορπίζουν αυτόματα (Εξαίρεση: Μάχες σε δικές σας πόλεις ή λιμάνια).|Δεν είναι δυνατή η μεταφορά μονάδων.|Δεν είναι δυνατή η εκπαίδευση μονάδων.|Δεν είναι δυνατές οι κατασκοπευτικές αποστολές.'],ikakratie:['Κανένα','Κανένα'],aristokratie:['-20% χρόνος οικοδόμησης κτηρίων.|+20% άμυνα στην κατασκοπεία.','+3% διαφθορά σε όλες τις πόλεις εκτός από την πρωτεύουσα.'],demokratie:['+75 ικανοποίηση σε όλες τις πόλεις|+1 πόντος έρευνας ανά ώρα για κάθε πολιτιστική συνθήκη','20% άμυνα σε κατασκοπεία|+5% χρόνος εκπαίδευσης μονάδων ξηράς'],diktatur:['-2% κόστος συντήρησης μονάδων ξηράς.|-2% κόστος συντήρησης για μονάδες θάλασσας.|-2% χρόνος εκπαίδευσης μονάδων ξηράς.|-2% χρόνος κατασκευής μονάδων θάλασσας.|+2 επιπλέον εμπορικά πλοία.','-75 ικανοποίηση σε όλες τις πόλεις.'],nomokratie:['-5% διαφθορά σε όλες τις πόλεις.|+20% άμυνα στην κατασκοπεία.','+5% χρόνος εκπαίδευσης μονάδων ξηράς.|+5% χρόνος κατασκευής μονάδων θάλασσας.|+50% χρόνοι φόρτωσης σε δικά σας λιμάνια.'],oligarchie:['+5 βεληνεκές θέσεων εμπορικών συναλλαγών.|+10% ταχύτητα εμπορικών πλοίων.|-2% κόστος συντήρησης για μονάδες θάλασσας.|+2 επιπλέον εμπορικά πλοία.','+20% χρόνος οικοδόμησης κτιρίων.|+3% διαφθορά σε όλες τις πόλεις.'],technokratie:['+5% πόντοι έρευνας.|+20% παραγωγικότητα βοηθών εργατών.','+1 κόστος χρυσού ανά ερευνητή.'],theokratie:['-20% χρόνος ηρεμίας θαυμάτων.|Η ικανοποίηση στις πόλεις με ναό αυξάνεται κατά +2 φορές σε σχέση με την τιμή μετατροπής.<br>Η μέγιστη επιβράβευση είναι +150.|+1 παραγωγή χρυσού ανά ιερέα.','-5% πόντοι έρευνας.|-20 ικανοποίηση σε όλες τις πόλεις χωρίς ναούς.']},'Πλεονεκτήματα','Μειονεκτήματα','Κατεχόμενες πόλεις','Κατεχόμενα λιμάνια','Δεν έχετε υπό κατοχή καμία πόλη','Δεν έχετε υπό κατοχή κανένα λιμάνι','Αν θέλετε να αλλάξετε το πολίτευμά σας, αυτό θα σας κοστίσει <b>{0}</b> μονάδες χρυσού για κάθε πόλη που έχετε ιδρύσει (δηλαδή συνολικά: <b>{1}</b> μονάδες χρυσού). Μέχρι να καθιερωθεί το νέο πολίτευμα, θα υπάρχει Αναρχία. Αυτή διαρκεί ένα συγκεκριμένο διάστημα που αντιστοιχεί σε <b>{2}</b> για κάθε πόλη που έχετε ιδρύσει (δηλαδή συνολικά: <b>{3}</b>).','Πολιτεύματα που έχουν ερευνηθεί','Δεν έχετε αρκετή ποσότητα χρυσού','Αλλαγή πολιτεύματος σε',''],
+				palacetxt: ['Το παλάτι είναι ένα εξαιρετικό μέρος για να οδηγήσετε την αυτοκρατορία σας στο μέλλον! Παρέχει επίσης μια πανέμορφη θέα στη θάλασσα. Κάθε επέκταση του παλατιού στην πρωτεύουσά σας σας επιτρέπει να ιδρύσετε μια επιπλέον αποικία.','Τρέχον πολίτευμα: {0}','Οι πόλεις της αυτοκρατορίας σας',{anarchie:'Η αναρχία είναι μια κατάσταση στην οποία δεν υπάρχει συγκεκριμένος κυβερνήτης. Αυτό το πολίτευμα τίθεται σε ισχύ μόνο κατά τη διάρκεια της επανάστασης.',ikakratie:'Η Ικακρατία είναι το πολίτευμα της κυριαρχίας του καλόβουλου αφέντη του νησιού. Με αυτό το πολίτευμα ξεκινάτε το παιχνίδι.',aristokratie:'Η Αριστοκρατία είναι το πολίτευμα της κυριαρχίας των ευγενών, μιας ομάδας ελίτ.',demokratie:'Η Δημοκρατία είναι το πολίτευμα της κυριαρχίας του λαού.',diktatur:'Η Δικτατορία είναι το πολίτευμα της κυριαρχίας του ενός, αυτού που διατάζει.',nomokratie:'Η Νομοκρατία είναι το πολίτευμα της κυριαρχίας των νόμων, που οι εξουσιαστές δεν μπορούν να αλλάξουν εύκολα.',oligarchie:'Η Ολιγαρχία είναι το πολίτευμα της κυριαρχίας μιας μειοψηφίας. Στο Ikariam αυτή η μειοψηφία είναι οι πλούσιες οικογένειες εμπόρων.',technokratie:'Η Τεχνοκρατία είναι το πολίτευμα της κυριαρχίας των ειδικών. Στο Ikariam αυτοί οι ειδικοί είναι επιστήμονες και ερευνητές.',theokratie:'Η Θεοκρατία είναι το πολίτευμα της κυριαρχίας των ιερέων.'},'Αλλαγή πολιτεύματος',{anarchie:['','25 % πρόσθετη διαφθορά σε όλες τις πόλεις.|Όλες οι μονάδες ξηράς και τα πολεμικά πλοία επιστρέφουν στη βάση τους, αν ήταν σταθμευμένα σε ξένες πόλεις ή καθ&apos;οδόν. Αν βρίσκονταν σε μάχη, σκορπίζουν αυτόματα (Εξαίρεση: Μάχες σε δικές σας πόλεις ή λιμάνια).|Δεν είναι δυνατή η μεταφορά μονάδων.|Δεν είναι δυνατή η εκπαίδευση μονάδων.|Δεν είναι δυνατές οι κατασκοπευτικές αποστολές.'],ikakratie:['Κανένα','Κανένα'],aristokratie:['-20% χρόνος οικοδόμησης κτηρίων.|+20% άμυνα στην κατασκοπεία.','+3% διαφθορά σε όλες τις πόλεις εκτός από την πρωτεύουσα.'],demokratie:['+75 ικανοποίηση σε όλες τις πόλεις|+1 πόντος έρευνας ανά ώρα για κάθε πολιτιστική συνθήκη','20% άμυνα σε κατασκοπεία|+5% χρόνος εκπαίδευσης μονάδων ξηράς'],diktatur:['-2% κόστος συντήρησης μονάδων ξηράς.|-2% κόστος συντήρησης για μονάδες θάλασσας.|-2% χρόνος εκπαίδευσης μονάδων ξηράς.|-2% χρόνος κατασκευής μονάδων θάλασσας.|+2 επιπλέον εμπορικά πλοία.','-75 ικανοποίηση σε όλες τις πόλεις.'],nomokratie:['-5% διαφθορά σε όλες τις πόλεις.|+20% άμυνα στην κατασκοπεία.','+5% χρόνος εκπαίδευσης μονάδων ξηράς.|+5% χρόνος κατασκευής μονάδων θάλασσας.|+50% χρόνοι φόρτωσης σε δικά σας λιμάνια.'],oligarchie:['+5 βεληνεκές θέσεων εμπορικών συναλλαγών.|+10% ταχύτητα εμπορικών πλοίων.|-2% κόστος συντήρησης για μονάδες θάλασσας.|+2 επιπλέον εμπορικά πλοία.','+20% χρόνος οικοδόμησης κτιρίων.|+3% διαφθορά σε όλες τις πόλεις.'],technokratie:['+5% πόντοι έρευνας.|+20% παραγωγικότητα βοηθών εργατών.','+1 κόστος χρυσού ανά ερευνητή.'],theokratie:['-20% χρόνος ηρεμίας θαυμάτων.|Η ικανοποίηση στις πόλεις με ναό αυξάνεται κατά +2 φορές σε σχέση με την τιμή μετατροπής.<br>Η μέγιστη επιβράβευση είναι +150.|+1 παραγωγή χρυσού ανά ιερέα.','-5% πόντοι έρευνας.|-20 ικανοποίηση σε όλες τις πόλεις χωρίς ναούς.']},'Πλεονεκτήματα','Μειονεκτήματα','Κατεχόμενες πόλεις','Κατεχόμενα λιμάνια','Δεν έχετε υπό κατοχή καμία πόλη','Δεν έχετε υπό κατοχή κανένα λιμάνι','Αν θέλετε να αλλάξετε το πολίτευμά σας, αυτό θα σας κοστίσει <b>{0}</b> μονάδες χρυσού για κάθε πόλη που έχετε ιδρύσει (δηλαδή συνολικά: <b>{1}</b> μονάδες χρυσού). Μέχρι να καθιερωθεί το νέο πολίτευμα, θα υπάρχει Αναρχία. Αυτή διαρκεί ένα συγκεκριμένο διάστημα  που αντιστοιχεί σε <b>{2}</b> για κάθε πόλη που έχετε ιδρύσει (δηλαδή συνολικά: <b>{3}</b>).','Πολιτεύματα που έχουν ερευνηθεί','Δεν έχετε αρκετή ποσότητα χρυσού','Αλλαγή πολιτεύματος σε',''],
 				safehousetxt: ['Ένας σοφός ηγέτης έχει το νου του στους συμμάχους του και στους εχθρούς του. Το κρησφύγετο σας επιτρέπει να μισθώσετε κατασκόπους, που είναι σε θέση να σας παρέχουν πληροφορίες για άλλες πόλεις. Ένα μεγαλύτερο κρησφύγετο παρέχει χώρο για περισσότερους κατασκόπους.','Αναφορές κατασκοπείας','Αρχειοθέτηση','Εκπαίδευση κατασκόπου','Αυτός ο πολίτης είναι πιστός και διακριτικός. Ένας ιδανικός υποψήφιος για κατάσκοπος. Ώρα εκπαίδευσης για έναν κατάσκοπο:','{0} εργάζονται ήδη στην άμυνα','Ο αριθμός των κατασκόπων έχει φτάσει στο μέγιστο!','Ανεπαρκής ποσότητα αγαθών','Εκπαίδευση','Επαναφορά<br>αριθμού<br>κατασκόπων','Εκπαίδευση<br>μέγιστου αριθμού<br>κατασκόπων','Πληροφορίες','Μπορούν να εκπαιδευτούν έως {0} κατάσκοποι','Μπορεί να εκπαιδευτεί έως {0} κατάσκοπος','<b>{0}</b> σε αναμονή για να εκπαιδευτούν','<b>{0}</b> σε αναμονή για να εκπαιδευτεί','Κανένας πολίτης σε αναμονή για να εκπαιδευτεί','<b>{0}</b> κατάσκοποι εργάζονται ήδη στην άμυνα','<b>{0}</b> κατάσκοπος εργάζεται ήδη στην άμυνα','Κανένας κατάσκοπος δεν εργάζεται στην άμυνα','<b>{0}</b> κατάσκοποι είναι σε αποστολή','<b>{0}</b> κατάσκοπος είναι σε αποστολή','Κανένας κατάσκοπος σε αποστολή','Κατάσκοποι σε αποστολή','Κανένας από τους κατασκόπους σας δεν βρίσκεται σε αποστολή!','Ιδιοκτήτης','Προορισμός','Αποστολή','Αποτελέσματα','Πράκτορες','Αντιπερισπασμοί','Ημερομηνία','Δεν υπάρχουν αναφορές κατασκοπείας!','','',''],
 				taverntxt: ['Μετά από μια εργάσιμη μέρα δεν υπάρχει τίποτα καλύτερο από μία δροσερή κανάτα κρασιού. Γι&apos; αυτό στους πολίτες σας αρέσει να συναντιούνται στην ταβέρνα. Και όταν τραγουδήσουν τα τελευταία παλιά τραγούδια στο τέλος της βραδιάς, ξεκινούν χαρούμενοι για το σπίτι. Κάθε επέκταση της ταβέρνας σας δίνει τη δυνατότητα να σερβίρετε περισσότερο κρασί.','Σερβίρισμα ποτών','Σερβίρισμα κρασιού','Μπορείτε να καθορίσετε ακριβώς πόσο κρασί σερβίρεται στον πληθυσμό σας. Όσο περισσότερο κρασί παρέχετε, τόσο πιο χαρούμενοι είναι οι πολίτες σας. Προσοχή: Ο ξενοδόχος σας απαιτεί ένα ωριαίο μερίδιο κάθε φορά που αλλάζετε την ποσότητα που διανέμεται.','Μηδενισμός<br>διανομής','Μέγιστη δυνατή<br>διανομή','ικανοποιημένοι πολίτες','ικανοποιημένος πολίτης','Καθόλου κρασί','{0} μονάδες κρασιού / ώρα','{0} μονάδα κρασιού / ώρα','Το Αποστακτήριο εξοικονομεί για σας','μονάδες κρασιού ανά ώρα','μονάδα κρασιού ανά ώρα','Εις υγείαν!','Δεν υπάρχει Αποστακτήριο στην πόλη!'],
 				townhalltxt: ['Μετονομασία πόλης','Τρέχον όνομα πόλης','Νέο όνομα πόλης','Εφαρμογή αλλαγής ονόματος πόλης','Μετονομασία','Θέσεις κατοικίας','Όριο μονάδων ξηράς','Όριο μονάδων θάλασσας','Πόντοι δράσης','Ανάπτυξη','ανά ώρα','Καθαρή πρόσοδος','{0} Πολίτες','Πληθυσμός και παραγωγή','Σημειώσεις','Δεν υπάρχει κανένα ιδιαίτερο γεγονός! Συγχαρητήρια, όλα στην πόλη σας βαίνουν καλώς!','Υπάρχει διαφθορά σε αυτήν την πόλη!','Η παραγωγικότητα και η ικανοποίηση σε αυτήν την πόλη μειώνονται έντονα! Επεκτείνετε {0} για να μειωθεί η διαφθορά.','το Κυβερνείο','το Παλάτι','Η ικανοποίηση στην πόλη σας δημιουργείται από διαφορετικά στοιχεία. Αυτό το διάγραμμα μπορεί να σας βοηθήσει, για να προσδιορίσει τα προβλήματα και τις δυνατότητες.','Θετικές επιδράσεις','Βασικές επιδράσεις','Βασική επίδραση','Επίδραση λόγω πολιτεύματος','Επίδραση λόγω έρευνας','Επίδραση λόγω πρωτεύουσας','Επιδράσεις από συμβάν','Επίδραση από συμβάν','Πρόσθετη επίδραση','Ακόμα ενεργό για','Επίδραση από μεταφορά λογαριασμού','Κρασί','Επίδραση λόγω επιπέδου ταβέρνας','Επίδραση από την ποσότητα κρασιού που σερβίρεται','Δεν υπάρχει ακόμα ταβέρνα στην πόλη σας','Πολιτισμός','Επίδραση λόγω επιπέδου μουσείου','Επίδραση από ενεργές πολιτιστικές συνθήκες','Δεν υπάρχει ακόμα μουσείο στην πόλη σας','Αρνητικές επιδράσεις','Πληθυσμός','Επανάσταση','Πολίτευμα','Συνολική ικανοποίηση','Εγκατάλειψη αποικίας','Μπορείτε να εγκαταλείψετε την αποικία σας. Ωστόσο, όλοι οι αποθηκευμένοι πόροι, οι πολίτες, ο στρατός και ο στόλος θα χαθούν.'],
@@ -13325,7 +13600,737 @@
 				transprttxten: ['Transport','Choose, which goods you want to transport and how large the cargo should be.','Charter mercenary transporter','Some seafarers would sail to the end of the world for a bit of Ambrosia. You can charter as many mercenary transporters as you have maximum transport ships available ({0}). They will sail with your fleet for one journey and somewhat expand your transporting capacity. The price increases with the number of mercenary transporters you buy!','Reset entry','Minimum','send along everything','Maximum','{0} Ambrosia is missing!<br>Acquire now!!','The mercenaries want: {0} (You have {1})','Transport Goods','Choose the goods that you want to transport from {0} to {1}. Keep in mind how many merchant ships you will need for this.','{0} transport',{wood:'Wood',wine:'Wine',marble:'Marble',glass:'Cr;ystal',sulfur:'Sulphur'},'Reset entry','send along everything','less','more','Capacity per merchant ship','Only the basic speed of the merchant ships will be increased. The bonus that an activated Poseidon miracle achieves will be retained, but it will not be additionally increased.','Basic speed','Triton Engines','Costs','These engines are crafted in Triton, son of Poseidon&apos;s, temple and can be mounted on the outside of our merchant ships. For a fair Ambrosia donation, Prometheus will fill the engines of all ships used with a divine fire from Hephaestus&apos; forge, which will drive the ships across the seas with divine powers.','Overview','Travel time','Loading time','Arrival date / time','Destination','Cargo',{wood:'Wood',wine:'Wine',marble:'Marble',glass:'Crystal',sulfur:'Sulphur'},'Speed','Transport goods','Schedule goods transport','A trade route allows you to send transports between two of your kingdom`s towns every day. This way you can supply all of your settlements with wine or other goods. You have one free trade route available and can add more for a bit of Ambrosia.<br><br>Please make sure that there are always enough goods and merchant ships available at the allotted times during all trips on the trading routes and that the involved towns` harbours are free of enemy fleets.','Establish as trade route','','',''],
 				notEnCap: ['Ανεπαρκής χώρος αποθήκευσης','Μετάβαση στην {0}','Μετάβαση στην {0}','Μετάβαση<br>στην {0} ή στην {1}'],
 				speeduptxt: ['Μείωση διάρκειας κατασκευής','Άμεση ολοκλήρωση της κατασκευής','Θέλετε τη μείωση στο μισό (<b>&frac12;</b>) της συνολικής διάρκειας κατασκευής<br>{1}<br>του συγκεκριμένου κτηρίου (<b>{0}</b>);','Θέλετε τη άμεση ολοκλήρωση της κατασκευής<br>του συγκεκριμένου κτηρίου (<b>{0}</b>);','Άκυρο','Ενεργοποίηση','Απαιτείται <b>{0}</b> μονάδα Αμβροσίας','Απαιτούνται <b>{0}</b> μονάδες Αμβροσίας','Αγορά Αμβροσίας'],
+				ikmsgtxt: ['Την {0} και στις {1} ο/η {2} έγγραψε:','Υποβολή','Δακτυλογραφήσατε ήδη {0} {1}','Διαθέσιμότητα ακόμα για {0} {1}','χαρακτήρας','χαρακτήρες'],
+				playertitles: {'0':'Κανένας τίτλος','1,6':'Μάστιγα των Βαρβάρων','2,6':'Αυτοκράτορας','3,1':'Μπαλωτής πανιών','3,6':'Βασιλιάς των Πειρατών','4,4':'Διάνοια','4,6':'Πεφωτισμένος','5,1':'Λάτρης της Τέχνης','5,6':'Αδυναμία του Απόλλωνα','6,3':'Μαραθωνοδρόμος','6,6':'Σίσυφος','7,1':'Συλλέκτης πόντων','8,6':'Υπερνικητής του Ηρακλή','12,2':'Παιδί-θαύμα','13,6':'Αδυναμία του Δία','14,5':'Αφέντης των Πριονιστηρίων','15,5':'Αφέντης των Αμπελιών','16,5':'Αφέντης των Λατομείων','17,5':'Αφέντης των Κρυσταλλορυχείων','18,5':'Αφέντης των Λάκκων θείου','19,6':'Περηφάνια του Ερμή','20,4':'Μεγαλέμπορος','21,1':'Περίεργος','21,6':'007','23,6':'Υπερεγκέφαλος','24,1':'Εργαστηριάκιας','26,6':'Αδυναμία του Αχιλλέα','27,6':'Πηδαλιούχος του Οδυσσέα','34,5':'Βασιλιάς των Οπλεμπόρων','35,2':'Μεταρρυθμιστής','36,5':'Άρχοντας των Φλογών','40,6':'Ταμίας του βασιλιά Μίδα','41,1':'Κουρσάρος','41,6':'Τρόμος των Θαλασσών','42,6':'Αφέντης των Σκιών','44,6':'Τρόμος των Βαρβάρων','45,4':'Παθιασμένος συλλέκτης','46,6':'Το Χταπόδι','100,4':'Δήμαρχος','104,4':'Φύλακας της Γνώσης','109,6':'Οινοχόος των Θεών','110,3':'Μαικήνας','110,6':'Μάστορας των Καλών Τεχνών','111,6':'Κυβερνήτης','112,2':'Πρέσβης','117,6':'Μέγας Τοπάρχης','130,2':'Καπετάνιος των Πειρατών','201,6':'Ναύαρχος','310,4':'Σεφ','311,6':'Δεξί Χέρι του Ασκληπιού','319,6':'Στρατηγός του Λεωνίδα'},
+				playerdetailstxt: ['Λεπτομέρειες παίκτη','Επιτεύγματα','Προφίλ','Τα παράσημά μου','Κατηγορίες','Αυτοκρατορία','Κοινωνικά','Νησιωτικά','Κτηριακά','Αμυντικά','Στρατιωτικά','Ναυτικά','Προβολή','Σύγκριση με άλλο παίκτη','Όνομα παίκτη','Σύγκριση','Αναζήτηση παίκτη','Επιστροφή στις κατηγορίες','Προηγούμενη κατηγορία','Επόμενη κατηγορία','Επίπεδο {0}','Κατηγορία «{0}»','Επιβράβευση επιπέδου {0}','Επιβραβεύσεις επιπέδου {0}','Προηγούμενο επίτευγμα στην κατηγορία','Επόμενο επίτευγμα στην κατηγορία','από','έναντι','Πληροφορίες παίκτη','Τίτλος','Όνομα','Θέση','Βαθμολογία','Ημερομηνία έναρξης<br>(Ηλικία)','Συμμαχία','Αποστολή μηνύματος στη συμμαχία σας','Επιλογή φύλου','Άντρας','Γυναίκα','Σύντομη περιγραφή','Επεξεργασία','Δακτηλογραφήσατε ήδη','Διαθεσιμότητα ακόμα για','χαρακτήρας','χαρακτήρες','Επιλεγμένο Παράσημο','Επιλογή παρασήμου','Δεν έχει επιλεγεί παράσημο'],
+				achievementstxt: {1:{id:1,cid:5,cat:'Άμυνα',sid:0,name:'Αντιμετωπιστής βαρβάρων',reqs:['Νικηφόρα επίθεση σε βαρβάρους επιπέδου 1.','Νικηφόρα επίθεση σε βαρβάρους επιπέδου 2.','Νικηφόρα επίθεση σε βαρβάρους επιπέδου 3.','Νικηφόρα επίθεση σε βαρβάρους επιπέδου 6.','Νικηφόρα επίθεση σε βαρβάρους επιπέδου 12.','Νικηφόρα επίθεση σε βαρβάρους επιπέδου 15.'],rews:['','','','','','Τίτλος: Μάστιγα των Βαρβάρων']},2:{id:2,cid:1,cat:'Αυτοκρατορία',sid:0,name:'Επέκταση',reqs:['Ίδρυση 2 πόλεων.','Ίδρυση 4 πόλεων.','Ίδρυση 6 πόλεων.','Ίδρυση 8 πόλεων.','Ίδρυση 10 πόλεων.','Ίδρυση 12 πόλεων.'],rews:['','','','','','Τίτλος: Αυτοκράτορας']},3:{id:3,cid:5,cat:'Άμυνα',sid:4,name:'Βασιλιάς των Πειρατών',reqs:['Κατασκευή ενός Πειρατικού φρουρίου.','Κατασκευή 2 Πειρατικών φρουρίων.','Κατασκευή 3 Πειρατικών φρουρίων.|Επίτευξη θέσης στις πρώτες 50 στην κατάταξη της πειρατείας.','Κατασκευή 3 Πειρατικών φρουρίων.|Επίτευξη θέσης στις πρώτες 25 στην κατάταξη της πειρατείας.','Κατασκευή 3 Πειρατικών φρουρίων.|Επίτευξη θέσης στις πρώτες 3 στην κατάταξη της πειρατείας.','Κατασκευή 3 Πειρατικών φρουρίων.|Επίτευξη 1ης θέσης στην κατάταξη της πειρατείας.'],rews:['Τίτλος: Μπαλωτής πανιών.','','','','','Τίτλος: Βασιλιάς των Πειρατών']},4:{id:4,cid:1,cat:'Αυτοκρατορία',sid:1,name:'Ερευνητής',reqs:['Διορισμός 100 ερευνητών στις ακαδημίες σας.','Διορισμός 200 ερευνητών στις ακαδημίες σας.','Ολοκλήρωση μιας μελλοντικής έρευνας.','Ολοκλήρωση όλων των μελλοντικών ερευνών 1ου επιπέδου.','Ολοκλήρωση όλων των μελλοντικών ερευνών 10ου επιπέδου.','Ολοκλήρωση όλων των μελλοντικών ερευνών 25ου επιπέδου.'],rews:['','','','Τίτλος: Διάνοια.','','Τίτλος: Πεφωτισμένος']},5:{id:5,cid:2,cat:'Κοινωνικά',sid:0,name:'Προστάτης του πολιτισμού',reqs:['Σύναψη 1 Πολιτιστικής συνθήκης.','Σύναψη 5 Πολιτιστικών συνθηκών.','Σύναψη 15 Πολιτιστικών συνθηκών.','Σύναψη 50 Πολιτιστικών συνθηκών.','Σύναψη 100 Πολιτιστικών συνθηκών.','Σύναψη 190 Πολιτιστικών συνθηκών.'],rews:['Τίτλος: Λάτρης της Τέχνης.','','','','','Τίτλος: Αδυναμία του Απόλλωνα']},6:{id:6,cid:1,cat:'Αυτοκρατορία',sid:2,name:'Δραστηριότητα',reqs:['Επίτευξη 1 φοράς της επταήμερης επιβράβευσης.','Επίτευξη 5 φορές της επταήμερης επιβράβευσης.','Επίτευξη 10 φορές της επταήμερης επιβράβευσης.','Επίτευξη 20 φορές της επταήμερης επιβράβευσης.','Επίτευξη 40 φορές της επταήμερης επιβράβευσης.','Επίτευξη 100 φορές της επταήμερης επιβράβευσης.'],rews:['','','Τίτλος: Μαραθωνοδρόμος.','1 &times; <div class="small itemIcon premiumAccount days sevenDays"></div>Προνομιούχος λογαριασμός (7 Ημέρες).','','Τίτλος: Σίσυφος|Αμβροσία: <img class="achievementCheck" src="skin/resources/icon_ambrosia_small.png" title="Αμβροσία"> 50']},7:{id:7,cid:1,cat:'Αυτοκρατορία',sid:3,name:'Πόντοι',reqs:['Επίτευξη 10000 πόντων στην συνολική κατάταξη.','Επίτευξη 100000 πόντων στην συνολική κατάταξη.','Επίτευξη 500000 πόντων στην συνολική κατάταξη.','Επίτευξη 1000000 πόντων στην συνολική κατάταξη.','Επίτευξη 10000000 πόντων στην συνολική κατάταξη.','Επίτευξη 40000000 πόντων στην συνολική κατάταξη.'],rews:['Τίτλος: Συλλέκτης πόντων.','','','','','']},8:{id:8,cid:1,cat:'Αυτοκρατορία',sid:4,name:'Βαθμολογία',reqs:['Επίτευξη θέσης στις πρώτες 250 σε μια λίστα κατάταξης της επιλογής σας.','Επίτευξη θέσης στις πρώτες 125 σε μια λίστα κατάταξης της επιλογής σας.','Επίτευξη θέσης στις πρώτες 50 σε μια λίστα κατάταξης της επιλογής σας.','Επίτευξη θέσης στις πρώτες 10 σε μια λίστα κατάταξης της επιλογής σας.','Παραμονή για ένα μήνα στις πρώτες 10 θέσεις μιας λίστας κατάταξης της επιλογής σας.','Παραμονή για τρεις μήνες στις πρώτες 10 θέσεις μιας λίστας κατάταξης της επιλογής σας.'],rews:['','','','','','Τίτλος: Υπερνικητής του Ηρακλή']},9:{id:9,cid:1,cat:'Αυτοκρατορία',sid:10,name:'Επιτεύγματα',reqs:['Ολοκλήρωση επιπέδων επιτευγμάτων 10.','Ολοκλήρωση επιπέδων επιτευγμάτων 25.','Ολοκλήρωση επιπέδων επιτευγμάτων 100.','Ολοκλήρωση επιπέδων επιτευγμάτων 250.','Ολοκλήρωση επιπέδων επιτευγμάτων 500.','Ολοκλήρωση επιπέδων επιτευγμάτων 800.'],rews:['','','','','','']},11:{id:11,cid:2,cat:'Κοινωνικά',sid:1,name:'Μηνύματα',reqs:['Λήψη 5 μηνυμάτων από άλλους παίκτες.','Λήψη 25 μηνυμάτων από άλλους παίκτες.','Λήψη 100 μηνυμάτων από άλλους παίκτες.','Λήψη 250 μηνυμάτων από άλλους παίκτες.','Λήψη 1000 μηνυμάτων από άλλους παίκτες.','Λήψη 2000 μηνυμάτων από άλλους παίκτες.'],rews:['','5 &times; <div class="small itemIcon archiveMessageCoin coin"></div>Αρχειοθέτηση μηνυμάτων.','','','','1 &times; <div class="small itemIcon premiumAccount days sevenDays"></div>Προνομιούχος λογαριασμός (7 Ημέρες)']},12:{id:12,cid:3,cat:'Νησί',sid:1,name:'Θαύμα',reqs:['Ενεργοποίηση ενός θαύματος.','Ενεργοποίηση ενός θαύματος με ελάχιστο επίπεδο 3.','Ενεργοποίηση ενός θαύματος με ελάχιστο επίπεδο 5.','Ενεργοποίηση 3 θαυμάτων με ελάχιστο επίπεδο 5.','Ενεργοποίηση 5 θαυμάτων με ελάχιστο επίπεδο 5.','Ενεργοποίηση 8 θαυμάτων με ελάχιστο επίπεδο 5.'],rews:['','Τίτλος: Παιδί-θαύμα.','','','','']},13:{id:13,cid:3,cat:'Νησί',sid:0,name:'Ιερείς',reqs:['Διορισμός 250 ιερέων στις πόλεις σας.','Διορισμός 500 ιερέων στις πόλεις σας.','Διορισμός 1000 ιερέων στις πόλεις σας.','Διορισμός 2500 ιερέων στις πόλεις σας.','Διορισμός 5000 ιερέων στις πόλεις σας.','Διορισμός 7500 ιερέων στις πόλεις σας.'],rews:['','','','','','Τίτλος: Αδυναμία του Δία']},14:{id:14,cid:3,cat:'Νησί',sid:2,name:'Πριονιστήριο',reqs:['Διορισμός 250 εργατών στα πριστήριά σας.','Διορισμός 1000 εργατών στα πριστήριά σας.','Διορισμός 3500 εργατών στα πριστήριά σας.','Διορισμός 6000 εργατών στα πριστήριά σας.','Διορισμός 10000 εργατών στα πριστήριά σας.','Διορισμός 15000 εργατών στα πριστήριά σας.'],rews:['1 &times; <div class="small itemIcon resourceBonus days twoDays"></div>Πριόνι ατμού (2 Ημέρες).','','','1 &times; <div class="small itemIcon resourceBonus days sevenDays"></div>Πριόνι ατμού (7 Ημέρες).','Τίτλος: Αφέντης των Πριονιστηρίων.','']},15:{id:15,cid:3,cat:'Νησί',sid:3,name:'Αμπελώνας',reqs:['Διορισμός 250 εργατών στους αμπελώνες σας.','Διορισμός 500 εργατών στους αμπελώνες σας.','Διορισμός 1000 εργατών στους αμπελώνες σας.','Διορισμός 2500 εργατών στους αμπελώνες σας.','Διορισμός 5000 εργατών στους αμπελώνες σας.','Διορισμός 7500 εργατών στους αμπελώνες σας.'],rews:['1 &times; <div class="small itemIcon wineBonus days twoDays"></div>Ατμοκίνητο πιεστήριο κρασιού (2 Ημέρες).','','','1 &times; <div class="small itemIcon wineBonus days sevenDays"></div>Ατμοκίνητο πιεστήριο κρασιού (7 Ημέρες).','Τίτλος: Αφέντης των Αμπελιών.','']},16:{id:16,cid:3,cat:'Νησί',sid:4,name:'Λατομείο',reqs:['Διορισμός 250 εργατών στα λατομεία σας.','Διορισμός 500 εργατών στα λατομεία σας.','Διορισμός 1000 εργατών στα λατομεία σας.','Διορισμός 2500 εργατών στα λατομεία σας.','Διορισμός 5000 εργατών στα λατομεία σας.','Διορισμός 7500 εργατών στα λατομεία σας.'],rews:['1 &times; <div class="small itemIcon marbleBonus days twoDays"></div>Σφυρί ατμού (2 Ημέρες).','','','1 &times; <div class="small itemIcon marbleBonus days sevenDays"></div>Σφυρί ατμού (7 Ημέρες).','Τίτλος: Αφέντης των Λατομείων.','']},17:{id:17,cid:3,cat:'Νησί',sid:5,name:'Ορυχείο κρυστάλλου',reqs:['Διορισμός 125 εργατών στα ορυχεία κρυστάλλου σας.','Διορισμός 250 εργατών στα ορυχεία κρυστάλλου σας.','Διορισμός 500 εργατών στα ορυχεία κρυστάλλου σας.','Διορισμός 750 εργατών στα ορυχεία κρυστάλλου σας.','Διορισμός 1500 εργατών στα ορυχεία κρυστάλλου σας.','Διορισμός 3000 εργατών στα ορυχεία κρυστάλλου σας.'],rews:['','1 &times; <div class="small itemIcon crystalBonus days twoDays"></div>Ατμοκίνητο τρυπάνι κρυστάλλινου γυαλιού (2 Ημέρες).','','','Τίτλος: Αφέντης των Κρυσταλλορυχείων|1 &times; <div class="small itemIcon crystalBonus days sevenDays"></div>Ατμοκίνητο τρυπάνι κρυστάλλινου γυαλιού (7 Ημέρες).','']},18:{id:18,cid:3,cat:'Νησί',sid:6,name:'Λάκος θείου',reqs:['Διορισμός 125 εργατών στα ορυχεία θείου σας.','Διορισμός 250 εργατών στα ορυχεία θείου σας.','Διορισμός 500 εργατών στα ορυχεία θείου σας.','Διορισμός 750 εργατών στα ορυχεία θείου σας.','Διορισμός 1500 εργατών στα ορυχεία θείου σας.','Διορισμός 3000 εργατών στα ορυχεία θείου σας.'],rews:['','1 &times; <div class="small itemIcon sulfurBonus days twoDays"></div>Ατμοκίνητος τροχός θείου με πτερύγια (2 Ημέρες).','','','Τίτλος: Αφέντης των Λάκκων θείου|1 &times; <div class="small itemIcon sulfurBonus days sevenDays"></div>Ατμοκίνητος τροχός θείου με πτερύγια (7 Ημέρες).','']},19:{id:19,cid:2,cat:'Κοινωνικά',sid:2,name:'Εμπόριο: Αγορά',reqs:['Αγορά υλικών αξίας 100000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός">.','Αγορά υλικών αξίας 1000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός">.','Αγορά υλικών αξίας 5000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός">.','Αγορά υλικών αξίας 10000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός">.','Αγορά υλικών αξίας 25000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός">.','Αγορά υλικών αξίας 50000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός">.'],rews:['','','','','','Τίτλος: Περηφάνια του Ερμή']},20:{id:20,cid:2,cat:'Κοινωνικά',sid:3,name:'Εμπόριο: Πώληση',reqs:['Πώληση υλικών αξίας 100000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός">.','Πώληση υλικών αξίας 1000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός">.','Πώληση υλικών αξίας 5000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός">.','Πώληση υλικών αξίας 10000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός">.','Πώληση υλικών αξίας 25000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός">.','Πώληση υλικών αξίας 50000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός">.'],rews:['','','','Τίτλος: Μεγαλέμπορος.','','']},21:{id:21,cid:5,cat:'Άμυνα',sid:5,name:'Κατασκοπεία',reqs:['Επιτυχής ολοκλήρωση μιας αποστολής κατασκοπείας (χωρίς άφιξη).','Επιτυχής ολοκλήρωση 5 αποστολών κατασκοπείας.','Επιτυχής ολοκλήρωση 5 διαφορετικών αποστολών κατασκοπείας.','Επιτυχής ολοκλήρωση 8 διαφορετικών αποστολών κατασκοπείας.','Επιτυχής ολοκλήρωση 11 διαφορετικών αποστολών κατασκοπείας.','Επιτυχής ολοκλήρωση 11 διαφορετικών αποστολών κατασκοπείας από 3 φορές.'],rews:['Τίτλος: Περίεργος.','5 &times; <div class="small itemIcon archiveEspionageReportCoin coin"></div>Αρχειοθέτηση έκθεσης κατασκοπείας.','','','','Τίτλος: 007']},23:{id:23,cid:1,cat:'Αυτοκρατορία',sid:5,name:'Εφευρέσεις',reqs:['Χάλκινή βελτίωση της ζημιάς και της θωράκισης μιας μονάδας.','Χάλκινή βελτίωση της ζημιάς και της θωράκισης 5 μονάδων.','Χάλκινή βελτίωση της ζημιάς και της θωράκισης 10 μονάδων.','Χάλκινή βελτίωση της ζημιάς και της θωράκισης όλων των μονάδων.','Ασημένια βελτίωση της ζημιάς και της θωράκισης όλων των μονάδων.','Χρησή βελτίωση της ζημιάς και της θωράκισης όλων των μονάδων.'],rews:['','','','','','Τίτλος: Υπερεγκέφαλος|1 &times; <div class="small itemIcon badTaxAccountant days sevenDays"></div>Κακός φοροτεχνικός (7 Ημέρες)']},24:{id:24,cid:1,cat:'Αυτοκρατορία',sid:7,name:'Πειράματα',reqs:['Διενέργεια ενός πειράματος.','Διενέργεια 10 πειραμάτων.','Διενέργεια 100 πειραμάτων.','Διενέργεια 250 πειραμάτων.','Διενέργεια 500 πειραμάτων.','Διενέργεια 1000 πειραμάτων.'],rews:['Τίτλος: Εργαστηριάκιας.','','','','','']},26:{id:26,cid:5,cat:'Άμυνα',sid:6,name:'Μάχη ξηράς',reqs:['Νικηφόρα έκβαση Μάχης με χερσαίες δυνάμεις εναντίον ενός άλλου παίκτη.','Νικηφόρα έκβαση 10 Μαχών με χερσαίες δυνάμεις εναντίον άλλων παικτών.','Νικηφόρα έκβαση 100 Μαχών με χερσαίες δυνάμεις εναντίον άλλων παικτών.','Νικηφόρα έκβαση 250 Μαχών με χερσαίες δυνάμεις εναντίον άλλων παικτών.','Νικηφόρα έκβαση 500 Μαχών με χερσαίες δυνάμεις εναντίον άλλων παικτών.','Νικηφόρα έκβαση 1000 Μαχών με χερσαίες δυνάμεις εναντίον άλλων παικτών.'],rews:['','','','','','Τίτλος: Αδυναμία του Αχιλλέα']},27:{id:27,cid:5,cat:'Άμυνα',sid:7,name:'Ναυμαχία',reqs:['Νικηφόρα έκβαση Μάχης με ναυτικές δυνάμεις εναντίον ενός άλλου παίκτη.','Νικηφόρα έκβαση 10 Μαχών με ναυτικές δυνάμεις εναντίον άλλων παικτών.','Νικηφόρα έκβαση 100 Μαχών με ναυτικές δυνάμεις εναντίον άλλων παικτών.','Νικηφόρα έκβαση 250 Μαχών με ναυτικές δυνάμεις εναντίον άλλων παικτών.','Νικηφόρα έκβαση 500 Μαχών με ναυτικές δυνάμεις εναντίον άλλων παικτών.','Νικηφόρα έκβαση 1000 Μαχών με ναυτικές δυνάμεις εναντίον άλλων παικτών.'],rews:['','','','','','Τίτλος: Πηδαλιούχος του Οδυσσέα']},28:{id:28,cid:5,cat:'Άμυνα',sid:2,name:'Λεηλάτης',reqs:['Λεηλασία 10000 υλικών.','Λεηλασία 100000 υλικών.','Λεηλασία 500000 υλικών.','Λεηλασία 1000000 υλικών.','Λεηλασία 10000000 υλικών.','Λεηλασία 40000000 υλικών.'],rews:['','','','','','']},29:{id:29,cid:5,cat:'Άμυνα',sid:8,name:'Απελευθερωτής',reqs:['Απελευθέρωση της πόλης ενός άλλου παίκτη.','Απελευθέρωση 10 πόλεων από άλλους παίκτες.','Απελευθέρωση 25 πόλεων από άλλους παίκτες.','Απελευθέρωση 50 πόλεων από άλλους παίκτες.','Απελευθέρωση 100 πόλεων από άλλους παίκτες.','Απελευθέρωση 250 πόλεων από άλλους παίκτες.'],rews:['','','','','','']},33:{id:33,cid:2,cat:'Κοινωνικά',sid:4,name:'Αγοραστής όπλων',reqs:['Αγορά 100 μονάδων.','Αγορά 1000 μονάδων.','Αγορά 5000 μονάδων.','Αγορά 10000 μονάδων.','Αγορά 25000 μονάδων.','Αγορά 50000 μονάδων.'],rews:['','','','','','1 &times; <div class="small itemIcon badTaxAccountant days sevenDays"></div>Κακός φοροτεχνικός (7 Ημέρες)']},34:{id:34,cid:2,cat:'Κοινωνικά',sid:5,name:'Πωλητής όπλων',reqs:['Πώληση 100 μονάδων.','Πώληση 1000 μονάδων.','Πώληση 5000 μονάδων.','Πώληση 10000 μονάδων.','Πώληση 25000 μονάδων.','Πώληση 50000 μονάδων.'],rews:['','','','','Τίτλος: Βασιλιάς των Οπλεμπόρων.','1 &times; <div class="small itemIcon badTaxAccountant days sevenDays"></div>Κακός φοροτεχνικός (7 Ημέρες)']},35:{id:35,cid:1,cat:'Αυτοκρατορία',sid:8,name:'Μορφές πολιτευμάτων',reqs:['Αλλαγή του πολιτεύματος μια φορά.','Αλλαγή του πολιτεύματος 2 φορές.','Αλλαγή του πολιτεύματος 3 φορές.','Αλλαγή του πολιτεύματος 4 φορές.','Αλλαγή του πολιτεύματος 5 φορές.','Αλλάγή σε κάθε διαθέσιμο πολίτευμα από μια φορά.'],rews:['','Τίτλος: Μεταρρυθμιστής.','','','','']},36:{id:36,cid:3,cat:'Νησί',sid:7,name:'Πύργοι Ήλιου',reqs:['Δωρεά πετρελαίου 1 φορά.','Δωρεά πετρελαίου 2 φορές.','Δωρεά πετρελαίου 3 φορές.','Δωρεά πετρελαίου 4 φορές.','Δωρεά πετρελαίου 5 φορές.','Δωρεά πετρελαίου 10 φορές.'],rews:['','','','','Τίτλος: Άρχοντας των Φλογών.','1 &times; <div class="small itemIcon heliosTowerOil coin"></div>Πετρέλαιο']},38:{id:38,cid:5,cat:'Άμυνα',sid:9,name:'Κατακτητής',reqs:['Κατάκτηση της πόλης ενός άλλου παίκτη.','Κατοχή 2 πόλεων άλλων παικτών ταυτόχρονα.','Κατοχή 3 πόλεων άλλων παικτών ταυτόχρονα.','Κατοχή 4 πόλεων άλλων παικτών ταυτόχρονα.','Κατοχή 5 πόλεων άλλων παικτών ταυτόχρονα.','Κατοχή 10 πόλεων άλλων παικτών ταυτόχρονα.'],rews:['','','','','','']},39:{id:39,cid:5,cat:'Άμυνα',sid:10,name:'Κατακτητής λιμανιών',reqs:['Κατάκτηση του λιμανιού ενός άλλου παίκτη.','Κατοχή 2 λιμανιών άλλων παικτών ταυτόχρονα.','Κατοχή 3 λιμανιών άλλων παικτών ταυτόχρονα.','Κατοχή 4 λιμανιών άλλων παικτών ταυτόχρονα.','Κατοχή 5 λιμανιών άλλων παικτών ταυτόχρονα.','Κατοχή 10 λιμανιών άλλων παικτών ταυτόχρονα.'],rews:['','','','','','']},40:{id:40,cid:1,cat:'Αυτοκρατορία',sid:9,name:'Χρυσός',reqs:['Απόκτηση 100000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός"> στο θησαυροφυλάκιο.','Απόκτηση 2500000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός"> στο θησαυροφυλάκιο.','Απόκτηση 10000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός"> στο θησαυροφυλάκιο.','Απόκτηση 50000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός"> στο θησαυροφυλάκιο.','Απόκτηση 100000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός"> στο θησαυροφυλάκιο.','Απόκτηση 250000000 <img class="achievementCheck" src="skin/resources/icon_gold_small.png" title="Χρυσός"> στο θησαυροφυλάκιο.'],rews:['','','','','','Τίτλος: Ταμίας του βασιλιά Μίδα']},41:{id:41,cid:5,cat:'Άμυνα',sid:3,name:'Επιδρομή πειρατών',reqs:['Ολοκλήρωση επιτυχούς επιδρομής σε μια πόλη.','Ολοκλήρωση επιτυχούς επιδρομής σε 10 πόλεις.','Ολοκλήρωση επιτυχούς επιδρομής σε 100 πόλεις.','Ολοκλήρωση επιτυχούς επιδρομής σε 250 πόλεις.','Ολοκλήρωση επιτυχούς επιδρομής σε 500 πόλεις.','Ολοκλήρωση επιτυχούς επιδρομής σε 1000 πόλεις.'],rews:['Τίτλος: Κουρσάρος.','1 &times; <div class="small itemIcon convertCapturePointsCoin coin"></div>Μετατροπή πόντων κουρσέματος.','','','','Τίτλος: Τρόμος των Θαλασσών']},42:{id:42,cid:6,cat:'Μονάδες εδάφους',sid:27,name:'Κατάσκοποι',reqs:['Εκπαίδευση 10 κατασκόπων.','Εκπαίδευση 50 κατασκόπων.','Εκπαίδευση 100 κατασκόπων.','Εκπαίδευση 500 κατασκόπων.','Εκπαίδευση 1000 κατασκόπων.','Εκπαίδευση 10000 κατασκόπων.'],rews:['','','','','','Τίτλος: Αφέντης των Σκιών']},43:{id:43,cid:1,cat:'Αυτοκρατορία',sid:6,name:'Χωρητικότητα αποθήκευσης',reqs:['Επίτευξη χωρητικότητας αποθήκευσης 30000 ανά υλικό.','Επίτευξη χωρητικότητας αποθήκευσης 150000 ανά υλικό.','Επίτευξη χωρητικότητας αποθήκευσης 1000000 ανά υλικό.','Επίτευξη χωρητικότητας αποθήκευσης 5000000 ανά υλικό.','Επίτευξη χωρητικότητας αποθήκευσης 10000000 ανά υλικό.','Επίτευξη χωρητικότητας αποθήκευσης 20000000 ανά υλικό.'],rews:['','','','1 &times; <div class="small itemIcon storageCapacityBonus days sevenDays"></div>Ατμοκίνητο ανυψωτικό όχημα (7 Ημέρες).','','']},44:{id:44,cid:5,cat:'Άμυνα',sid:1,name:'Κυνηγός Βαρβάρων',reqs:['Νικηφόρα επίθεση σε βαρβάρους επιπέδου 9.','Νικηφόρα επίθεση σε βαρβάρους επιπέδου 19.','Νικηφόρα επίθεση σε βαρβάρους επιπέδου 29.','Νικηφόρα επίθεση σε βαρβάρους επιπέδου 39.','Νικηφόρα επίθεση σε βαρβάρους επιπέδου 50.','Νικηφόρα επίθεση σε Βαρβάρους επιπέδου 50 σε 3 διαφορετικά νησιά.'],rews:['','1 &times; <div class="small itemIcon barbarianTruce coin n2"></div>Ανακωχή (Βαρβαρικό χωριό Επιπέδου 20-29).','','1 &times; <div class="small itemIcon barbarianTruce coin n4"></div>Ανακωχή (Βαρβαρικό χωριό Επιπέδου 40-49).','','Τίτλος: Τρόμος των Βαρβάρων|1 &times; <div class="small itemIcon barbarianTruce coin n5"></div>Ανακωχή (Βαρβαρικό χωριό Επιπέδου 50)']},45:{id:45,cid:5,cat:'Άμυνα',sid:25,name:'Αρχειοθέτης',reqs:['Εύρεση ολόκληρου χάρτη.','Πολλαπλή εύρεση 3 διαφορετικών Κομματιών ναυτικού χάρτη.','Πολλαπλή εύρεση 5 διαφορετικών Κομματιών ναυτικού χάρτη.','Πολλαπλή εύρεση 7 διαφορετικών Κομματιών ναυτικού χάρτη.','Πολλαπλή εύρεση 10 διαφορετικών Κομματιών ναυτικού χάρτη.','Εύρεση 10 διαφορετικών ναυτικών χαρτών τουλάχιστον 5 φορές'],rews:['','','','Τίτλος: Παθιασμένος συλλέκτης.','','']},46:{id:46,cid:5,cat:'Άμυνα',sid:26,name:'Θαλάσσιο τέρας',reqs:['Νικηφόρα έκβαση ναυμαχίας με τον Βαρβαρικό στόλο 5 φορές σε ένα οποιοδήποτε επίπεδο.','Νικηφόρα έκβαση ναυμαχίας με τον Βαρβαρικό στόλο 10 φορές σε ένα οποιοδήποτε επίπεδο.','Νικηφόρα έκβαση ναυμαχίας με τον Βαρβαρικό στόλο 30 φορές σε ένα οποιοδήποτε επίπεδο.','Νικηφόρα έκβαση ναυμαχίας με τον Βαρβαρικό στόλο 50 φορές σε ένα οποιοδήποτε επίπεδο.','Νικηφόρα έκβαση ναυμαχίας με τον Βαρβαρικό στόλο 75 φορές σε ένα οποιοδήποτε επίπεδο.','Νικηφόρα έκβαση ναυμαχίας με τον Βαρβαρικό στόλο 100 φορές σε ένα οποιοδήποτε επίπεδο'],rews:['','','','','','Τίτλος: Το Χταπόδι']},100:{id:100,cid:4,cat:'Κτίριο',sid:0,name:'Δημαρχείο',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 10 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 15 σε 4 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 20 σε 6 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 25 σε 9 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 30 σε 12 πόλεις.'],rews:['','','','Τίτλος: Δήμαρχος.','','']},103:{id:103,cid:4,cat:'Κτίριο',sid:7,name:'Λιμένας',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 10 σε 3 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 15 σε 5 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 20 σε 7 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 25 σε 9 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 30 σε 11 πόλεις.'],rews:['','','','','','']},104:{id:104,cid:4,cat:'Κτίριο',sid:1,name:'Ακαδημία',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 10 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 15 σε 4 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 20 σε 6 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 25 σε 9 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 30 σε 12 πόλεις.'],rews:['','','','Τίτλος: Φύλακας της Γνώσης.','','']},105:{id:105,cid:4,cat:'Κτίριο',sid:8,name:'Ναυπηγείο',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10 σε 3 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 10 σε 5 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 15 σε 7 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 20 σε 7 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 20 σε 10 πόλεις.'],rews:['','','','','','']},106:{id:106,cid:4,cat:'Κτίριο',sid:9,name:'Στρατώνας',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10 σε 3 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 15 σε 5 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 20 σε 7 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 25 σε 7 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 30 σε 10 πόλεις.'],rews:['','','','','','']},107:{id:107,cid:4,cat:'Κτίριο',sid:2,name:'Αποθήκη',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 25 σε 4 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 30 σε 6 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 35 σε 9 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 40 σε 12 πόλεις.'],rews:['','1 &times; <div class="small itemIcon safeCapacityBonus days twoDays"></div>Λουκέτο (2 Ημέρες).','','1 &times; <div class="small itemIcon safeCapacityBonus days sevenDays"></div>Λουκέτο (7 Ημέρες).','','']},108:{id:108,cid:4,cat:'Κτίριο',sid:10,name:'Τείχος',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 15.','Αναβάθμιση του κτηρίου στο επίπεδο 20 σε 3 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 25 σε 5 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 30 σε 7 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 35 σε 9 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 40 σε 11 πόλεις.'],rews:['','','','','','']},109:{id:109,cid:4,cat:'Κτίριο',sid:3,name:'Ταβέρνα',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 25 σε 4 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 30 σε 6 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 35 σε 9 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 40 σε 12 πόλεις.'],rews:['','','','','','Τίτλος: Οινοχόος των Θεών']},110:{id:110,cid:4,cat:'Κτίριο',sid:6,name:'Μουσείο',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 5 σε 3 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 8 σε 5 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 10 σε 7 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 12 σε 9 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 15 σε 11 πόλεις.'],rews:['','1 &times; <div class="small itemIcon culturalTreatyCoin coin"></div>Αναζήτηση πολιτιστικών αγαθών.','Τίτλος: Μαικήνας.','','','Τίτλος: Μάστορας των Καλών Τεχνών']},111:{id:111,cid:4,cat:'Κτίριο',sid:4,name:'Παλάτι',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 1.','Αναβάθμιση του κτηρίου στο επίπεδο 3.','Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 7.','Αναβάθμιση του κτηρίου στο επίπεδο 9.','Αναβάθμιση του κτηρίου στο επίπεδο 11.'],rews:['','','','','','Τίτλος: Κυβερνήτης']},112:{id:112,cid:4,cat:'Κτίριο',sid:11,name:'Πρεσβεία',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15.','Αναβάθμιση του κτηρίου στο επίπεδο 20.','Αναβάθμιση του κτηρίου στο επίπεδο 25.','Αναβάθμιση του κτηρίου στο επίπεδο 30 σε 2 πόλεις.'],rews:['','Τίτλος: Πρέσβης.','','','','']},113:{id:113,cid:4,cat:'Κτίριο',sid:12,name:'Ανταλλακτήριο',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 15 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 20 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 25 σε 3 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 30 σε 3 πόλεις.'],rews:['','','','','','']},115:{id:115,cid:4,cat:'Κτίριο',sid:13,name:'Εργαστήριο',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 15 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 20 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 25 σε 3 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 30 σε 3 πόλεις.'],rews:['','','','','','']},116:{id:116,cid:4,cat:'Κτίριο',sid:14,name:'Κρησφύγετο',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 10 σε 3 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 15 σε 5 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 20 σε 7 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 25 σε 9 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 30 σε 11 πόλεις.'],rews:['','','','','','']},117:{id:117,cid:4,cat:'Κτίριο',sid:5,name:'Κυβερνείο',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 1.','Αναβάθμιση του κτηρίου στο επίπεδο 3 σε 3 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 5 σε 5 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 7 σε 7 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 9 σε 9 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 11 σε 11 πόλεις.'],rews:['','','','','','Τίτλος: Μέγας Τοπάρχης|1 &times; <div class="small itemIcon moveCityCoin coin"></div>Μετατόπιση πόλης']},118:{id:118,cid:4,cat:'Κτίριο',sid:15,name:'Ξυλοκόπος',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15.','Αναβάθμιση του κτηρίου στο επίπεδο 20.','Αναβάθμιση του κτηρίου στο επίπεδο 25.','Αναβάθμιση του κτηρίου στο επίπεδο 30.'],rews:['','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount1000"></div>Παράδοση πρώτης ύλης: Οικοδομικό υλικό (πολύ μικρή).','','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount10000"></div>Παράδοση πρώτης ύλης: Οικοδομικό υλικό (μικρή).','','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount100000"></div>Παράδοση πρώτης ύλης: Οικοδομικό υλικό (μεγάλη)']},119:{id:119,cid:4,cat:'Κτίριο',sid:19,name:'Λιθουργείο',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15.','Αναβάθμιση του κτηρίου στο επίπεδο 20.','Αναβάθμιση του κτηρίου στο επίπεδο 25.','Αναβάθμιση του κτηρίου στο επίπεδο 30.'],rews:['','1 &times; <div class="small itemIcon marblePackage goodsPackage amount1000"></div>Παράδοση πρώτης ύλης: Μάρμαρο (πολύ μικρή).','','1 &times; <div class="small itemIcon marblePackage goodsPackage amount10000"></div>Παράδοση πρώτης ύλης: Μάρμαρο (μικρή).','','1 &times; <div class="small itemIcon marblePackage goodsPackage amount100000"></div>Παράδοση πρώτης ύλης: Μάρμαρο (μεγάλη)']},120:{id:120,cid:4,cat:'Κτίριο',sid:16,name:'Υαλουργείο',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15.','Αναβάθμιση του κτηρίου στο επίπεδο 20.','Αναβάθμιση του κτηρίου στο επίπεδο 25.','Αναβάθμιση του κτηρίου στο επίπεδο 30.'],rews:['','1 &times; <div class="small itemIcon crystalPackage goodsPackage amount1000"></div>Παράδοση πρώτης ύλης: Κρύσταλλος (πολύ μικρή).','','1 &times; <div class="small itemIcon crystalPackage goodsPackage amount10000"></div>Παράδοση πρώτης ύλης: Κρύσταλλος (μικρή).','','1 &times; <div class="small itemIcon crystalPackage goodsPackage amount100000"></div>Παράδοση πρώτης ύλης: Κρύσταλλος (μεγάλη)']},121:{id:121,cid:4,cat:'Κτίριο',sid:18,name:'Οινοποιείο',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15.','Αναβάθμιση του κτηρίου στο επίπεδο 20.','Αναβάθμιση του κτηρίου στο επίπεδο 25.','Αναβάθμιση του κτηρίου στο επίπεδο 30.'],rews:['','1 &times; <div class="small itemIcon winePackage goodsPackage amount1000"></div>Παράδοση πρώτης ύλης: Κρασί (πολύ μικρή).','','1 &times; <div class="small itemIcon winePackage goodsPackage amount10000"></div>Παράδοση πρώτης ύλης: Κρασί (μικρή).','','1 &times; <div class="small itemIcon winePackage goodsPackage amount100000"></div>Παράδοση πρώτης ύλης: Κρασί (μεγάλη)']},122:{id:122,cid:4,cat:'Κτίριο',sid:17,name:'Πύργος Αλχημιστή',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15.','Αναβάθμιση του κτηρίου στο επίπεδο 20.','Αναβάθμιση του κτηρίου στο επίπεδο 25.','Αναβάθμιση του κτηρίου στο επίπεδο 30.'],rews:['','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount1000"></div>Παράδοση πρώτης ύλης: Θείο (πολύ μικρή).','','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount10000"></div>Παράδοση πρώτης ύλης: Θείο (μικρή).','','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount100000"></div>Παράδοση πρώτης ύλης: Θείο (μεγάλη)']},123:{id:123,cid:4,cat:'Κτίριο',sid:20,name:'Ξυλουργός',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15.','Αναβάθμιση του κτηρίου στο επίπεδο 20.','Αναβάθμιση του κτηρίου στο επίπεδο 25.','Αναβάθμιση του κτηρίου στο επίπεδο 30.'],rews:['','','','','','']},124:{id:124,cid:4,cat:'Κτίριο',sid:24,name:'Αρχιτεκτονικό γραφείο',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15.','Αναβάθμιση του κτηρίου στο επίπεδο 20.','Αναβάθμιση του κτηρίου στο επίπεδο 25.','Αναβάθμιση του κτηρίου στο επίπεδο 30.'],rews:['','','','','','']},125:{id:125,cid:4,cat:'Κτίριο',sid:21,name:'Οπτικός',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15.','Αναβάθμιση του κτηρίου στο επίπεδο 20.','Αναβάθμιση του κτηρίου στο επίπεδο 25.','Αναβάθμιση του κτηρίου στο επίπεδο 30.'],rews:['','','','','','']},126:{id:126,cid:4,cat:'Κτίριο',sid:23,name:'Αποστακτήριο',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15.','Αναβάθμιση του κτηρίου στο επίπεδο 20.','Αναβάθμιση του κτηρίου στο επίπεδο 25.','Αναβάθμιση του κτηρίου στο επίπεδο 30.'],rews:['','','','','','']},127:{id:127,cid:4,cat:'Κτίριο',sid:22,name:'Περιοχή Δοκιμών Πυροτεχνημάτων',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15.','Αναβάθμιση του κτηρίου στο επίπεδο 20.','Αναβάθμιση του κτηρίου στο επίπεδο 25.','Αναβάθμιση του κτηρίου στο επίπεδο 30.'],rews:['','','','','','']},128:{id:128,cid:4,cat:'Κτίριο',sid:25,name:'Ναός',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 15 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 20 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 25 σε 3 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 30 σε 3 πόλεις.'],rews:['','','','','','']},129:{id:129,cid:4,cat:'Κτίριο',sid:26,name:'Αλάνα',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15.','Αναβάθμιση του κτηρίου στο επίπεδο 20.','Αναβάθμιση του κτηρίου στο επίπεδο 25 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 30 σε 2 πόλεις.'],rews:['','','','','','1 &times; <div class="small itemIcon storageCapacityBonus days sevenDays"></div>Ατμοκίνητο ανυψωτικό όχημα (7 Ημέρες)']},130:{id:130,cid:4,cat:'Κτίριο',sid:27,name:'Πειρατικό φρούριο',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15.','Αναβάθμιση του κτηρίου στο επίπεδο 20.','Αναβάθμιση του κτηρίου στο επίπεδο 25 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 30 σε 2 πόλεις.'],rews:['','Τίτλος: Καπετάνιος των Πειρατών.','','','','']},131:{id:131,cid:4,cat:'Κτίριο',sid:28,name:'Μαύρη αγορά',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15.','Αναβάθμιση του κτηρίου στο επίπεδο 20.','Αναβάθμιση του κτηρίου στο επίπεδο 23 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 25 σε 3 πόλεις.'],rews:['','','','','','']},132:{id:132,cid:4,cat:'Κτίριο',sid:29,name:'Αρχείο ναυτικών χαρτών',reqs:['Αναβάθμιση του κτηρίου στο επίπεδο 5.','Αναβάθμιση του κτηρίου στο επίπεδο 10.','Αναβάθμιση του κτηρίου στο επίπεδο 15 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 20 σε 2 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 25 σε 3 πόλεις.','Αναβάθμιση του κτηρίου στο επίπεδο 35 σε 5 πόλεις.'],rews:['','','','','','']},201:{id:201,cid:7,cat:'Μονάδες πλοίων',sid:0,name:'Εμπορικά πλοία',reqs:['Απόκτηση 5 εμπορικών πλοίων.','Απόκτηση 25 εμπορικών πλοίων.','Απόκτηση 50 εμπορικών πλοίων.','Απόκτηση 75 εμπορικών πλοίων.','Απόκτηση 125 εμπορικών πλοίων.','Απόκτηση 200 εμπορικών πλοίων.'],rews:['','','1 &times; <div class="small itemIcon goldPackage goodsPackage amount10000"></div>Παράδοση πρώτης ύλης: Χρυσός (μικρή).','','1 &times; <div class="small itemIcon goldPackage goodsPackage amount250000"></div>Παράδοση πρώτης ύλης: Χρυσός (γιγαντιαία).','Τίτλος: Ναύαρχος']},210:{id:210,cid:7,cat:'Μονάδες πλοίων',sid:1,name:'Παραγωγός: Σκάφος-Έμβολο',reqs:['Κατασκευή 25 Σκαφών-Έμβολων.','Κατασκευή 400 Σκαφών-Έμβολων.','Κατασκευή 1000 Σκαφών-Έμβολων.','Κατασκευή 2500 Σκαφών-Έμβολων.','Κατασκευή 10000 Σκαφών-Έμβολων.','Κατασκευή 100000 Σκαφών-Έμβολων.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s210 ships amount50"></div>Πακέτο στρατεύματος: Σκάφος-Έμβολο (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s210 ships amount250"></div>Πακέτο στρατεύματος: Σκάφος-Έμβολο (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s210 ships amount500"></div>Πακέτο στρατεύματος: Σκάφος-Έμβολο (μεγάλο)']},211:{id:211,cid:7,cat:'Μονάδες πλοίων',sid:3,name:'Παραγωγός: Φλογοβόλο',reqs:['Κατασκευή 25 Φλογοβόλων.','Κατασκευή 400 Φλογοβόλων.','Κατασκευή 1000 Φλογοβόλων.','Κατασκευή 2500 Φλογοβόλων.','Κατασκευή 10000 Φλογοβόλων.','Κατασκευή 100000 Φλογοβόλων.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s211 ships amount50"></div>Πακέτο στρατεύματος: Φλογοβόλο (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s211 ships amount250"></div>Πακέτο στρατεύματος: Φλογοβόλο (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s211 ships amount500"></div>Πακέτο στρατεύματος: Φλογοβόλο (μεγάλο)']},212:{id:212,cid:7,cat:'Μονάδες πλοίων',sid:8,name:'Παραγωγός: Βάρκα Κατάδυσης',reqs:['Κατασκευή 25 Βαρκών Κατάδυσης.','Κατασκευή 400 Βαρκών Κατάδυσης.','Κατασκευή 1000 Βαρκών Κατάδυσης.','Κατασκευή 2500 Βαρκών Κατάδυσης.','Κατασκευή 10000 Βαρκών Κατάδυσης.','Κατασκευή 100000 Βαρκών Κατάδυσης.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s212 ships amount50"></div>Πακέτο στρατεύματος: Βάρκα Κατάδυσης (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s212 ships amount250"></div>Πακέτο στρατεύματος: Βάρκα Κατάδυσης (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s212 ships amount500"></div>Πακέτο στρατεύματος: Βάρκα Κατάδυσης (μεγάλο)']},213:{id:213,cid:7,cat:'Μονάδες πλοίων',sid:2,name:'Παραγωγός: Βαλλιστροφόρο',reqs:['Κατασκευή 25 Βαλλιστροφόρων.','Κατασκευή 400 Βαλλιστροφόρων.','Κατασκευή 1000 Βαλλιστροφόρων.','Κατασκευή 2500 Βαλλιστροφόρων.','Κατασκευή 10000 Βαλλιστροφόρων.','Κατασκευή 100000 Βαλλιστροφόρων.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s213 ships amount50"></div>Πακέτο στρατεύματος: Βαλλιστροφόρο (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s213 ships amount250"></div>Πακέτο στρατεύματος: Βαλλιστροφόρο (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s213 ships amount500"></div>Πακέτο στρατεύματος: Βαλλιστροφόρο (μεγάλο)']},214:{id:214,cid:7,cat:'Μονάδες πλοίων',sid:4,name:'Παραγωγός: Καταπελτοφόρο',reqs:['Κατασκευή 25 Καταπελτοφόρων.','Κατασκευή 400 Καταπελτοφόρων.','Κατασκευή 1000 Καταπελτοφόρων.','Κατασκευή 2500 Καταπελτοφόρων.','Κατασκευή 10000 Καταπελτοφόρων.','Κατασκευή 100000 Καταπελτοφόρων.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s214 ships amount50"></div>Πακέτο στρατεύματος: Καταπελτοφόρο (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s214 ships amount250"></div>Πακέτο στρατεύματος: Καταπελτοφόρο (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s214 ships amount500"></div>Πακέτο στρατεύματος: Καταπελτοφόρο (μεγάλο)']},215:{id:215,cid:7,cat:'Μονάδες πλοίων',sid:5,name:'Παραγωγός: Κανονιοφόρο',reqs:['Κατασκευή 25 Κανονιοφόρων.','Κατασκευή 400 Κανονιοφόρων.','Κατασκευή 1000 Κανονιοφόρων.','Κατασκευή 2500 Κανονιοφόρων.','Κατασκευή 10000 Κανονιοφόρων.','Κατασκευή 100000 Κανονιοφόρων.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s215 ships amount50"></div>Πακέτο στρατεύματος: Κανονιοφόρο (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s215 ships amount250"></div>Πακέτο στρατεύματος: Κανονιοφόρο (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s215 ships amount500"></div>Πακέτο στρατεύματος: Κανονιοφόρο (μεγάλο)']},216:{id:216,cid:7,cat:'Μονάδες πλοίων',sid:6,name:'Παραγωγός: Έμβολο ατμού',reqs:['Κατασκευή 25 Εμβόλων ατμού.','Κατασκευή 400 Εμβόλων ατμού.','Κατασκευή 1000 Εμβόλων ατμού.','Κατασκευή 2500 Εμβόλων ατμού.','Κατασκευή 10000 Εμβόλων ατμού.','Κατασκευή 100000 Εμβόλων ατμού.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s216 ships amount50"></div>Πακέτο στρατεύματος: Έμβολο ατμού (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s216 ships amount250"></div>Πακέτο στρατεύματος: Έμβολο ατμού (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s216 ships amount500"></div>Πακέτο στρατεύματος: Έμβολο ατμού (μεγάλο)']},217:{id:217,cid:7,cat:'Μονάδες πλοίων',sid:7,name:'Παραγωγός: Πυραυλάκατος',reqs:['Κατασκευή 25 Πυραυλακάτων.','Κατασκευή 400 Πυραυλακάτων.','Κατασκευή 1000 Πυραυλακάτων.','Κατασκευή 2500 Πυραυλακάτων.','Κατασκευή 10000 Πυραυλακάτων.','Κατασκευή 100000 Πυραυλακάτων.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s217 ships amount50"></div>Πακέτο στρατεύματος: Πυραυλάκατος (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s217 ships amount250"></div>Πακέτο στρατεύματος: Πυραυλάκατος (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s217 ships amount500"></div>Πακέτο στρατεύματος: Πυραυλάκατος (μεγάλο)']},218:{id:218,cid:7,cat:'Μονάδες πλοίων',sid:9,name:'Παραγωγός: Κωπήλατη τορπιλάκατος',reqs:['Κατασκευή 25 Κωπήλατων τορπιλακάτων.','Κατασκευή 400 Κωπήλατων τορπιλακάτων.','Κατασκευή 1000 Κωπήλατων τορπιλακάτων.','Κατασκευή 2500 Κωπήλατων τορπιλακάτων.','Κατασκευή 10000 Κωπήλατων τορπιλακάτων.','Κατασκευή 100000 Κωπήλατων τορπιλακάτων.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s218 ships amount50"></div>Πακέτο στρατεύματος: Κωπήλατη τορπιλάκατος (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s218 ships amount250"></div>Πακέτο στρατεύματος: Κωπήλατη τορπιλάκατος (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s218 ships amount500"></div>Πακέτο στρατεύματος: Κωπήλατη τορπιλάκατος (μεγάλο)']},219:{id:219,cid:7,cat:'Μονάδες πλοίων',sid:10,name:'Παραγωγός: Μεταφορικό αερόστατων',reqs:['Κατασκευή 25 Μεταφορικών αερόστατων.','Κατασκευή 400 Μεταφορικών αερόστατων.','Κατασκευή 1000 Μεταφορικών αερόστατων.','Κατασκευή 2500 Μεταφορικών αερόστατων.','Κατασκευή 10000 Μεταφορικών αερόστατων.','Κατασκευή 100000 Μεταφορικών αερόστατων.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s219 ships amount50"></div>Πακέτο στρατεύματος: Μεταφορικό αερόστατων (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s219 ships amount250"></div>Πακέτο στρατεύματος: Μεταφορικό αερόστατων (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s219 ships amount500"></div>Πακέτο στρατεύματος: Μεταφορικό αερόστατων (μεγάλο)']},220:{id:220,cid:7,cat:'Μονάδες πλοίων',sid:11,name:'Παραγωγός: Βοηθητικό',reqs:['Κατασκευή 10 Βοηθητικών.','Κατασκευή 75 Βοηθητικών.','Κατασκευή 150 Βοηθητικών.','Κατασκευή 300 Βοηθητικών.','Κατασκευή 1000 Βοηθητικών.','Κατασκευή 10000 Βοηθητικών.'],rews:['','1 &times; <div class="small itemIcon troopsPackage s220 ships amount5"></div>Πακέτο στρατεύματος: Βοηθητικό (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s220 ships amount25"></div>Πακέτο στρατεύματος: Βοηθητικό (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s220 ships amount50"></div>Πακέτο στρατεύματος: Βοηθητικό (μεγάλο)']},301:{id:301,cid:6,cat:'Μονάδες εδάφους',sid:0,name:'Παραγωγός: Εκτοξευτής',reqs:['Εκπαίδευση 25 Εκτοξευτών.','Εκπαίδευση 400 Εκτοξευτών.','Εκπαίδευση 1000 Εκτοξευτών.','Εκπαίδευση 2500 Εκτοξευτών.','Εκπαίδευση 10000 Εκτοξευτών.','Εκπαίδευση 100000 Εκτοξευτών'],rews:['','1 &times; <div class="small itemIcon troopsPackage s301 units amount100"></div>Πακέτο στρατεύματος: Εκτοξευτής (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s301 units amount500"></div>Πακέτο στρατεύματος: Εκτοξευτής (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s301 units amount1000"></div>Πακέτο στρατεύματος: Εκτοξευτής (μεγάλο)']},302:{id:302,cid:6,cat:'Μονάδες εδάφους',sid:4,name:'Παραγωγός: Ξιφομάχος',reqs:['Εκπαίδευση 25 Ξιφομάχων.','Εκπαίδευση 400 Ξιφομάχων.','Εκπαίδευση 1000 Ξιφομάχων.','Εκπαίδευση 2500 Ξιφομάχων.','Εκπαίδευση 10000 Ξιφομάχων.','Εκπαίδευση 100000 Ξιφομάχων'],rews:['','1 &times; <div class="small itemIcon troopsPackage s302 units amount100"></div>Πακέτο στρατεύματος: Ξιφομάχος (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s302 units amount500"></div>Πακέτο στρατεύματος: Ξιφομάχος (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s302 units amount1000"></div>Πακέτο στρατεύματος: Ξιφομάχος (μεγάλο)']},303:{id:303,cid:6,cat:'Μονάδες εδάφους',sid:5,name:'Παραγωγός: Οπλίτης',reqs:['Εκπαίδευση 25 Οπλιτών.','Εκπαίδευση 400 Οπλιτών.','Εκπαίδευση 1000 Οπλιτών.','Εκπαίδευση 2500 Οπλιτών.','Εκπαίδευση 10000 Οπλιτών.','Εκπαίδευση 100000 Οπλιτών'],rews:['','1 &times; <div class="small itemIcon troopsPackage s303 units amount100"></div>Πακέτο στρατεύματος: Οπλίτης (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s303 units amount500"></div>Πακέτο στρατεύματος: Οπλίτης (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s303 units amount1000"></div>Πακέτο στρατεύματος: Οπλίτης (μεγάλο)']},304:{id:304,cid:6,cat:'Μονάδες εδάφους',sid:2,name:'Παραγωγός: Πυροβολητής θείου',reqs:['Εκπαίδευση 25 Πυροβολητών θείου.','Εκπαίδευση 400 Πυροβολητών θείου.','Εκπαίδευση 1000 Πυροβολητών θείου.','Εκπαίδευση 2500 Πυροβολητών θείου.','Εκπαίδευση 10000 Πυροβολητών θείου.','Εκπαίδευση 100000 Πυροβολητών θείου'],rews:['','1 &times; <div class="small itemIcon troopsPackage s304 units amount100"></div>Πακέτο στρατεύματος: Πυροβολητής θείου (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s304 units amount500"></div>Πακέτο στρατεύματος: Πυροβολητής θείου (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s304 units amount1000"></div>Πακέτο στρατεύματος: Πυροβολητής θείου (μεγάλο)']},305:{id:305,cid:6,cat:'Μονάδες εδάφους',sid:11,name:'Παραγωγός: Κανόνι',reqs:['Κατασκευή 25 Κανονιών.','Κατασκευή 400 Κανονιών.','Κατασκευή 1000 Κανονιών.','Κατασκευή 2500 Κανονιών.','Κατασκευή 10000 Κανονιών.','Κατασκευή 100000 Κανονιών'],rews:['','1 &times; <div class="small itemIcon troopsPackage s305 units amount100"></div>Πακέτο στρατεύματος: Κανόνι (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s305 units amount500"></div>Πακέτο στρατεύματος: Κανόνι (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s305 units amount1000"></div>Πακέτο στρατεύματος: Κανόνι (μεγάλο)']},306:{id:306,cid:6,cat:'Μονάδες εδάφους',sid:10,name:'Παραγωγός: Καταπέλτης',reqs:['Κατασκευή 25 Καταπελτών.','Κατασκευή 400 Καταπελτών.','Κατασκευή 1000 Καταπελτών.','Κατασκευή 2500 Καταπελτών.','Κατασκευή 10000 Καταπελτών.','Κατασκευή 100000 Καταπελτών'],rews:['','1 &times; <div class="small itemIcon troopsPackage s306 units amount100"></div>Πακέτο στρατεύματος: Καταπέλτης (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s306 units amount500"></div>Πακέτο στρατεύματος: Καταπέλτης (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s306 units amount1000"></div>Πακέτο στρατεύματος: Καταπέλτης (μεγάλο)']},307:{id:307,cid:6,cat:'Μονάδες εδάφους',sid:9,name:'Παραγωγός: Κριός',reqs:['Κατασκευή 25 Κριών.','Κατασκευή 400 Κριών.','Κατασκευή 1000 Κριών.','Κατασκευή 2500 Κριών.','Κατασκευή 10000 Κριών.','Κατασκευή 100000 Κριών'],rews:['','1 &times; <div class="small itemIcon troopsPackage s307 units amount100"></div>Πακέτο στρατεύματος: Κριός (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s307 units amount500"></div>Πακέτο στρατεύματος: Κριός (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s307 units amount1000"></div>Πακέτο στρατεύματος: Κριός (μεγάλο)']},308:{id:308,cid:6,cat:'Μονάδες εδάφους',sid:6,name:'Παραγωγός: Γίγαντας Ατμού',reqs:['Εκπαίδευση 25 Γιγάντων Ατμού.','Εκπαίδευση 400 Γιγάντων Ατμού.','Εκπαίδευση 1000 Γιγάντων Ατμού.','Εκπαίδευση 2500 Γιγάντων Ατμού.','Εκπαίδευση 10000 Γιγάντων Ατμού.','Εκπαίδευση 100000 Γιγάντων Ατμού'],rews:['','1 &times; <div class="small itemIcon troopsPackage s308 units amount100"></div>Πακέτο στρατεύματος: Γίγαντας Ατμού (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s308 units amount500"></div>Πακέτο στρατεύματος: Γίγαντας Ατμού (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s308 units amount1000"></div>Πακέτο στρατεύματος: Γίγαντας Ατμού (μεγάλο)']},309:{id:309,cid:6,cat:'Μονάδες εδάφους',sid:8,name:'Παραγωγός: Βομβαρδιστικό αερόστατο',reqs:['Κατασκευή 25 Βομβαρδιστικών αερόστατων.','Κατασκευή 400 Βομβαρδιστικών αερόστατων.','Κατασκευή 1000 Βομβαρδιστικών αερόστατων.','Κατασκευή 2500 Βομβαρδιστικών αερόστατων.','Κατασκευή 10000 Βομβαρδιστικών αερόστατων.','Κατασκευή 100000 Βομβαρδιστικών αερόστατων'],rews:['','1 &times; <div class="small itemIcon troopsPackage s309 units amount100"></div>Πακέτο στρατεύματος: Βομβαρδιστικό αερόστατο (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s309 units amount500"></div>Πακέτο στρατεύματος: Βομβαρδιστικό αερόστατο (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s309 units amount1000"></div>Πακέτο στρατεύματος: Βομβαρδιστικό αερόστατο (μεγάλο)']},310:{id:310,cid:6,cat:'Μονάδες εδάφους',sid:13,name:'Παραγωγός: Μάγειρας',reqs:['Εκπαίδευση 10 Μαγείρων.','Εκπαίδευση 75 Μαγείρων.','Εκπαίδευση 150 Μαγείρων.','Εκπαίδευση 300 Μαγείρων.','Εκπαίδευση 1000 Μαγείρων.','Εκπαίδευση 10000 Μαγείρων'],rews:['','1 &times; <div class="small itemIcon troopsPackage s310 units amount10"></div>Πακέτο στρατεύματος: Μάγειρας (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s310 units amount50"></div>Πακέτο στρατεύματος: Μάγειρας (κανονικό)|Τίτλος: Σεφ.','','1 &times; <div class="small itemIcon troopsPackage s310 units amount100"></div>Πακέτο στρατεύματος: Μάγειρας (μεγάλο)']},311:{id:311,cid:6,cat:'Μονάδες εδάφους',sid:12,name:'Παραγωγός: Γιατρός',reqs:['Εκπαίδευση 10 Ιατρών.','Εκπαίδευση 75 Ιατρών.','Εκπαίδευση 150 Ιατρών.','Εκπαίδευση 300 Ιατρών.','Εκπαίδευση 1000 Ιατρών.','Εκπαίδευση 10000 Ιατρών'],rews:['','1 &times; <div class="small itemIcon troopsPackage s311 units amount10"></div>Πακέτο στρατεύματος: Γιατρός (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s311 units amount50"></div>Πακέτο στρατεύματος: Γιατρός (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s311 units amount100"></div>Πακέτο στρατεύματος: Γιατρός (μεγάλο)|Τίτλος: Δεξί Χέρι του Ασκληπιού']},312:{id:312,cid:6,cat:'Μονάδες εδάφους',sid:7,name:'Παραγωγός: Γυροκόπτερο',reqs:['Κατασκευή 25 Γυροκόπτερων.','Κατασκευή 400 Γυροκόπτερων.','Κατασκευή 1000 Γυροκόπτερων.','Κατασκευή 2500 Γυροκόπτερων.','Κατασκευή 10000 Γυροκόπτερων.','Κατασκευή 100000 Γυροκόπτερων'],rews:['','1 &times; <div class="small itemIcon troopsPackage s312 units amount100"></div>Πακέτο στρατεύματος: Γυροκόπτερο (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s312 units amount500"></div>Πακέτο στρατεύματος: Γυροκόπτερο (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s312 units amount1000"></div>Πακέτο στρατεύματος: Γυροκόπτερο (μεγάλο)']},313:{id:313,cid:6,cat:'Μονάδες εδάφους',sid:1,name:'Παραγωγός: Τοξότης',reqs:['Εκπαίδευση 25 Τοξοτών.','Εκπαίδευση 400 Τοξοτών.','Εκπαίδευση 1000 Τοξοτών.','Εκπαίδευση 2500 Τοξοτών.','Εκπαίδευση 10000 Τοξοτών.','Εκπαίδευση 100000 Τοξοτών'],rews:['','1 &times; <div class="small itemIcon troopsPackage s313 units amount100"></div>Πακέτο στρατεύματος: Τοξότης (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s313 units amount500"></div>Πακέτο στρατεύματος: Τοξότης (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s313 units amount1000"></div>Πακέτο στρατεύματος: Τοξότης (μεγάλο)']},315:{id:315,cid:6,cat:'Μονάδες εδάφους',sid:3,name:'Παραγωγός: Λογχοφόροι',reqs:['Εκπαίδευση 25 Λογχοφόρων.','Εκπαίδευση 400 Λογχοφόρων.','Εκπαίδευση 1000 Λογχοφόρων.','Εκπαίδευση 2500 Λογχοφόρων.','Εκπαίδευση 10000 Λογχοφόρων.','Εκπαίδευση 100000 Λογχοφόρων'],rews:['','1 &times; <div class="small itemIcon troopsPackage s315 units amount100"></div>Πακέτο στρατεύματος: Λογχοφόρος (μικρό).','','1 &times; <div class="small itemIcon troopsPackage s315 units amount500"></div>Πακέτο στρατεύματος: Λογχοφόρος (κανονικό).','','1 &times; <div class="small itemIcon troopsPackage s315 units amount1000"></div>Πακέτο στρατεύματος: Λογχοφόρος (μεγάλο)']},319:{id:319,cid:6,cat:'Μονάδες εδάφους',sid:14,name:'Παραγωγός: Σπαρτιάτης',reqs:['Αγορά 300 Σπαρτιατών.','Αγορά 600 Σπαρτιατών.','Αγορά 900 Σπαρτιατών.','Αγορά 1200 Σπαρτιατών.','Αγορά 1500 Σπαρτιατών.','Αγορά 3000 Σπαρτιατών.'],rews:['','','','','','Τίτλος: Στρατηγός του Λεωνίδα']},501:{id:501,cid:6,cat:'Μονάδες εδάφους',sid:15,name:'Καταστροφέας: Εκτοξευτής',reqs:['Απόλυση 25 Εκτοξευτών.','Απόλυση 400 Εκτοξευτών.','Απόλυση 1000 Εκτοξευτών.','Απόλυση 2500 Εκτοξευτών.','Απόλυση 10000 Εκτοξευτών.','Απόλυση 100000 Εκτοξευτών'],rews:['','1 &times; <div class="small itemIcon marblePackage goodsPackage amount1000"></div>Παράδοση πρώτης ύλης: Μάρμαρο (πολύ μικρή).','','1 &times; <div class="small itemIcon marblePackage goodsPackage amount10000"></div>Παράδοση πρώτης ύλης: Μάρμαρο (μικρή).','','1 &times; <div class="small itemIcon marblePackage goodsPackage amount25000"></div>Παράδοση πρώτης ύλης: Μάρμαρο (κανονική)']},502:{id:502,cid:6,cat:'Μονάδες εδάφους',sid:19,name:'Καταστροφέας: Ξιφομάχος',reqs:['Απόλυση 25 Ξιφομάχων.','Απόλυση 400 Ξιφομάχων.','Απόλυση 1000 Ξιφομάχων.','Απόλυση 2500 Ξιφομάχων.','Απόλυση 10000 Ξιφομάχων.','Απόλυση 100000 Ξιφομάχων'],rews:['','','','','','']},503:{id:503,cid:6,cat:'Μονάδες εδάφους',sid:20,name:'Καταστροφέας: Οπλίτης',reqs:['Απόλυση 25 Οπλιτών.','Απόλυση 400 Οπλιτών.','Απόλυση 1000 Οπλιτών.','Απόλυση 2500 Οπλιτών.','Απόλυση 10000 Οπλιτών.','Απόλυση 100000 Οπλιτών'],rews:['','','','','','']},504:{id:504,cid:6,cat:'Μονάδες εδάφους',sid:17,name:'Καταστροφέας: Πυροβολητής θείου',reqs:['Απόλυση 25 Πυροβολητών θείου.','Απόλυση 400 Πυροβολητών θείου.','Απόλυση 1000 Πυροβολητών θείου.','Απόλυση 2500 Πυροβολητών θείου.','Απόλυση 10000 Πυροβολητών θείου.','Απόλυση 100000 Πυροβολητών θείου'],rews:['','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount1000"></div>Παράδοση πρώτης ύλης: Θείο (πολύ μικρή).','','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount10000"></div>Παράδοση πρώτης ύλης: Θείο (μικρή).','','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount25000"></div>Παράδοση πρώτης ύλης: Θείο (κανονική)']},505:{id:505,cid:6,cat:'Μονάδες εδάφους',sid:26,name:'Καταστροφέας: Κανόνι',reqs:['Απόσυρση 25 Κανονιών.','Απόσυρση 400 Κανονιών.','Απόσυρση 1000 Κανονιών.','Απόσυρση 2500 Κανονιών.','Απόσυρση 10000 Κανονιών.','Απόσυρση 100000 Κανονιών'],rews:['','','','','','']},506:{id:506,cid:6,cat:'Μονάδες εδάφους',sid:25,name:'Καταστροφέας: Καταπέλτης',reqs:['Απόσυρση 25 Καταπελτών.','Απόσυρση 400 Καταπελτών.','Απόσυρση 1000 Καταπελτών.','Απόσυρση 2500 Καταπελτών.','Απόσυρση 10000 Καταπελτών.','Απόσυρση 100000 Καταπελτών'],rews:['','','','','','']},507:{id:507,cid:6,cat:'Μονάδες εδάφους',sid:24,name:'Καταστροφέας: Κριός',reqs:['Απόσυρση 25 Κριών.','Απόσυρση 400 Κριών.','Απόσυρση 1000 Κριών.','Απόσυρση 2500 Κριών.','Απόσυρση 10000 Κριών.','Απόσυρση 100000 Κριών'],rews:['','','','','','']},508:{id:508,cid:6,cat:'Μονάδες εδάφους',sid:21,name:'Καταστροφέας: Γίγαντας Ατμού',reqs:['Απόλυση 25 Γιγάντων Ατμού.','Απόλυση 400 Γιγάντων Ατμού.','Απόλυση 1000 Γιγάντων Ατμού.','Απόλυση 2500 Γιγάντων Ατμού.','Απόλυση 10000 Γιγάντων Ατμού.','Απόλυση 100000 Γιγάντων Ατμού'],rews:['','','','','','']},509:{id:509,cid:6,cat:'Μονάδες εδάφους',sid:23,name:'Καταστροφέας: Βομβαρδιστικό αερόστατο',reqs:['Απόσυρση 25 Βομβαρδιστικών αερόστατων.','Απόσυρση 400 Βομβαρδιστικών αερόστατων.','Απόσυρση 1000 Βομβαρδιστικών αερόστατων.','Απόσυρση 2500 Βομβαρδιστικών αερόστατων.','Απόσυρση 10000 Βομβαρδιστικών αερόστατων.','Απόσυρση 100000 Βομβαρδιστικών αερόστατων'],rews:['','','','','','']},512:{id:512,cid:6,cat:'Μονάδες εδάφους',sid:22,name:'Καταστροφέας: Γυροκόπτερο',reqs:['Απόσυρση 25 Γυροκόπτερων.','Απόσυρση 400 Γυροκόπτερων.','Απόσυρση 1000 Γυροκόπτερων.','Απόσυρση 2500 Γυροκόπτερων.','Απόσυρση 10000 Γυροκόπτερων.','Απόσυρση 100000 Γυροκόπτερων'],rews:['','','','','','']},513:{id:513,cid:6,cat:'Μονάδες εδάφους',sid:16,name:'Καταστροφέας: Τοξότης',reqs:['Απόλυση 25 Τοξοτών.','Απόλυση 400 Τοξοτών.','Απόλυση 1000 Τοξοτών.','Απόλυση 2500 Τοξοτών.','Απόλυση 10000 Τοξοτών.','Απόλυση 100000 Τοξοτών'],rews:['','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount1000"></div>Παράδοση πρώτης ύλης: Οικοδομικό υλικό (πολύ μικρή).','','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount10000"></div>Παράδοση πρώτης ύλης: Οικοδομικό υλικό (μικρή).','','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount25000"></div>Παράδοση πρώτης ύλης: Οικοδομικό υλικό (κανονική)']},515:{id:515,cid:6,cat:'Μονάδες εδάφους',sid:18,name:'Καταστροφέας: Λογχοφόροι',reqs:['Απόλυση 25 Λογχοφόρων.','Απόλυση 400 Λογχοφόρων.','Απόλυση 1000 Λογχοφόρων.','Απόλυση 2500 Λογχοφόρων.','Απόλυση 10000 Λογχοφόρων.','Απόλυση 100000 Λογχοφόρων'],rews:['','','','','','']},610:{id:610,cid:7,cat:'Μονάδες πλοίων',sid:12,name:'Καταστροφέας: Σκάφος-Έμβολο',reqs:['Απόσυρση 25 Σκαφών-Έμβολων.','Απόσυρση 400 Σκαφών-Έμβολων.','Απόσυρση 1000 Σκαφών-Έμβολων.','Απόσυρση 2500 Σκαφών-Έμβολων.','Απόσυρση 10000 Σκαφών-Έμβολων.','Απόσυρση 100000 Σκαφών-Έμβολων.'],rews:['','','','','','']},611:{id:611,cid:7,cat:'Μονάδες πλοίων',sid:14,name:'Καταστροφέας: Φλογοβόλο',reqs:['Απόσυρση 25 Φλογοβόλων.','Απόσυρση 400 Φλογοβόλων.','Απόσυρση 1000 Φλογοβόλων.','Απόσυρση 2500 Φλογοβόλων.','Απόσυρση 10000 Φλογοβόλων.','Απόσυρση 100000 Φλογοβόλων.'],rews:['','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount1000"></div>Παράδοση πρώτης ύλης: Θείο (πολύ μικρή).','','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount10000"></div>Παράδοση πρώτης ύλης: Θείο (μικρή).','','1 &times; <div class="small itemIcon sulfurPackage goodsPackage amount25000"></div>Παράδοση πρώτης ύλης: Θείο (κανονική)']},612:{id:612,cid:7,cat:'Μονάδες πλοίων',sid:19,name:'Καταστροφέας: Βάρκα Κατάδυσης',reqs:['Απόσυρση 25 Βαρκών Κατάδυσης.','Απόσυρση 400 Βαρκών Κατάδυσης.','Απόσυρση 1000 Βαρκών Κατάδυσης.','Απόσυρση 2500 Βαρκών Κατάδυσης.','Απόσυρση 10000 Βαρκών Κατάδυσης.','Απόσυρση 100000 Βαρκών Κατάδυσης.'],rews:['','','','','','']},613:{id:613,cid:7,cat:'Μονάδες πλοίων',sid:13,name:'Καταστροφέας: Βαλλιστροφόρο',reqs:['Απόσυρση 25 Βαλλιστροφόρων.','Απόσυρση 400 Βαλλιστροφόρων.','Απόσυρση 1000 Βαλλιστροφόρων.','Απόσυρση 2500 Βαλλιστροφόρων.','Απόσυρση 10000 Βαλλιστροφόρων.','Απόσυρση 100000 Βαλλιστροφόρων.'],rews:['','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount1000"></div>Παράδοση πρώτης ύλης: Οικοδομικό υλικό (πολύ μικρή).','','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount10000"></div>Παράδοση πρώτης ύλης: Οικοδομικό υλικό (μικρή).','','1 &times; <div class="small itemIcon resourcePackage goodsPackage amount25000"></div>Παράδοση πρώτης ύλης: Οικοδομικό υλικό (κανονική)']},614:{id:614,cid:7,cat:'Μονάδες πλοίων',sid:15,name:'Καταστροφέας: Καταπελτοφόρο',reqs:['Απόσυρση 25 Καταπελτοφόρων.','Απόσυρση 400 Καταπελτοφόρων.','Απόσυρση 1000 Καταπελτοφόρων.','Απόσυρση 2500 Καταπελτοφόρων.','Απόσυρση 10000 Καταπελτοφόρων.','Απόσυρση 100000 Καταπελτοφόρων.'],rews:['','1 &times; <div class="small itemIcon marblePackage goodsPackage amount1000"></div>Παράδοση πρώτης ύλης: Μάρμαρο (πολύ μικρή).','','1 &times; <div class="small itemIcon marblePackage goodsPackage amount10000"></div>Παράδοση πρώτης ύλης: Μάρμαρο (μικρή).','','1 &times; <div class="small itemIcon marblePackage goodsPackage amount25000"></div>Παράδοση πρώτης ύλης: Μάρμαρο (κανονική)']},615:{id:615,cid:7,cat:'Μονάδες πλοίων',sid:16,name:'Καταστροφέας: Κανονιοφόρο',reqs:['Απόσυρση 25 Κανονιοφόρων.','Απόσυρση 400 Κανονιοφόρων.','Απόσυρση 1000 Κανονιοφόρων.','Απόσυρση 2500 Κανονιοφόρων.','Απόσυρση 10000 Κανονιοφόρων.','Απόσυρση 100000 Κανονιοφόρων.'],rews:['','','','','','']},616:{id:616,cid:7,cat:'Μονάδες πλοίων',sid:17,name:'Καταστροφέας: Έμβολο ατμού',reqs:['Απόσυρση 25 Εμβόλων ατμού.','Απόσυρση 400 Εμβόλων ατμού.','Απόσυρση 1000 Εμβόλων ατμού.','Απόσυρση 2500 Εμβόλων ατμού.','Απόσυρση 10000 Εμβόλων ατμού.','Απόσυρση 100000 Εμβόλων ατμού.'],rews:['','','','','','']},617:{id:617,cid:7,cat:'Μονάδες πλοίων',sid:18,name:'Καταστροφέας: Πυραυλάκατος',reqs:['Απόσυρση 25 Πυραυλακάτων.','Απόσυρση 400 Πυραυλακάτων.','Απόσυρση 1000 Πυραυλακάτων.','Απόσυρση 2500 Πυραυλακάτων.','Απόσυρση 10000 Πυραυλακάτων.','Απόσυρση 100000 Πυραυλακάτων.'],rews:['','','','','','']},618:{id:618,cid:7,cat:'Μονάδες πλοίων',sid:20,name:'Καταστροφέας: Κωπήλατη τορπιλάκατος',reqs:['Απόσυρση 25 Κωπήλατων τορπιλακάτων.','Απόσυρση 400 Κωπήλατων τορπιλακάτων.','Απόσυρση 1000 Κωπήλατων τορπιλακάτων.','Απόσυρση 2500 Κωπήλατων τορπιλακάτων.','Απόσυρση 10000 Κωπήλατων τορπιλακάτων.','Απόσυρση 100000 Κωπήλατων τορπιλακάτων.'],rews:['','','','','','']},619:{id:619,cid:7,cat:'Μονάδες πλοίων',sid:21,name:'Καταστροφέας: Μεταφορικό αερόστατων',reqs:['Απόσυρση 25 Μεταφορικών αερόστατων.','Απόσυρση 400 Μεταφορικών αερόστατων.','Απόσυρση 1000 Μεταφορικών αερόστατων.','Απόσυρση 2500 Μεταφορικών αερόστατων.','Απόσυρση 10000 Μεταφορικών αερόστατων.','Απόσυρση 100000 Μεταφορικών αερόστατων.'],rews:['','','','','','']},701:{id:701,cid:5,cat:'Άμυνα',sid:14,name:'Ειδικός: Εκτοξευτής',reqs:['Νικηφόρα έκβαση μιας μάχης ενάντια σε μονάδες ενός άλλου παίκτη, χρησιμοποιώντας μόνο Εκτοξευτές'],rews:['1 &times; <div class="small itemIcon troopsPackage s301 units amount500"></div>Πακέτο στρατεύματος: Εκτοξευτής (κανονικό)']},702:{id:702,cid:5,cat:'Άμυνα',sid:18,name:'Ειδικός: Ξιφομάχος',reqs:['Νικηφόρα έκβαση μιας μάχης ενάντια σε μονάδες ενός άλλου παίκτη, χρησιμοποιώντας μόνο Ξιφομάχους'],rews:['1 &times; <div class="small itemIcon troopsPackage s302 units amount500"></div>Πακέτο στρατεύματος: Ξιφομάχος (κανονικό)']},703:{id:703,cid:5,cat:'Άμυνα',sid:11,name:'Ειδικός: Οπλίτης',reqs:['Νικηφόρα έκβαση μιας μάχης ενάντια σε μονάδες ενός άλλου παίκτη, χρησιμοποιώντας μόνο Οπλίτες.'],rews:['1 &times; <div class="small itemIcon troopsPackage s303 units amount500"></div>Πακέτο στρατεύματος: Οπλίτης (κανονικό)']},704:{id:704,cid:5,cat:'Άμυνα',sid:13,name:'Ειδικός: Πυροβολητής θείου',reqs:['Νικηφόρα έκβαση μιας μάχης ενάντια σε μονάδες ενός άλλου παίκτη, χρησιμοποιώντας μόνο Πυροβολητές θείου.'],rews:['1 &times; <div class="small itemIcon troopsPackage s304 units amount500"></div>Πακέτο στρατεύματος: Πυροβολητής θείου (κανονικό)']},705:{id:705,cid:5,cat:'Άμυνα',sid:17,name:'Ειδικός: Γίγαντας Ατμού',reqs:['Νικηφόρα έκβαση μιας μάχης ενάντια σε μονάδες ενός άλλου παίκτη, χρησιμοποιώντας μόνο Γίγαντες Ατμού'],rews:['1 &times; <div class="small itemIcon troopsPackage s308 units amount500"></div>Πακέτο στρατεύματος: Γίγαντας Ατμού (κανονικό)']},706:{id:706,cid:5,cat:'Άμυνα',sid:12,name:'Ειδικός: Τοξότης',reqs:['Νικηφόρα έκβαση μιας μάχης ενάντια σε μονάδες ενός άλλου παίκτη, χρησιμοποιώντας μόνο Τοξότες.'],rews:['1 &times; <div class="small itemIcon troopsPackage s313 units amount500"></div>Πακέτο στρατεύματος: Τοξότης (κανονικό)']},707:{id:707,cid:5,cat:'Άμυνα',sid:16,name:'Ειδικός: Λογχοφόροι',reqs:['Νικηφόρα έκβαση μιας μάχης ενάντια σε μονάδες ενός άλλου παίκτη, χρησιμοποιώντας μόνο Λογχοφόρους'],rews:['1 &times; <div class="small itemIcon troopsPackage s315 units amount500"></div>Πακέτο στρατεύματος: Λογχοφόρος (κανονικό)']},708:{id:708,cid:5,cat:'Άμυνα',sid:15,name:'Ειδικός: Σπαρτιάτης',reqs:['Νικηφόρα έκβαση μιας μάχης ενάντια σε μονάδες ενός άλλου παίκτη, χρησιμοποιώντας μόνο Σπαρτιάτες'],rews:['']},810:{id:810,cid:5,cat:'Άμυνα',sid:23,name:'Ειδικός: Σκάφος-Έμβολο',reqs:['Νικηφόρα έκβαση μιας μάχης ενάντια σε μονάδες ενός άλλου παίκτη, χρησιμοποιώντας μόνο Σκάφη-Έμβολα'],rews:['1 &times; <div class="small itemIcon troopsPackage s210 ships amount250"></div>Πακέτο στρατεύματος: Σκάφος-Έμβολο (κανονικό)']},811:{id:811,cid:5,cat:'Άμυνα',sid:21,name:'Ειδικός: Φλογοβόλο',reqs:['Νικηφόρα έκβαση μιας μάχης ενάντια σε μονάδες ενός άλλου παίκτη, χρησιμοποιώντας μόνο Φλογοβόλα'],rews:['1 &times; <div class="small itemIcon troopsPackage s211 ships amount250"></div>Πακέτο στρατεύματος: Φλογοβόλο (κανονικό)']},813:{id:813,cid:5,cat:'Άμυνα',sid:19,name:'Ειδικός: Βαλλιστροφόρο',reqs:['Νικηφόρα έκβαση μιας μάχης ενάντια σε μονάδες ενός άλλου παίκτη, χρησιμοποιώντας μόνο Βαλλιστροφόρα'],rews:['1 &times; <div class="small itemIcon troopsPackage s213 ships amount250"></div>Πακέτο στρατεύματος: Βαλλιστροφόρο (κανονικό)']},814:{id:814,cid:5,cat:'Άμυνα',sid:20,name:'Ειδικός: Καταπελτοφόρο',reqs:['Νικηφόρα έκβαση μιας μάχης ενάντια σε μονάδες ενός άλλου παίκτη, χρησιμοποιώντας μόνο Καταπελτοφόρα'],rews:['1 &times; <div class="small itemIcon troopsPackage s214 ships amount250"></div>Πακέτο στρατεύματος: Καταπελτοφόρο (κανονικό)']},815:{id:815,cid:5,cat:'Άμυνα',sid:22,name:'Ειδικός: Κανονιοφόρο',reqs:['Νικηφόρα έκβαση μιας μάχης ενάντια σε μονάδες ενός άλλου παίκτη, χρησιμοποιώντας μόνο Κανονιοφόρα'],rews:['1 &times; <div class="small itemIcon troopsPackage s215 ships amount250"></div>Πακέτο στρατεύματος: Κανονιοφόρο (κανονικό)']},816:{id:816,cid:5,cat:'Άμυνα',sid:24,name:'Ειδικός: Έμβολο ατμού',reqs:['Νικηφόρα έκβαση μιας μάχης ενάντια σε μονάδες ενός άλλου παίκτη, χρησιμοποιώντας μόνο Έμβολα ατμού'],rews:['1 &times; <div class="small itemIcon troopsPackage s216 ships amount250"></div>Πακέτο στρατεύματος: Έμβολο ατμού (κανονικό)']}},
 				click_:'<b>Κλικ</b>'
+			},
+			es:
+			{
+				allyranks: ['Líder','Ministro del Interior','General','Diplomático'],
+				advisors: ['Asesor comercial', 'Asesor militar', 'Asesor de investigación', 'Asesor de diplomacia'],
+				adequacy: 'Adecuación',
+				level: 'Nivel',
+				in_level: 'en nivel {0}',
+				upgrade: 'Actualizar',
+				inqueue: 'En cola',
+				downgrade: 'Demoler',
+				upbtntitle: 'La actualización no es posible en este momento',
+				qubtntitle: 'La actualización se puede poner en cola',
+				downbtntitle: ['¡La demolición no es posible!', '¡La demolición es posible!'],
+				buildings: 'Edificios',
+				economy: 'Economía',
+				military: 'Milicia',
+				worldmap: 'Mapamundi',
+				greek: 'Griego',
+				empire: 'Empire',
+				overview: 'Overview',
+				troops: 'Tropas',
+				fleet: 'Flota',
+				ships: 'Barcos',
+				units: 'Unidades',
+				towns: 'Ciudades',
+				city: 'Ciudad',
+				townHall: 'Intendencia',
+				colony: 'Colonia',
+				colony_: 'Colonia',
+				capital: 'Capital',
+				capital_: 'Capital',
+				palace: 'Palacio',
+				palaceColony: 'Residencia del Gobernador',
+				government: 'Forma actual de gobierno',
+				anarchie: 'Anarquia',
+				xenokratie: 'Xenocracia',
+				ikakratie: 'Ikacracia',
+				aristokratie: 'Aristocracia',
+				diktatur: 'Dictadura',
+				demokratie: 'Democracia',
+				nomokratie: 'Nomocracia',
+				oligarchie: 'Oligarquía',
+				technokratie: 'Tecnocracia',
+				theokratie: 'Teocracía',
+				from_government: 'del gobierno',
+				tavern: 'Taberna',
+				miracle: 'Maravillas',
+				MirTxts: ['','Este milagro se activó recientemente. Reutilizar'],
+				world_miracle: 'Milagro mundial',
+				priests: 'Sacerdotes en el templo',
+				conversion: 'Tasa de conversión de fe',
+				curislandfaith: 'Isla de la <b>Fe</b>',
+				maxislandfaith: '<b>Fe</b> máxima en la isla',
+				percentage: 'El porcentaje de fe de la isla es',
+				cooldown: 'Reutilización (activado recientemente) ',
+				to_temple: '(al templo de las ciudades)',
+				to_wonder: '(a los monumentos de las islas)',
+				favours: ['Favores','Favor'],
+				tasks: 'Tareas',
+				renew: 'Renevor',
+				zeroingtasks: 'Resetear todas las tareas',
+				zeroingvaluation: 'Tiempo restante antes de la valoración',
+				pirates: 'Piratas<br>Overview',
+				museum: 'Museo',
+				academy: 'Academia',
+				workshop: 'Taller de invenciones',
+				temple: 'Templo',
+				workers: 'Trabajadores',
+				unskilled: 'No calificado',
+				embassy: 'Embajada',
+				warehouse: 'Depósito',
+				dump: 'Almacén',
+				port: 'Puerto comercial',
+				branchOffice: 'Tienda',
+				wall: 'Muro',
+				safehouse: 'Escondite',
+				barracks: 'Cuartel',
+				shipyard: 'Astillero de Guerra',
+				forester: 'Forester\`s House',
+				carpentering: 'Carpinteria',
+				winegrower: 'Viñedo',
+				vineyard: 'Prensa de Vino',
+				stonemason: 'Cantera',
+				architect: 'Oficina del Arquitecto',
+				glassblowing: 'Mina de Cirstal',
+				optician: 'Optico',
+				alchemist: 'Torre del Alquimita',
+				fireworker: 'Area de Pruebas Pirotécnicas',
+				pirateFortress: 'Fortaleza pirata',
+				blackMarket: 'Mercado negro',
+				marineChartArchive: 'Archivo de cartas náuticas',
+				tavern_level: 'Nivel de taverna',
+				corruption: 'Corrupción',
+				cultural_treaty: 'Tratados culturales',
+				cultural: 'Bienes Culturales',
+				pCTs: ['Sin solicitud', 'Solicitud', 'Solicitudes', 'Tratado cultural'],
+				cultinfo: ['Lugares', 'Socios', 'Vacío', 'Solicitudes', 'Distribución por ciudad', 'Tratados culturales en el museo de la ciudad "{0}"','Exhibiendo bienes culturales de otras personas en su museo, complacerá a sus ciudadanos educados. Forme tratados culturales con otros jugadores para obtener más exhibiciones.','Bienes culturales en este museo','¡Sus ciudadanos están admirando los muchos tesoros del museo! <br> El índice de satisfacción en esta ciudad aumentará en: <span class="bold green">{0}</span> (<b>{1}</b> de nivel, <b>{2}</b> de socios)','Nombre de usuario','Alianza' , 'Capital', 'Acciones', 'Retirar solicitud de tratado cultural', 'Rechazar solicitud de tratado cultural', 'Socios culturales', 'Cancelar tratado cultural', 'Distribución de tratados culturales', 'Tiene un total de <b>{0}</b> tratados sobre bienes culturales. Puede distribuirlos entre sus museos dando más satisfacción a los ciudadanos de su imperio. ¡Debes distribuir todos los bienes culturales!','max','Confirmar cambios','No tratado cultural','Cumplir con bienes culturales','indignado','enojado','neutral','feliz','eufórico','¡Atención! ¡No distribuiste todos tus bienes culturales!','En el museo tus ciudadanos pueden ver cómo otras naciones intentan copiar nuestra excelente cultura. Para albergar exposiciones más grandes, debe actualizar su museo. Después de cada ampliación del museo, puede exhibir un bien cultural adicional.'],
+				cultural_r: 'De forma de gobierno',
+				ctenabled: 'Se ha establecido un tratado cultural',
+				ctrequested: ['Se le solicitó un Tratado Cultural', 'Se le solicitó un Tratado Cultural'],
+				playersearch: 'Buscar jugador',
+				Page: 'Página',
+				CompMsg: 'Redactar mensaje',
+				FriendList: 'Lista de amigos',
+				HighscoreList: 'Lista de puntuaciones más altas',
+				population: 'Población',
+				citizens: 'Ciudadanos',
+				scientists: 'Investigadores',
+				scientists_max: 'Maximo de Investigadores',
+				scientists_employed: 'Empleado',
+				options: 'Opciones',
+				help: 'Ayuda',
+				dailytasks: 'Tareas diarias',
+				agora: 'Ágora',
+				to_world: 'Mostrar Mundo',
+				to_island: 'Mostrar Isla',
+				army_cost: 'Costo del Ejército',
+				fleet_cost: 'Costo de la Flota',
+				army_supply: 'Suministro del Ejército',
+				fleet_supply: 'Suministro la Flota',
+				qltxts: ['Carga completa', 'Carga completa', 'barco', 'barcos'],
+				research_cost: 'Costo de Investigación',
+				research_hp: 'Producción por hora de la ciudad',
+				income: 'Ingresos',
+				badtax: 'Incremento (Impuesto)',
+				expenses: 'Cargos',
+				balances: 'Balances',
+				diplomacy: 'Diplomacía',
+				dammy_packages: 'Paquetes ficticios',
+				espionage: 'Mostrar Informes de espionaje',
+				send_out_spy: 'Enviar espía',
+				inventory: 'Inventorio',
+				effects: '[Effectos] - Inventario',
+				location: 'Ubicación',
+				contracts: 'Mostrar Acuerdo',
+				treaty: 'Tratado',
+				treaties_: 'Tratados',
+				sendCTsopt: 'Enviar solicitud de tratado sobre bienes culturales',
+				altreat: 'Tratados de alianza',
+				generalAllyView: ['Sin rango general en la Alianza','Rango general <br> Acciones militares de la Alianza'],
+				combat: 'Mostrar Informes de guerra',
+				dismiss_unit: 'Descartar unidad(es)',
+				dismiss_fleet: 'Descartar flota(s)',
+				edit_route: 'Crear ruta comercial',
+				satisfaction: 'Satisfacción',
+				total_: 'total',
+				total_cargo: 'Carga total',
+				currenttotal_: 'Actual<br>Total',
+				max_Level: 'Nivel máximo',
+				max_Level_complete: '¡Nivel máximo alcanzado!',
+				max_Level_tocomplete: '¡Nivel más alto a alcanzar!',
+				actionP: 'Puntos de acción',
+				researchP: 'Puntos de Investigación',
+				research: 'Investigación',
+				from_researchs: 'mediante investigación (bonificación)',
+				potion: 'Poción de sabiduría',
+				research_field: 'Campo de investigación',
+				finances_: 'Finanzas',
+				free_ground: 'Terreno libre',
+				trpart: 'Ofertas de socios comerciales',
+				wood_: 'Madera',
+				wine_: 'Vino',
+				marble_: 'Mármol',
+				crystal_: 'Cristal',
+				glass_: 'Cristal',
+				sulphur_: 'Azufre',
+				sulfur_: 'Azufre',
+				luxury_good: 'Artículos de lujo',
+				angry: 'enojado',
+				unhappy: 'infeliz',
+				neutral: 'neutro',
+				happy: 'feliz',
+				euphoric: 'eufórico',
+				bonuses: 'Resumen de bonus<br>(Satisfacción de Ciudadanos)',
+				bonustiptxt: [
+					'Bonus básicos',
+					'Museos (nivel+Tratados Culturales)',
+					'de la Forma de Gobierno',
+					'Taberna (nivel+distribución de vino)',
+					'debido a Investigación +bonus por Capital',
+					'debido a Sacerdotes (con Teocracia)',
+					'debido a Corrupción','Satisfacción Total (balance)',
+					'Población Actual',
+					'Satisfacción Disponible',
+					'Corrupción media'
+				],
+				growth: 'Crecimiento',
+				housing_space: 'Espacio habitable máximo',
+				free_Citizens: 'Ciudadanos libres',
+				free_housing_space: 'Espacio habitable libre',
+				level_tavern: 'Nivel Taberna',
+				maximum: 'máximo',
+				used: 'usado',
+				foruse: 'para usar',
+				branchreserved: 'To branch office',
+				current: 'actual',
+				missing: 'desaparecido',
+				currcap: 'Capacidad<br>actual',
+				currquant: 'Cantidad<br>actual',
+				plundergold: 'Oro',
+				garrison: 'Límite de guarnición',
+				spy: 'Espionaje',
+				Sea: 'de Mar',
+				spytiptxt: [
+					'En defensa',
+					'En misión',
+					'Espías',
+					'Para entrenar',
+					'Plazas para espías'
+				],
+				Inland: 'de Tierra',
+				full: '0',
+				off: 'apagado',
+				currentunits: 'actuales',
+				time_to_full: 'para llenar',
+				time_to_empty: 'para vaciar',
+				sum_aftertranfer: 'after trasfer',
+				capacity: 'Capacidad',
+				safe: 'Seguro',
+				resources_lootable: 'Lootable',
+				shortbuildingtime: ['Acortar tiempo de construcción','Finalizar contrucción'],
+				training: 'Entrenando',
+				theatertxts: {
+					active: 'Activo',
+					inactive: 'Inactivo',
+					status: 'Estado',
+					resource: 'Drama<br>Wood production',
+					tradegood: 'Comedy<br>{0} production',
+					favour: 'Cultural<br>show',
+					wood: 'Madera',
+					wine: 'Vino',
+					marble: 'Mármol',
+					glass: 'Cristal',
+					sulfur: 'Azufre',
+					tip: 'Available show for +20 % {0}',
+					luxury: 'Bien de lujo'
+				},
+				plundering: 'Saqueando',
+				constructing: 'Ampliación en progreso',
+				constructing_mine: 'En Progreso',
+				forminetitle: [
+					'Aserradera',
+					'Viñedo',
+					'Cantera',
+					'Mina de Cristal',
+					'Mina de azufre'
+				],
+				resourcelevel: 'Forest Level',
+				tradegoodlevel: 'Mine Level',
+				curwood: 'Available wood',
+				maxwood: 'Required wood',
+				diffwood: 'Rest wood',
+				next_Level: 'Necesario para<br>el nivel',
+				origin: 'Origen',
+				transport: 'Transportes',
+				from: 'from town',
+				after_transport: 'After transports',
+				in_transit: 'Transport',
+				mission: 'Mission',
+				subsum: 'Sub Sum',
+				convert: 'Conversión',
+				classify: 'Clasificación',
+				dailyreset: 'Actualización Diaria',
+				finalevaluation: 'Evaluación Final',
+				loading: 'cargando',
+				en_route: 'en marcha',
+				arrived: 'llegado',
+				arrival: 'llegada',
+				arrival_time: 'Hora de llegada',
+				speed: 'Velocidad',
+				time_: 'Tiempo de construcción',
+				time_remaining: 'Tiempo restante',
+				cargo: 'Cargo',
+				duration: 'Duration',
+				to_town_hall: 'a la Intendencia de',
+				to_saw_mill: 'Al aserradero',
+				to_mine: 'Al bien de lujo',
+				to_barracks: 'a Cuartel de',
+				to_shipyard: 'a el Astillero de',
+				resource: 'Saw Mill in Forest',
+				tradegood: 'Quarry on Mine',
+				nextlevel: 'Siguiente nivel',
+				inprogress: 'En progreso',
+				member: 'Lista de miembros',
+				friendlist: 'Ver lista de Amigos',
+				transporting: 'Transportar a',
+				transtip: 'Move to the resource town and click here<br>to transfer the resources to this town',
+				transporting_units: 'Desplegar Tropas a',
+				transporting_fleets: 'Desplegar Flotas a',
+				triton_engines: 'Propulsor de Tritón',
+				troop_movements: 'Movimientros de Tropas / Flotas',
+				station_army: 'Station troops',
+				station_fleets: 'Station fleets',
+				target: 'Objetivo',
+				today: 'hoy',
+				per_: 'por',
+				at: 'a las',
+				in_: 'en',
+				tomorrow: 'mañana',
+				yesterday: 'ayer',
+				second: 's',
+				minute: 'm',
+				hour: 'h',
+				day: 'D',
+				week: 'S',
+				month: 'M',
+				year: 'A',
+				hour_long: 'Hora',
+				day_long: 'Día',
+				week_long: 'Semana',
+				ika_world: 'Buscar Ikariam-World',
+				charts: 'Mostrar Gráficos',
+				//settings
+				wonders: [
+					'Sin Templo!',
+					'La fragua de Hefesto',
+					'Gruta Sagrada de Hades',
+					'Jardines de Deméter',
+					'Templo de Atenea',
+					'Templo a Hermes',
+					'Fortaleza de Ares',
+					'Templo de Poseidón',
+					'Coloso'
+				],
+				//wonderstxt: [['Godly Equipment','Hephaestus, God of blacksmiths, can bless the work of his blacksmiths. Their armour becomes really strong and their swords becomes incredibly sharp for a few hours, so that it is almost as if they have been personally forged by a God.','After praying for a miracle, Hephaestus sent our high priest a blunt sword and told us that the quality of his work depends on the quality of our work. He obviously is not very happy about the inhabitants&apos; faith on this island!','All combat units receive 0 more armour and cause <b>10 %</b> more damage.','All combat units receive 1 more armour and cause <b>10 %</b> more damage.','All combat units receive 1 more armour and cause <b>15 %</b> more damage.','All combat units receive 2 more armour and cause <b>15 %</b> more damage.','All combat units receive 2 more armour and cause <b>20 %</b> more damage.'],['Gorgon Guard','The mighty Hades, ruler of the underworld, can send out terrible Gorgons, who can turn advancing enemies into stone with their stares. However, this does have the pleasant side effect that we always have enough stone at the end of a battle to rebuild our town wall.<br>Barbarians are not affected by this miracle.','It look like Elysium is still a long way away for you. After we requested a miracle from Hades, he said that it would be better for him to send his dog out to spread faith than to spend his time relying on our priests.','<b>20 %</b> of the resource costs for all units that die during fights in their own cities are credited back as marble units.','<b>30 %</b> of the resource costs for all units that die during fights in their own cities are credited back as marble units.','<b>40 %</b> of the resource costs for all units that die during fights in their own cities are credited back as marble units.','<b>50 %</b> of the resource costs for all units that die during fights in their own cities are credited back as marble units.','<b>80 %</b> of the resource costs for all units that die during fights in their own cities are credited back as marble units.'],['Blessed harvest','Demeter, Goddess of earth and crop can bless your people with a fertile ground and a fantastic harvest. Your population will also increase a lot faster - but only if there is enough housing space for more inhabitants.','Demeter, in her endless wisdom, has demanded that we sow some seeds of belief before we try harvesting miracles. She is worried that we do not know enough about agriculture to appreciate her gifts.','The population of your cities is increasing by <b>2</b> per hour.','The population of your cities is increasing by <b>4</b> per hour.','The population of your cities is increasing by <b>6</b> per hour.','The population of your cities is increasing by <b>8</b> per hour.','The population of your cities is increasing by <b>12</b> per hour.'],['Secured homeland','Athena, the tireless, the invincible, the protector. As protection goddess of your cities and of the craftsmen, she can reinforce your warehouses&apos; walls to hide more resources from pillaging enemies.','We should not aggravate goddesses like Athena. Praying for a miracle with such little faith could be interpreted as arrogance. After all, she does have the habit of turning people into animals!','<b>+ 40 %</b> secure resources in all warehouses.','<b>+ 80 %</b> secure resources in all warehouses.','<b>+ 160 %</b> secure resources in all warehouses.','<b>+ 240 %</b> secure resources in all warehouses','<b>+ 400 %</b> secure resources in all warehouses'],['Faster than lightning','Hermes, God of travelling salesmen and of transport, cannot stand the sight of stationary ships and unused goods. He fulfils your salesmen&apos;s wishes to get to places faster by giving dockworkers superhuman powers. This means that every ship only has to spend a fraction of the normal time loading its cargo at the harbour.','It is an honour that Hermes will helps us mortals if we pay homage to him, but it would even insult the God of thieves if we demanded help without giving him something in return. That kind of defraud would just be too... direct.','The goods&apos; loading speed is increased by <b>40 %</b>.','The goods&apos; loading speed is increased by <b>80 %</b>.','The goods&apos; loading speed is increased by <b>120 %</b>.','The goods&apos; loading speed is increased by <b>160 %</b>.','The goods&apos; loading speed is increased by <b>200 %</b>.'],['Massacre','Ares, the detested God of savage warfare, blood-lust and of massacre, fills the hearts of all warriors in the vicinity of your cities with pure hate. These warriors will then charge into bloody combat without a second thought to their own healths, until no man is left standing.','The priests are quivering in their boots. Nobody wants to talk to Ares at the moment, because if his attention is drawn to this small friendly island, he will overrun it with war and terror, so that the humans have to pay homage to him during battle and death.','<b>+ 100</b> morale per round for all armies stationed at your cities - even for enemy troops!','<b>+ 200</b> morale per round for all armies stationed at your cities - even for enemy troops!','<b>+ 400</b> morale per round for all armies stationed at your cities - even for enemy troops!','<b>+ 600</b> morale per round for all armies stationed at your cities - even for enemy troops!','<b>+ 2,000</b> morale per round for all armies stationed at your cities - even for enemy troops!'],['Sailors&apos; blessing','Poseidon, God of the seas, has sent many a disrespectful sailor on ludicrous odysseys. But those who render homage to him, can expect that their ship will sail over calm waters and will be led through perfect winds and onto their destination harbour. Poseidon shortens the travel time of all the ships that begin their journey while the miracle is activated .','At this moment in time, it would be foolish to aggravate Poseidon by asking him for a miracle. If an island&apos;s belief is not strong enough for him, he likes sending out terrible sea monsters to remind the inhabitants that they should respect the sea.','<b>10 %</b> increased speed for warships and transporters.','<b>30 %</b> increased speed for warships and transporters.','<b>50 %</b> increased speed for warships and transporters.','<b>70 %</b> increased speed for warships and transporters.','<b>100 %</b> increased speed for warships and transporters.'],['Stone Guard','The Colossus is a statue of the sun god Helios. He can let the sun shine out Colossus&apos; torch. The glaring, blazing light, which can be seen throughout Greece, symbolises a threat from the mighty God and ensures chaotic escape and confusion amongst your opponents.','Helios may be a competent and friendly god, but his power is equal to Zeus&apos;. If we do not put enough faith and belief in him, he probably will not continue to give us the time of day and stop his chariot of the sun just to dedicate his precious time to our requests.','<b>10 %</b> of all enemy troops and ships that are fighting against your troops in your towns have been driven away. The scatter time of <b>4h</b> has increased by <b>30m</b>.','<b>20 %</b> of all enemy troops and ships that are fighting against your troops in your towns have been driven away. The scatter time of <b>4h</b> has increased by <b>1h</b>.','<b>30 %</b> of all enemy troops and ships that are fighting against your troops in your towns have been driven away. The scatter time of <b>4h</b> has increased by <b>1h 30m</b>.','<b>50 %</b> of all enemy troops and ships that are fighting against your troops in your towns have been driven away. The scatter time of <b>4h</b> has increased by <b>2h</b>.','<b>100 %</b> of all enemy troops and ships that are fighting against your troops in your towns have been driven away. The scatter time of <b>4h</b> has increased by <b>3h</b>.']],
+				wonderViewButton: 'Ir al Monumento<br>(vista de Isla)',
+				wonderViewButton2: 'Ir al Monumento<br>(vista de Ciudad)',
+				wonderActivateButton: 'Miracle<br>activation',
+				wonderlevel: 'Monument level',
+				faithlevel: 'Faith level',
+				islandshare: 'Island Faith Share',
+				miraclecompletion: 'Miracle in action',
+				cooldowncompletion: 'Cooldown completion',
+				wonderdonations: 'Personal donations',
+				donations: 'Donations',
+				donateforexpansion: 'Donate to upgrade',
+				wonderBeliefTooltip: 'This island has a faith of {0} %.',
+				wonderBeliefInfo2: 'Island faith percentage is {0} %.',
+				cityOrder: 'Ordene las ciudades',
+				fullArmyTable: 'Mostrar todas las unidades militares',
+				hideOnWorldView: 'Ocultar al Mostrar mundo',
+				hideOnIslandView: 'Ocultar al Mostrar isla',
+				hideOnCityView: 'Ocultar al Mostrar ciudad',
+				onTop: 'Mostrar encima de las ventanas de Ikariam',
+				windowTennis: 'Mostrar arriba de las ventanas de Ikariam al posicionar el mouse',
+				autoUpdates: 'Comprobar automáticamente si hay actualizaciones',
+				smallFont: 'Utilizar una fuente más pequeña',
+				goldShort: 'Reduce total gold display',
+				defaultBuildingList: 'Use default building list',
+				alternativeBuildingList: 'Utilizar la lista de edificios alternativa',
+				compressedBuildingList: 'Usar la vista comprimida de edificios',
+				wineOut: 'Desactivar la opción de Ambrosía cuando te quedas sin vino',
+				dailyBonus: 'Confirmar automaticamente el bonus diario',
+				unnecessaryTexts: 'Eliminar descripciones innecesarias',
+				ambrosiaPay: 'Desactivar las nuevas opciones de compra de Ambrosía',
+				quantityLoads: 'View Full Loads + ships for quantities',
+				wineWarning: 'Ocultar herramienta "alerta de vino"', // Hide tooltip "wine warning"
+				wineWarningTime: 'Advertencia cuando se esté acabando el vino',
+				languageChange: 'Cambiar Idioma',
+				current_Version: 'La versión actual<b>:</b>',
+				ikariam_Version: 'La versión Ikariam<b>:</b>',
+				reset: 'Restablecer los ajustes por defecto',
+				resetbtn: 'Resetear',
+				zeroing: 'Resetear a cero',
+				remainingtime: 'Remaining time',
+				goto_website: 'Ir al sitio de greasyfork.org',
+				website: 'Sitio web',
+				Check_for_updates: 'Buscar actualizaciones',
+				check: 'Buscar actualizaciones',
+				Report_bug: 'Notificar un error en el script',
+				report: 'Informar de un error',
+				save: 'Guardar',
+				save_settings: 'Guardar cambios<b>!</b>&nbsp;',
+				newsticker: 'Ocultar noticias',
+				event: 'Ocultar eventos',
+				logInPopup: 'Ocultar la ventana de info al loguearse',
+				birdswarm: 'Ocultar las aves',
+				walkers: 'Ocultar ciudadanos animados',
+				noPiracy : 'Ocultar piratería',
+				noTheater: 'Ocultar Teatro de Proyección',
+				donationButtons: 'Botones estandar de montos de donación',
+				donwoodlogalltitle: 'All wood units for Donation',
+				donwoodlogall: 'All available quantity',
+				donwoodlogtitle: '{0} wood units for Donation',
+				ctfinder: 'Mostrar tratados culturales',
+				XYshow: 'Mostrar coordenadas de las islas',
+				worldmapshow: 'Mostrar la pestaña mapamundi',
+				hourlyRes: 'Ocultar los recursos por hora',
+				playerInfo: 'Mostrar información sobre el jugador',
+				control: 'Ocultar barra inferior de control',
+				alert: '¡Sólo se admite una opción!',
+				alert_palace: 'Visite antes la ciudad capital, por favor.',
+				alert_palace1: 'There is still no palace present in your city.\n Please explore expansion and build a palace.',
+				alert_toast: 'Script reiniciado, recargando página en unos segundos',
+				alert_error: 'Un error ha ocurrido al comprobar actualizaciones: ',
+				alert_noUpdate: 'No hay actualizaciones disponibles para "',
+				alert_update: 'Hay una actualización para el script de Greasemonkey! "',
+				alert_update1: '¿Desea ir a la página del script?',
+				alert_daily: 'Por favor, activa \'Confirmar automaticamente el bonus diario \'',
+				alert_wine: 'Warning wine > ',
+				en: 'Inglés',
+				es: 'Español',
+				el: 'Griego',
+				de : 'Alemán',
+				it : 'Italiano',
+				fr : 'Francés',
+				ro : 'Rumano',
+				ru : 'Ruso',
+				cz : 'Checo',
+				pl : 'Polaco',
+				ar : 'Arábico',
+				ir : 'Persa',
+				pt : 'Portugués',
+				tr : 'Turco',
+				nl : 'Holandés',
+				// Units
+				phalanx: 'Hoplita',
+				steamgiant: 'Gigante a vapor',
+				spearman: 'Lancero',
+				swordsman: 'Espadachín',
+				slinger: 'Hondero',
+				archer: 'Arquero',
+				marksman: 'Fusilero',
+				ram: 'Ariete',
+				catapult: 'Catapulta',
+				mortar: 'Mortero',
+				gyrocopter: 'Girocóptero',
+				bombardier: 'Bombardero-Balón',
+				cook: 'Cocinero',
+				medic: 'Médico',
+				spartan: 'Espartano',
+				ship_transport: 'Barco Mercante',
+				ship_ram: 'Barco-espolón',
+				ship_flamethrower: 'Barco lanza-llamas',
+				ship_steamboat: 'Barco-espolón de vapor',
+				ship_ballista: 'Barco-ballesta',
+				ship_catapult: 'Barco-catapulta',
+				ship_mortar: 'Barco-mortero',
+				ship_submarine: 'Submarino',
+				ship_paddlespeedship: 'Lancha de palas',
+				ship_ballooncarrier: 'Portaglobos',
+				ship_tender: 'Barco de mantenimiento',
+				ship_rocketship: 'Barco lanzamisiles',
+				barbarian: 'Agitador de hacha de los bárbaros',
+				barbarianClub: 'Aporreador bárbaro',
+				barbarianKnive: 'Clavacuchillos bárbaro',
+				barbarianAxethrow: 'Lanzahachas bárbaro',
+				barbarianWalker: 'Unidad de guerra bárbara',
+				barbarianRam: 'Ariete bárbaro',
+				barbarianCatapult: 'Catapulta bárbara',
+				barbarianFighter: 'Caza bárbaro',
+				barbarianZeppelin: 'Dirigible bárbaro',
+				ship_barbarian_light_battleship: 'Rompeplanchas',
+				ship_barbarian_light_ranged: 'Rajavelas',
+				ship_barbarian_heavy_battleship: 'Pirobarco',
+				ship_barbarian_heavy_ranged: 'Tiraguijarros',
+				ship_barbarian_heavy_battleship_II: 'Cuña',
+				ship_barbarian_heavy_ranged_II: 'Catapulta de pólvora',
+				ship_barbarian_first_strike_I: 'Terror de las profundidades marinas',
+				ship_barbarian_first_strike_II: 'Fuego de dragón',
+				ship_barbarian_anti_carrier: 'Encendedor de zepelín',
+				ship_barbarian_carrier: 'Nido de bárbaros',
+				//settings descriptions
+				cityOrder_description: 'Orden de la descripción de ciudades',
+				fullArmyTable_description: 'Mostrar todos los tipos de unidades militares aún al no tenerlas',
+				hideOnWorldView_description: 'Ocultar por defecto cuando se ve el mundo',
+				hideOnIslandView_description: 'Ocultar por defecto cuando se ve la isla',
+				hideOnCityView_description: 'Ocultar por defecto cuando se ve la ciudad',
+				onTop_description: 'Mostrar tabla encima de las ventanas de Ikariam',
+				windowTennis_description: 'Llevar tablero sobre las ventanas de Ikariam al posar el mouse sobre el<br>Enviar Ikariam detrás de las ventanas de Ikariam al posar el mouse sobre el<br>No tiene en cuenta la opción de \'alto\'',
+				autoUpdates_description: 'Habilitar la comprobación de actualización automática<br>(Una vez cada 24 horas)',
+				smallFont_description: 'Utilice una fuente más pequeña para las tablas de datos',
+				goldShort_description: 'Total gold display shorten on the Board',
+				defaultBuildingList_description: 'Utilizar la vista de edificios por defecto',
+				alternativeBuildingList_description: 'Utilizar la lista de construcción alternativa',
+				compressedBuildingList_description: 'Usar la vista comprimida de edificios<br>Juntar los edificios de producción de recursos<br>Juntar palacio y residencias del gobernador',
+				wineOut_description: 'Desactiva el cartel de ambrosía al quedarte sin vino',
+				dailyBonus_description: 'El bonus diario se confirma automaticamente<br>y esa ventana no se mostrará más.',
+				unnecessaryTexts_description: 'Elimina las descripciones innecesarias en la lista de construcción de edificios, reduce el desplazamiento',
+				ambrosiaPay_description: 'Desactiva el cartel de compras de Ambrosía,<br>Cliquear el botón cancela la acción',
+				quantityLoads_description: 'Display the full loads and extra ships for the related quantities',
+				wineWarning_description: 'Oculta la herramienta \'alera de vino\'',
+				wineWarningTime_description: 'Tiempo restante del vino se convierte, \'rojo\' en ese momento',
+				languageChange_description: 'Cambiar el idioma',
+				newsticker_description: 'Oculta las noticias en la barra de Gameforge',
+				event_description: 'Oculta los carteles de eventos',
+				logInPopup_description: 'Oculta la ventana de info al loguearte',
+				birdswarm_description: 'Oculta las aves en la vista de isla y ciudad',
+				walkers_description: 'Oculta la animación de ciudadanos y de barcos de transporte en las vistas de ciudad e isla',
+				noPiracy_description: 'Elimina la Fortaleza Pirata',
+				noTheater_description: 'Elimina el Teatro de Proyección',
+				donationButtons_description: 'Agregar una cantidad estándar para los botones de donación (0,500,+1K,+10K,+100K,+500K,+1M) para expansión',
+				ctfinder_description: 'Muestra un ícono junto al nombre del jugador, si tienes un TC con él/ella.<br>Si el jugador aún no ha aceptado tu solicitud, el ícono es semitransparente.',
+				XYshow_description: 'Muestra las coordenadas ([X:Y]) de la isla junto al nombre de la ciudad.',
+				worldmapshow_description: 'Muestra la pestaña mapamundi',
+				hourlyRes_description: 'Ocultar los recursos por hora en la barra de info',
+				playerInfo_description: 'Ver información de los jugadores de la opinión de la isla',
+				control_description: 'Oculta la barra de control inferior en vistas de ciudad, isla y mundo (Mantiene coordenadas)',
+				// settings categories
+				visibility_category: '<b>Visibilidad del Tablero</b>',
+				display_category: '<b>Ajustes de pantalla</b>',
+				global_category: '<b>Ajustes globales</b>',
+				army_category: '<b>Ajustes del Ejército</b>',
+				tweaks_category: '<b>Ajustes de configuración</b>',
+				building_category: '<b>Ajustes de edificio</b>',
+				resource_category: '<b>Configuración de recursos</b>',
+				language_category: '<b>Configuración de idioma</b>',
+				Initialize_Board: '<b>Inicializar Tablero</b>',
+				// Helptable
+				on_your_Town_Hall: 'Vaya a la intendencia y pase por todas sus ciudades con esta vista',
+				on_the_Troops: 'Vaya a la pestaña de \"Tropas en la ciudad\" en la parte izquierda y pase por cada ciudad con esta vista',
+				on_Research_Advisor: 'Vaya al Ayudante de Investigación y pase por los 4 temas de investigación',
+				on_your_Palace: 'Vaya al Palacio',
+				on_your_Finance: 'Vaya a las finanzas (Donde se ve el oro)',
+				on_the_Ambrosia: 'Vaya a la \"Tienda de ambrosía\"',
+				helpSteps: [
+					'en la intendencia y pase por todas sus ciudades con esta vista',
+					'en el Ayudante de Investigación y pase por las 4 áreas de investigación en el panel de la izquierda',
+					'en el Palacio de la Capital',
+					'en el Museo',
+					'en la lista de Socios Culturales',
+					'en la lista de Miembros de la Alianza (recorra TODAS las páginas disponibles)',
+					'en las Finanzas',
+					'en el Inventario',
+					'en la pestaña de \"Tropas en la ciudad\" en la parte izquierda y pase por cada ciudad con esta vista'
+				],
+				Re_Order_Towns: '<b>Reordenar ciudades</b>',
+				Reset_Position: '<b>Restablecer Posición</b>',
+				On_any_tab: 'Sobre el ícono de recurso de cada ciudad, hágale clic y múevalo a la posición deseada',
+				Right_click: 'Haga clic derecho sobre el la pestaña de \"Empire Overview\" en el menú izquierdo de la página',
+				Navigate: '1, 2, 3 ... 0, \', + <b>:&nbsp;&nbsp;</b> Cambiar entre las ciudades 1-12',
+				Navigate_to_City: 'SHIFT + 1/2/3/4/5 <b>:&nbsp;&nbsp;</b> Vaya a Ciudad / Construcción / Ejército',
+				Navigate_to: 'Q, W, E, R <b>:&nbsp;&nbsp;</b> Vaya a Ciudades / Milicia / Investigación / Diplomacia',
+				Navigate_to_World: 'SHIFT + Q, W, E <b>:&nbsp;&nbsp;</b> Vaya a la visión del mundo / isla / ciudad',
+				Spacebar: 'Spacebar<b>:&nbsp;&nbsp;</b> Minimizar / Maximizar el tablero',
+				Hotkeys: '<b>Teclas de acceso rápido</b>',
+				// formatting
+				updated_: 'Updated',
+				tothe: 'to the',
+				//addtransport: 'Movement added',
+				zones: ['Área "Navegación"','Área "Economía"','Área "Ciencia"','Área "Milicia"'],
+				researchzones: ['Navegación','Economía','Ciencia','Milicia'],
+				movements: 'Movements',
+				shop: 'Shop',
+				cinetheatre: 'al Teatro de la Proyección',
+				Cinetheatre: 'Teatro de Proyección',
+				fulldatelong: 'ddd D [de] MMMM [de] YYYY H:mm:ss', // based on momentjs (untranslated)
+				fulldateshort: 'ddd D/M/YYYY H:mm', // based on momentjs (untranslated)
+				dateformat: 'ddd D [de] MMMM [de] YYYY', // based on momentjs (untranslated)
+				dateformatshort: 'ddd D/M/YYYY', // based on momentjs (untranslated)
+				timeformat: 'H:mm:ss', // based on momentjs (untranslated)
+				timeformatshort: 'H:mm', // based on momentjs (untranslated)
+				thousandSeperator: ',',
+				decimalPoint: '.',
+				leftquot: '&quot;',
+				rightquot: '&quot;',
+				ordinal: ['o','o','o','o'],
+				pirtxt: [
+					'Pirate Fortress',
+					'Capture Run',
+					'Crew Strength',
+					'Capture Points',
+					'Time remaining before valuation',
+					'Base Crew Strength',
+					'Crew Strength Bonus',
+					'Position',
+					'Daily highscore for capture points, next update at {0}',
+					'Send crew out on a capture run',
+					'Your crew is carring out a {0}. While this is the case, you cannot order another raid or capture run.',
+					'Duration',
+					'Cancel',
+					'Target',
+					'Reward',
+					'Action',
+					'Capture',
+					'Available from level',
+					'Smugglers',
+					'Fishing Boat',
+					'Wine Transport',
+					'Merchant Ship',
+					'Ram Ship',
+					'Diving Boat',
+					'Diplomat Ship',
+					'Castaways',
+					'Phoenicians',
+					'Convert capture points into crew strength',
+					'Requires at least 10 capture points',
+					'Conversion has a basic duration',
+					'As long as you have at least {0} capture points in your account, you will receive {1} bonus to your crew strength.',
+					'Confirm',
+					'A threatening pirate banner flies over your town&apos;s Pirate Fortress. The pirate who accumulates the most loot during a capture run can secure grandiose rewards. So that your capture points are not robbed from you until the day of the position calculation, you should strengthen your crew.',
+					'There is a base time of {0} for the conversion',
+					'Please enter the security word into the box below to carry out the activity. You do not need to take upper and lower case spelling into account when entering it. It&apos;s a security measure against dishonest pirates.',
+					'Security word',
+					'raid',
+					'capture run',
+					'Range for Raids',
+					'New Capture Run',
+					'Smugglers&apos; mission auto-repeat',
+					'No change',
+					'Position',
+					'Positions',
+					'Out of range from<br>{0} "<b>{1}</b>"',
+					'Current',
+					'Previous',
+					'Position difference',
+					'Time to reach target',
+					'Total raid time',
+					'Reach',
+					'Return',
+					'No reward',
+					'Rewards with current highscore list',
+					'Highscore difference',
+					'Current difference',
+					'Missions',
+					'Missions duration',
+					'Player',
+					'Copies to clipboard the current Pirate Highscore list.','The Pirate Highscore list has been copied to clipboard!'
+				],
+				financestxt: [
+					'Balances',
+					'Amount of gold',
+					'Increased Gold Receipts',
+					'Amount'
+				],
+				//researchtxt: {1010:'Deck Weapons',1020:'Ship maintenance',1030:'Expansion',1040:'Foreign Cultures',1050:'Pitch',1060:'Greek Fire',1070:'Counterweight',1080:'Diplomacy',1090:'Sea maps',1100:'Paddle Wheel Engine',1110:'Mortar Attachment',1120:'Architecture',1130:'Draft',1140:'Caulking',1150:'Massive Ram',1160:'Offshore Base',1170:'Piracy',1999:'Seafaring Future',2010:'Conservation',2020:'Pulley',2030:'Wealth',2040:'Wine culture',2050:'Culinary Specialities',2060:'Geometry',2070:'Market',2080:'Relaxation holiday',2090:'Helping hands',2100:'Spirit Level',2110:'Bureaucracy',2120:'Utopia',2130:'Improved resource gathering',2140:'Wine Press',2150:'Carpentry',2160:'Depot',2170:'Legislation',2180:'Soldier Exchange',2999:'Economic Future',3010:'Well construction',3020:'Paper',3030:'Espionage',3040:'Polytheism',3050:'Ink',3060:'Cultural Exchange',3070:'Anatomy',3080:'Optics',3081:'Experiments',3090:'Mechanical Pen',3100:'Bird`s Flight',3110:'Letter Chute',3120:'Pressure Chamber',3130:'The Archimedean Principle',3140:'Invention',3150:'Government Formation',3160:'State Religion',3170:'Archiving',3999:'Scientific Future',4010:'Dry-Dock',4020:'Maps',4030:'Professional Army',4040:'Siege',4050:'Code of Honour',4060:'Ballistics',4070:'Law of the Lever',4080:'Governor',4090:'Logistics',4100:'Gunpowder',4110:'Robotics',4120:'Cannon Casting',4130:'Pyrotechnics',4999:'Militaristic Future'},
+				//branchOfficetxt: ['Merchants and traders do their business at the trading post. There is always a deal to make or a bargain to hunt. Merchants from far away usually head for big and well known trading posts! Range and capacity of your trading post are increased with every second expansion.','Goods Trade','Soldier Exchange','Trade Treaty','Own Offers','Bargain hunter','Buy goods','Sell goods','Search radius','Islands within radius','Town','Goods per minute','Piece','Resource','Purchase price','Distance','Trade?','per piece','There are no offers at the moment.','Search for','Currency','Land Units','Sea Units','All','All','Unit','Offers from trade partners','Resources','Offer type','Quantity','Price','Limits','Buy','Sell','Reserved gold for acquisitions','Update offers','Current capacity','Capacity for level {0}'],
+				servertimetip: '<b>World time (server)</b><br>{0}<br><b>Local time</b><br>{1}',
+				summertime: 'Hora de verano',
+				wintertime: 'Hora de invierno',
+				viewCityMenu: {image_troops:'Troops in town',image_espionage:'Espionage',image_resourceShop:'Receive goods!',image_trader:'Premium trader',image_friends:'Invite friends',image_constructionlist:'Building construction list',image_fireunit:'Dismiss units',image_toggle:'Display building names',empire_Menu:'Empire overview'},
+				//dipladvtxt: ['Messages ({0})','Agora ({0})','Treaties','Alliance ({0})','Search player','Ignored players','Alliance','Inbox','Outbox','Inbox Archive','Outbox Archive','Inbox Archive','Outbox Archive','Action','Sender','Subject','Town','Date','Click here to expand/hide the message','Go to sender&aposs town','Reply to sender','Reply','Delete','Report','Ignore','Reply to all','This function forwards insults and offences to the Game Operator.\nDo you really want to forward this message to the GO?','Messages sent by this player will no longer be displayed.','Sure?','Yes','Cancel','No messages.','next','previous','All','Unread','Read','None','Mark as read','Delete','Influence','Diplomacy points: {0}','Receiver','New post','Agora','There are no messages on the Agora at the moment. Contact your town neighbours now by creating a new post.','Accept','Reject','Trade treaties','Partner','Cities','Status','Action','Cancel trade treaty','{0} towns','{0} town','Location','Name','Luxury<br>good','Cultural treaties {0}','Go to museum','Distribute cultural goods ({0})','Alliance forum','Alliance forum ({0})','Alliance information','Alliance information','Menbers list','Search alliance','Subforum','Threads','Last thread','Actions','Threads: {0}','Title','Replies','Create thread','Reply','Return to top','Report','Quote','Title','Submit','<b>{0}</b> characters remain','<b>{0}</b> character remains','No more characters are remaining','Username','Search','Î˜Î­ÏƒÎ·','Title','Username','Alliance','Ranks','Actions','No player found on this research.','Players you ignore','No entries','Title','Name','Alliance','Action','Player will no longer be ignored.','Delete','You can write a new post for the Agora here, which all islanders will be able to read.','Subject','Message','Create new thread','Back','{0} characters','{0} character','No more characters'],
+				action: 'Acción',
+				//museumlvl: 'Museum level',
+				//embassytxt: ['The embassy is a busy place: diplomats from all over the world negotiate contracts here, forge treaties and found alliances. In order to get a larger alliance you need to upgrade your embassy. Every expansion level of your embassy increases your diplomacy points.','Diplomacy Points','Alliance','Members list','Alliance Internal Page','Search alliance','Founding date (Age)','Members','Short description','Placement (Points)','Alliance homepage','Diplomatic Influence','Your rank','Founding an Alliance','In the embassy you can manage and lead your alliance or redistribute your ranks.','Tag (up to <b>5</b> characters)','Alliance name (up to <b>15</b> characters)','Become a member of an existent alliance','An alliance can be suggested that suits your place on the highscore list.','Alliance suggestion','Name','Abbreviation','Abbreviation','Name','Members','Points','Actions','Display Alliance page','Join the alliance','Last connection','Name','Towns','Rank','Points','Actions','Actions','Send message to the members of your alliance','Alliance treaties','Withdraw','You are not a member of an alliance','Alliance information'],
+				//resadvtxt: ['No scientist available','Available in {0}','Available','per Hour','Basic production','Premium Bonus','Not enough research points','Already researched.','Immediately','Requirement(s)','Costs','Available in'],
+				//researchshortdesc: {1010:'Building of ballista ships in the shipyard',1020:'2 % less upkeep for ships',1030:'Building of palaces, founding of colonies, overseas trading',1040:'Construction of Embassies.',1050:'4 % less upkeep for ships',1060:'Building of flame ships in the shipyard',1070:'Building of catapult-ships at the shipyard',1080:'Garrison right',1090:'8 % less upkeep for ships',1100:'Construction of paddle speedboats in the shipyard',1110:'Building of mortar ships in the shipyard.',1120:'Building of an architect&aposs office.',1130:'Quicker ships with a lighter load.',1140:'Construction of tenders in the shipyard',1150:'Construction of steam rams in the shipyard',1160:'Construction of balloon carriers in the shipyard.',1170:'Construction of Pirate Fortresses, Capture Runs, Raids, participation in the Capture Points Highscores',1999:'2 % ess upkeep for ships for each future level.',2010:'Building of warehouses.',2020:'2 % less building costs.',2030:'Allows the production of luxury goods, the construction of trading posts and gives you 130 units of each luxury good.',2040:'Building of taverns.',2050:'Training of chefs in the barracks.',2060:'4 % less building costs.',2070:'Treaties, form of government: Democracy.',2080:'Increases the satisfaction and maximum population in all towns.',2090:'Overloading of resources.',2100:'8 % less cost for the construction of buildings.',2110:'An additional building space in the towns.',2120:'+200 housing space, +200 satisfaction in the capital.',2130:'Construction of Forester Houses, Stonemasons, Wineries, Glassblowers and Alchemists&apos Towers.',2140:'Building of wine cellars.',2150:'Building of Carpentries.',2160:'Allows you to build depots.',2170:'Form of government: Nomocracy.',2180:'Building the Black Market.',2999:'+10 satisfaction and +20 max. inhabitants in every town for each future level.',3010:'+50 housing space, +50 happiness in the capital.',3020:'2 % more research points.',3030:'Building of hideouts.',3040:'Temples and Miracles.',3050:'4 % more research points.',3060:'Building of museums, cultural goods treaties, Phoenician merchant ships.',3070:'Recruiting of doctors in the barracks.',3080:'Building of an optician&aposs.',3081:'Purchase of research points for crystal glass, form of government: technocracy.',3090:'8 % more research points.',3100:'Construction of Gyrocopter in the barracks.',3110:'3 Gold upkeep cost less per scientist.',3120:'Building of submersibles in the shipyard.',3130:'Building of bombardiers in the barracks.',3140:'Building of workshops.',3150:'Start of a revolution, forms of government: dictatorship and oligarchy.',3160:'Form of government: theocracy.',3170:'Building a Sea Chart Archive.',3999:'2 % more research points for each future level.',4010:'Construction of a second trading port, shipyard.',4020:'2 % less upkeep for soldiers.',4030:'Recruiting of swordsmen and hoplites at the barracks.',4040:'Building of battering rams in the barracks.',4050:'4 % less upkeep costs and allows the form of government: aristocracy.',4060:'Training of archers in the barracks.',4070:'Building of catapults in the barracks.',4080:'Occupation.',4090:'8 % less upkeep for soldiers.',4100:'Construction of carabineers in the barracks and rocket ships in the shipyard.',4110:'Building of steam giants in the barracks.',4120:'Building of mortars in the barracks.',4130:'Building of firework test area.',4999:'2 % less upkeep for units for each future level.'},
+				//researchdesc: {1010:'A rotating attachment for our warships on which we can mount huge weapons! For a start our inventors have mounted a huge crossbow on it. But we assume that the attachment will be able to bear other machines, too. So as soon as one of our scientists has an idea we can install it on our ships without a problem.<br><br><b>Allows:</b> Building of [[v:u,s:213,h:10|ballista ships]] in the [[v:b,b:5,h:1|shipyard]].',1020:'If we always keep our ships nice and clean, they won&apos;t have to be repaired that often. It will also keep up the morale of the crew when they sing songs together from time to time while scrubbing the deck or mending the sail cloths.<br><br><b>Effect:</b> 2 % less upkeep for [[v:u,s:210,h:10|ships]].',1030:'There is a lot more than just an ocean out there! More islands await being discovered. We are not alone! We can gain ground on one of the newly discovered islands, tap new resources and get to know other nations! Our clerks are eager to administer even more, our traders ready to travel to new lands!<br><br><b>Allows:</b> Building of [[v:b,b:11,h:1|palaces]], founding of [[v:i,h:0,sh:6|colonies]], [[v:i,h:0,sh:3|overseas trading]].',1040:'If we get to know other nations, it will help us to make progress ourselves. Regular talks and warm exchanges can work true wonders and lead to new alliances and friendships. Of course we need a pretty and comfortable building for all the ambassadors and the feasts we will hold in their honour!<br><br><b>Allows:</b> Construction of [[v:b,b:12,h:1|Embassies]].',1050:'That is some tough and bad smelling liquid our scientists have found there! But since we have started sticking it onto our ships there are hardly any holes we have to mend!<br><br><b>Effect:</b> 4 % less upkeep for [[v:u,s:210,h:10|ships]].',1060:'A fire that can&apos;t be extinguished with water! With this mixture from many secret ingredients we can now set fire to ships and sink them! Soon we will conquer the seas with ships that have the breath of a dragon!<br><br><b>Allows:</b> Building of [[v:u,s:211,h:10|flame ships]] in the [[v:b,b:5,h:1|shipyard]].',1070:'Our scientists have improved the weapon attachment for our ships, so that they don&apos;t tear apart when we fling huge rocks towards our enemies. And thanks to the counterweight our catapult stays on board now and doesn&apos;t launch itself anymore.<br><br><b>Allows:</b> Building of [[v:u,s:214,h:10|catapult-ships]] at the [[v:b,b:5,h:1|shipyard]].',1080:'One of our philosophers has written down wise things about war and peace. He has advised us to confederate with other nations so that we can fight our enemies together!<br><br><b>Allows:</b> [[v:i,h:14|Garrison right]].',1090:'Our voyages will be much safer if we write down where all the dangerous currents and treacherous shallows are! Then our seamen won&apos;t have to be afraid of any jagged rocks, deadly maelstroms or seductive sirens any more.<br><br><b>Effect:</b> 8% less upkeep for [[v:u,s:210,h:10|ships]].',1100:'Great news for our seamen: A steam driven paddle wheel allows our ships to move much faster than they ever could with oarsmen. Now we can teach our enemies to fear us with our mighty paddle wheel rams.<br><br><b>Allows:</b> Construction of [[v:u,s:218,h:10|paddle speedboats]] in the [[v:b,b:5,h:1|shipyard]].',1110:'This mortar is so huge, that not even Hercules could drag it along. Only an armoured steam ship is strong enough to carry it and all the huge cannon balls it can fire at our enemies.<br><br><b>Allows:</b> Building of [[v:u,s:215,h:10|mortar ships]] in the [[v:b,b:5,h:1|shipyard]].',1120:'A good house can withstand the harshest elements. It can withstand them even better when a clever mind takes care of it with a lot of drawings and a little mathematics before hand, so that all the walls are straight and the roof is tight. Thanks to angles and compasses our buildings will be much more stable and well protected from the rain. An architect&apos;s office would spare us a lot of marble, just think about the savings we could make in constructing a new building!<br><br><b>Allows:</b> Building of an [[v:b,b:24,h:1|architect&apos;s office]].',1130:'Our scientists have found out that our ships have less water resistance when their load is smaller. This means that we can put larger sails on the mast and travel more quickly.<br><br><b>Allows:</b> Quicker ships with a lighter load.',1140:'With this technology, our engineers can seal leaky ships. Caulking in and in front of the port is a complicated undertaking, but gives our fleets the chance to get ready for battle between two attacks.<br><br><b>Allows:</b> Construction of [[v:u,s:220,h:10|tenders]] in the [[v:b,b:5,h:1|shipyard]].',1150:'One of the most dangerous sea units can be built with the ram. This masterpiece of engineering ingenuity is attached to the ship&apos;s bow and can inflict massive amounts of damage onto other ships.<br><br><b>Allows:</b> Construction of [[v:u,s:216,h:10|steam rams]] in the [[v:b,b:5,h:1|shipyard]].',1160:'We can use this research to build some of the largest ships in the shipyard. These are equipped with balloons that bomb opponents on the high seas.<br><br><b>Allows:</b> Construction of [[v:u,s:219,h:10|balloon carriers]] in the [[v:b,b:5,h:1|shipyard]].',1170:'A powerful Pirate Fortress with a strong crew eager for your orders. They are looking to loot capture points and gold. Fame and enormous amounts of resources beckon the most successful pirates. From here you can start raids on other Pirate Fortresses.<br><br><b>Allows:</b> construction of [[v:b,b:30,h:1|Pirate Fortresses]], [[v:i,h:19,sh:2|Capture Runs]], [[v:i,h:19,sh:5|Raids]], participation in the [[v:i,h:19,sh:6|Capture Points Highscores]].',1999:'The secrets of the oceans are finally ours! Our ships are constantly becoming tougher and faster! There are almost no ships on this ocean capable of competing with ours.<br><br><b>Effect:</b> 2% less upkeep for [[v:u,s:210,h:10|ships]].',2010:'We have learned how to store and protect our resources in the long term from wind and weather. Additionally a part of our resources is safe from pirates and other villains, who might want to steal from us!<br><br><b>Allows:</b> Building of [[v:b,b:7,h:1|warehouses]].',2020:'A brilliant idea: A rope that is pulled over a roll gives a simple man the strength of Hercules. So now our workers can lift up huge blocks of stone on their own and construct our buildings even faster!<br><br><br><b>Effect:</b> 2% less building costs.',2030:'The earth is full of valuable treasures! We have learned how to mine sulphur and crystal and how to chisel marble off rocks. We are also growing wonderful vines on the fertile land on our hills which produce delicious wine!<br>A new era of prosperity will dawn on us when we start using these treasures. We can then sell goods at a trading post and buy what we need from foreign traders.<br><br><b>Effect:</b> Allows the production of [[v:i,h:6|luxury goods]], the construction of [[v:b,b:13,h:1|trading posts]] and gives you 130 units of each luxury good.',2040:'A happy population needs festivals in which they can spend hours revelling and drinking our fantastic free-flowing wine. Dionysus loves seeing us enjoying what he has given us!<br><br><b>Allows:</b> Building of [[v:b,b:9,h:1|taverns]].',2050:'Our culture is truly rich in delicious treats! If we have cooks joining our soldiers in battle the delicious smell will be enough to remind them of their kitchen at home and surely strengthen their fighting spirit. And it shouldn&apos;t be forgotten, that a hearty meal has always brought a man back onto his feet. And of course a cook has a sharp knife that he can jump into the fight with.<br><br><b>Allows:</b> Training of [[v:u,u:310,h:9|chefs]] in the [[v:b,b:6,h:1|barracks]].',2060:'Right angles, triangles, circles â€“ a few bright minds can calculate how we can construct our buildings even better and more beautifully. And soon our towns will serve as examples to the whole world!<br><br><b>Effect:</b> 4% less building costs.',2070:'The most unusual goods arrive at the market here from distant islands. You can form treaties with merchants here so that we get all the resources that we need.<br><br><b>Allows:</b> [[v:i,h:14|treaties]], [[v:i,h:18,sh:0|form of government:]] [[v:f,f:2,h:18,sh:3|democracy]].',2080:'A worker who has had a good rest is much more eager to work than an exhausted one. That&apos;s why every citizen should have one day off per week. This will make all our citizens happier!<br><br><b>Effect:</b> Increases the [[v:i,h:3|satisfaction]] and maximum population in all towns.',2090:'If our citizens help out a little underground instead of tanning themselves on the beach, weâ€™ll get more raw materials and theyâ€™ll get less sunburn. Thereâ€™s always a need for help down the mines, saw mills and vineyards.<br><br><b>Allows:</b> Overloading of [[v:i,h:5|resources]].',2100:'Water is always even. We should use this knowledge so that our buildings become even, too! Our town will become even more beautiful and we will use less stone and wood for constructing our buildings!<br><br><b>Effect:</b> 8% less cost for the construction of buildings.',2110:'Now our palace has even more shelves, boxes and drawers, more piles of records and forms as well as clerks who can understand it all. Finally we can afford to build and administer an additional building in our towns!<br>But due to the increased administration burden and the meticulous documentation of all processes, we cannot smuggle goods in or out of occupied towns anymore, as our occupier is also well informed about our records.<br><br><b>Allows:</b> An additional [[v:i,h:0,sh:1|building space]] in the towns.',2120:'Our citizens are living in wealth and prosperity. They are happy and healthy and have very little to worry about. Yes, one could say we are living in one of those places that you can only find in the scriptures from one of the great philosophers.<br><br><b>Effect:</b> +200 housing space, +200 satisfaction in the capital.',2130:'Some time has passed since we learned how to use the treasures of our island for our own needs. We should now educate our workers and let every forest, quarry or vineyard, every sulphur pit or crystal mine be administered by men who are not only strong but also skilful. This way we will gather even more income and our civilization will get richer than ever!<br><br><b>Allows:</b> Construction of [[v:b,b:18,h:1|Forester Houses]], [[v:b,b:19,h:1|Stonemasons]], [[v:b,b:21,h:1|Wineries]], [[v:b,b:20,h:1|Glassblowers]] and [[v:b,b:22,h:1|Alchemists&apos; Towers]].',2140:'What an event those annual wine fÃªtes are! The whole town is there when the best grapes in town are stomped into wine and when the liquid gold splashes around, the kids have the most fun! With a wine press though, handled by an experienced winemaker, we would lose much less. The winemaker could also organise proper storage that allows us to let the wine age and mature well!<br><br><b>Allows:</b> Building of [[v:b,b:26,h:1|wine cellars]].',2150:'Our island&apos;s forests provide us with excellent building material so that we can create strong woodwork for the roofs of our buildings. But to ensure that this is the case, lumber must be carefully selected and handled properly! A carpenter in our town would take care of this and would use up a lot less building material!<br><br><b>Allows:</b> Building of [[v:b,b:23,h:1|Carpentries]].',2160:'As our warehouses cannot handle the increasing amount of goods, we will need alternatives in the long run. Advanced methods of sealed tarpaulins and covers should enable us to store large amounts of goods in the open air.<br><br><b>Effect:</b> Allows you to build [[v:b,b:29,h:1|depots]].',2170:'We think it&apos;s a good idea to define the rules of living together on paper. This means that every island inhabitant can look up what&apos;s allowed and what isn&apos;t - meaning they&apos;ll be no more room for excuses!<br><br><b>Allows:</b> [[v:i,h:18,sh:0|Form of government]]: [[v:f,f:4,h:18,sh:5|Nomocracy]].',2180:'Our battle-tested warriors in their shiny armour, and our progressive war machines have become legendary. Now it&apos;s time to make a profit from them. Other leaders will be eager to purchase these troops.<br><br><b>Allows:</b> building the [[v:b,b:31,h:1|Black Market]].',2999:'Our citizens are wealthy and the marketplace is spilling over with delicacies from all over the world! The streets are clean and developed, making it easier for building material to reach the building site more quickly.<br><br><b>Effect:</b> +10 [[v:i,h:3|satisfaction]] and +20 max. inhabitants in every town per level of this future research.',3010:'Eureka! A well in our settlement! Now we don&apos;t have to wait for it to rain all the time. Our citizens will be much better off and the fields won&apos;t have to stay dry for very long!<br><br><b>Effect:</b> +50 housing space, +50 [[v:i,h:3|happiness]] in the capital.',3020:'We have found a better way to archive our knowledge! Now we have scriptures made from the papyrus plant, so we don&apos;t have to chisel our words into the heavy stones anymore in order to fill our library!<br><br><b>Effect:</b> 2% more research points.',3030:'When some of our citizens settle down in other towns, they can help us to keep an eye on our neighbours. We could keep ourselves informed when a neighbour makes a discovery or what kind of resources he has in stock.<br><br><b>Allows:</b> Building of [[v:b,b:16,h:1|hideouts]].',3040:'Man cannot rationally explain everything that happens in the world. And whenever he cannot explain it, the answer is sought from the gods. Gods are like humans on the one hand, but are very different on the other hand. After all, what other kind of rational explanation can the unexplainable have?<br><br><b>Allows:</b> [[v:b,b:28,h:1|Temples]] and [[v:i,h:15,sh:3|Miracles]].',3050:'Nature gives us everything we need to write: The birds give us their feathers and eight-armed fish out of the sea provide us with their black ink! Now we can write down our ideas even more easily!<br><br><br><b>Effect:</b> 4% more research points.',3060:'Our citizens should really have the chance to look at the cultural achievements of other people. And surely, in exchange, they will be interested in learning from us and exhibiting some of our great works of art in their museums.<br><br><b>Allows:</b> Building of [[v:b,b:10,h:1|museums]], [[v:i,h:14|cultural goods treaties]], Phoenician merchant ships.',3070:'We have learned a lot about the human body! Now we can send doctors into battle to help the wounded soldiers to quickly get back on their feet again. Of course they can mix the right tinctures and some doctors even know a secret recipe for a mixture that makes our fighters even braver.<br><br><b>Allows:</b> Recruiting of [[v:u,u:311,h:9|doctors]] in the [[v:b,b:6,h:1|barracks]].',3080:'When our scientists invent new things, many a glass can break. Or it gets lost in the infinite vastness of our laboratories, as keeping them tidy isn&apos;t really the primal virtue of the academy. If an optician would take care of not only the quality, but also that all the lenses and glasses are put back where they belong, we would use far less crystal glass!<br><br><b>Allows:</b> Building of an [[v:b,b:25,h:1|optician&apos;s]].',3081:'Our scientists would like to test their theories in practice. These kinds of attempts will probably accelerate the research, but it does mean we will need a certain amount of additional laboratory equipment. <br><br><b>Allows:</b> Purchase of research points for crystal glass, [[v:i,h:18,sh:0|form of government]]: [[v:f,f:6,h:18,sh:7|technocracy]].',3090:'A brilliant little apparatus: A smart inventor has managed to teach writing to a machine. Now we can copy our scriptures easily and our academies can quickly exchange their ideas with each other! <br><br><b>Effect:</b> 8% more research points.',3100:'We have learned how to fly like the birds! Now we can build a machine that can lift a man up into the skies and can whizz above the heads of our enemies with breath-taking speed, shooting arrows far behind the front lines.<br><br><b>Allows:</b> Construction of [[v:u,u:312,h:9|Gyrocopter]] in the [[v:b,b:6,h:1|barracks]].',3110:'A marvel: We can now shoot scrolls through pipes, so that they reach our scientists even faster! This saves us long errands and we have to pay less gold for our scientists!<br><br><b>Effect:</b> 3 Gold upkeep cost less per scientist.',3120:'Now we can let our ships sail under water, without them sinking! The oceans are ours! No enemy will see us, when we stalk them under water and sink them before they notice us!<br><br><b>Allows:</b> Building of [[v:u,s:212,h:10|submersibles]] in the [[v:b,b:5,h:1|shipyard]].',3130:'We have managed to get a machine to fly! Now even the sky isn&apos;t a limit anymore! We can let huge balloons fly over the heads of our enemies and throw fire or bee-hives at them from above!<br><br><b>Allows:</b> Building of [[v:u,u:309,h:9|bombardiers]] in the [[v:b,b:6,h:1|barracks]].',3140:'There has recently been a number of incidents relating to exploding powder and other substances. That&apos;s why we have set up an own workshop for all the nosy scientists, so that all the explosions don&apos;t disturb the work in the academy any more. It also has stronger walls and can&apos;t burn down as easily.<br><br><b>Allows:</b> Building of [[v:b,b:15,h:1|workshops]].',3150:'We have been thinking about the fact that a different form of government could give us special advantages. To do so there would be quite a lot to organise and we would possibly have to cut down on some staff, but it would be great to have that kind of government. <br><br><b>Allows:</b> Start of a revolution, [[v:i,h:18,sh:0|forms of government]]: [[v:f,f:3,h:18,sh:4|dictatorship]] and [[v:f,f:5,h:18,sh:6|oligarchy]].',3160:'Actually we don&apos;t need any secular laws - the religious ones are more than enough. And while we&apos;re at it: we don&apos;t actually need all our civil servants. <br><br><b>Allows:</b> [[v:i,h:18,sh:0|Form of government]]: [[v:f,f:7,h:18,sh:8|theocracy]].',3170:'We should probably archive our treasured sea charts. This will allow our sailors to always find the maps they need and save time on their journeys.<br><br><b>Allows:</b> building a [[v:b,b:32,h:1|Sea Chart Archive]].',3999:'The smartest brains in the world are working to answer the big question: Why are we here? Why is everything the way it is? And once again we are one step closer to enlightenment.<br><br><b>Effect:</b> 2% more research points.',4010:'A basin at the sea where water can be drained makes it so much easier for us to build ships and set sail. May a mighty fleet arise that teaches our enemies the true meaning of fear! <br><br><b>Allows:</b> Construction of a second [[v:b,b:3,h:1|trading port]], [[v:b,b:5,h:1|shipyard]].',4020:'These long marches over the hills and through the swamps mean that our material will wear out very fast. If we write down, how our soldiers can travel over land without always getting stuck in the undergrowth or sinking into the mud, the soldiers will have to mend their uniforms a lot less often.<br><br><b>Effect:</b> 2% less upkeep for [[v:u,u:301,h:9|soldiers]].',4030:'Chasing away pirates, barbarians and other villains will be much easier with some professional soldiers! It might be more expensive than just making our citizens into soldiers in the event of war, but in exchange our troops will be able to handle sword, spear and shield much better!<br><br><b>Allows:</b> Recruiting of [[v:u,u:302,h:9|swordsmen]] and [[v:u,u:303,h:9|hoplites]] at the [[v:b,b:6,h:1|barracks]].',4040:'With a ram&apos;s head made of metal and the strength of ten men we can even tear down town walls. Now it will be easy for our soldiers to conquer other towns!<br><br><b>Allows:</b> Building of [[v:u,u:307,h:9|battering rams]] in the [[v:b,b:6,h:1|barracks]].',4050:'Our soldiers are proud of serving their unit and their island kingdom. They are even taking better care of their uniforms, so that we don&apos;t have to mend and repair them as often.<br><br><b>Effect:</b> 4% less upkeep costs and allows the [[v:i,h:18,sh:0|form of government]]: [[v:f,f:1,h:18,sh:2|aristocracy]].',4060:'Now we know how to shoot arrows at our enemies. We should start right now to train our soldiers with these skills, so we can have archers joining our army in battle soon!<br><br><b>Allows:</b> Training of [[v:u,u:313,h:9|archers]] in the [[v:b,b:6,h:1|barracks]].',4070:'With this technology we can unleash powers that can even let huge rocks fly through the air! And if the rocks are large enough, they can even tear down town walls!<br><br><b>Allows:</b> Building of [[v:u,u:306,h:9|catapults]] in the [[v:b,b:6,h:1|barracks]].',4080:'If we employ a civil servant, we can then not only pillage our enemies&apos; towns, but also use and manage them. In no time we will be able to occupy foreign towns with our army from which we can then carry out further missions to increase our wealth and prosperity.<br><br><b>Allows:</b> [[v:i,h:8,sh:8|Occupation]].',4090:'Our soldiers can fight much better if they don&apos;t have to drag that much. And their equipment will last much longer on the long marches, so we won&apos;t have to mend it that often.<br><br><b>Effect:</b> 8% less upkeep for [[v:u,u:301,h:9|soldiers]].',4100:'This black mixture from the alchemist&apos;s kitchen can spark a fire with a loud bang and do truly devilish things! Now we can fill iron pipes with this powder to shoot heavy cannon balls through the air. <br><br><b>Allows:</b> Construction of [[v:u,u:304,h:9|carabineers]] in the [[v:b,b:6,h:1|barracks]] and [[v:u,s:217,h:10|rocket ships]] in the [[v:b,b:5,h:1|shipyard]].',4110:'Our scientists have built a mechanical giant with muscles made of metal and a steaming heart! Only the keenest and most skilled soldiers can steer such a colossus, but it will strike fear into everyone on the battlefield!<br><br><b>Allows:</b> Building of [[v:u,u:308,h:9|steam giants]] in the [[v:b,b:6,h:1|barracks]].',4120:'Our iron is getting heavier and harder: now we can even build barrels through which we can fire huge cannon balls at our enemies! If we can even fire bombs from a long distance our enemies and their town walls will tremble in fear!<br><br><b>Allows:</b> Building of [[v:u,u:305,h:9|mortars]] in the [[v:b,b:6,h:1|barracks]].',4130:'Sulphur is a really is a work of the devil! And with every new mixture, we can get even more impact from this precious resource. A safe practice ground would allow our blasters to test their inventions, without including the surrounding buildings as involuntary targets into their experiments.<br><br><b>Allows:</b> Building of [[v:b,b:27,h:1|firework test area]].',4999:'Our war machines are stronger and mightier than ever before and our armies are perfectly organised! Our civil servants managing the military have everything under control and thus the upkeep costs can be lowered.<br><br><b>Effect:</b> 2% less upkeep for [[v:u,u:301,h:9|units]].'},
+				//troopstxt: ['Troops in town','Inspect troops that are stationed in the town.','Inland garrison limit','Sea garrison limit','Units','Ships','Garrison','Defender','There are no allied units stationed in this town!','Occupying Forces','There are no units from an enemy occupation force stationed here!','Blocking fleets','There are no enemy troops stationed in this town.',''],
+				//barrackstxt: ['In the barracks the boisterous youth is instructed to become keen fighters. Your soldiers know how to handle swords, spears and slings and are also able to lead the mightiest war machines safely over the field. The troops are trained more quickly when you expand your barracks.','Occupation disadvantage','This town is being occupied by foreign troops.<br>New units can only be trained for double the cost!','Units Scheduled for Training','No units have been selected','No citizens are required','citizens','citizen','No unit is required','units','unit','No upkeep is required','No training duration',{wood:'wood',wine:'wine',marble:'marble',crystal:'crystal',sulfur:'sulfur',upkeep:'upkeep',time:'Required training duration'},'Completion:','Population Pack','Dummy packages','The different dummy packages allow you to fool opposing spies about your real troop strength.','Select a package','Recruit Units','To the description of unit "{0}"','Reset entry','Recruit as many as possible','max','Upkeep cost per hour. Can be reduced through forms of government and research.','Upkeep cost per hour','Training time','What would an island empire be without its fleet? At the shipyard, mighty warships are launched and made ready for long journeys over the oceans. May the seven seas tremble before them! Larger shipyards can build ships more quickly.','This town is being occupied by foreign troops. New units can only be trained for double the cost!','Ships Scheduled for Construction','No ships have been selected','No construction duration','Required construction duration','Ships construction','To the description of ship "{0}"','Reset entry','Construction duration per ship','Training','Construction','The building is upgrading!','Level <b>{0}</b> of building is required','Quantities not enough'],
+				//regGiftstxt: ['Registration Gifts','To welcome you as you deserve it, your citizens have collected some donations. You can collect a gift from here every day for a week. Welcome to Ikariam.','{0} Day','{0} Gold','{0} Research Points','{0} Spearmen',['{0} Gold','{0} Research Points'],'{0} Wine','{0} Crystal','{0} Gold','Receive!','Received!','You still have <b>{0}</b> ({1}) to receive your gifts.','You have received all the gifts. The window will remain available for <b>{0}</b> ({1}).','Ends at {0} ({1})'],
+				//wondertxt: ['Monument upgrade','Upgrade in progress','Next Level','Level','Required for next Level','Donated','Donated resources','Donations','Donate maximum quantity','maximum','Donate to upgrade','Maximum upgrade is completed!','Required resources','Wonder monument','Faith barometer','Level','Effect','Active duration','Cooldown duration','instantly','Players on this island','Player','Town','Donation quantity','Priests','Conve<br>rsion','Share','Go to','Actions'],
+				//forminetxt: ['Wood from the nearby forest is sawed into boards at the saw mill. It is then used as a material for constructing buildings and much more. The saw mill is extended by all inhabitants of the island together. The larger it is, the more workers you can employ there.','Assign Workers','Capacity','per hour','Town income','Overload!','No worker','Minimum','Maximum number of workers','Maximum','Confirm','Workers production','Unskilled production','Technocracy','Premium Bonus','Cinetheater','Helios Tower','Corruction','Total','{0} Citizens','Increased {0} Production',['wood','wine','marble','crystal','sulphur'],'{0} Days','Motivated workers','Motivate your workers in the Cinetheatre.','+ 20 % for 12 hours','Inactive','Go to Cinetheater','Players on this island','Player','Town','Level','Workers','Donated wood','Actions','Level {0}','{0} Workers','{0} Worker','Ambrosia Donation','Tutorial Ambrosia cannot be used on its own for this function. The donation will be displayed as a normal wood donation in the donation list.','Donate as much as possible','max',''],
+				//townhalltxt: ['Rename town','Old town name','New town name','Apply town name','Eename','Housing space','Inland garrison limit','Sea garrison limit','Action Points','Growth','per hour','Net Gold','{0} Citizens','Population and production','Notices','There are no special incidents! Congratulations, everything in your town is going fine!','There is corruption in this town!','The productivity and satisfaction in this town are reduced! Upgrade {0} to reduce corruption.','your Governor&apos;s Residence','your Palace','Your town&apos;s satisfaction is composed of lots of different elements. This chart can help you to identify problems and possibilities.','Bonuses','Basic bonuses','basic bonus','Form of Government','from research','capital bonus','Event bonus','Event bonus','Extra bonus','Still active for','from account transfer','Wine','from tavern level','from serving wine','There is no tavern available in this town yet.','Culture','from museum level','from cultural treaties','There is no museum available in this town.','Deductions','Population','Revolt','Form of Government','Total satisfaction','Abandon colony','You can give up your colony. However, all resources, citizens and units will be lost.'],
+				//taverntxt: ['After a hard day&apos;s work there is nothing more pleasant than a cool jug of wine. That&apos;s why your citizens love to meet at the tavern. And when the last old songs have been sung at the end of the day, they set out merrily and cheerful to their homes. Every expansion of your tavern allows you to serve more wine.','Serving of drinks','Serve wine','You can determine exactly how much wine is served to your population. The more wine you provide at the tavern, the happier your citizens will be. Attention: Every time you reallocate a large amount of wine you&apos;ll have to give your innkeeper an hour&apos;s ration.','Reset <br>entry','Serve as much<br>as possible','satisfied citizens','satisfied citizen','No wine','{0} craters of wine / hour','{0} crater of ÎºÏÎ±ÏƒÎ¹Î¿Ï / ÏŽÏÎ±','The wine press saves you','craters of wine per hour','wine per hour','Cheers!','There is no Wine Press in the city!'],
+				//academytxt: ['The academy is a sublime place full of knowledge which combines old traditions with modern technology. The wisest heads of your town await entrance! Consider that every scientist needs his own laboratory which costs money. The larger the academy the more scientists you can employ at the same time.','Assign Scientists','Research achievement','per Hour','Town income','Basic Production','Premium Bonus','Research','Form of Government','Corruption','Total','Overloaded','No<br>Scientists','maximum amount<br>of Scientists','Confirm','Conduct experiment','Our scientists have been experimenting for a long time and have finally discovered a way to create {0} research points. We need {1} crystal to conduct the experiments. But beware! The chemical reactions that happen during these experiments are quite loud and impressive. Thus the scientists need <b>4h</b> to clear up their laboratory afterwards so that they can carry on experimenting with crystal.','Current quantity is not enough','Research achievement','Cost','Conduct experiment','The scientists are still in the process of clearing up the mess that occurred after the last experiment.<br>Cleaning process:','To conduct the experiment<br>you need {0} more.','With the current quantity of crystal,<br>you can conduct up to {0}.','crystal','crystals','experiment','experiments','Each experiment, with current production, reduces<br>the duration for the availability of researches by <br><b>{0}<b>','The experiment is in progress','The quantity can be produced as follows:{0}','You have no crystal production in the crystal {0} you own!','You have no crystal towns!','{0}<br>of crystal','Hourly<br>production','Production<br>duration'],
+				//mayortxt: ['Mayor','Town News','Trade Routes','Current events ({0})','All','Military','Goods','Production','Espionage','Diplomacy','News','Piracy','Location','Date','Subject','Jump to the town "{0}"','previous 10...','...next 10'],
+				//porttxt: ['The port is your gateway to the world. You can hire merchant ships and get them ready for long journeys here. You can also receive precious goods from far away places. Larger ports can load ships faster. You can build another port that increases your loading speed as soon as you have researched the Dry-Dock.','Transport','Buy Merchant Ships','Trade Routes','Send out merchant ship','Transport to {0} {1}','Your up to 11 towns will be displayed here during the course of the game. You can select a town and choose how many goods should be sent to each town with your merchant ships.','How can I found new towns?','Fleets being loaded','Own merchant ships','Foreign ships','Incoming Traders','Raids','No ships registered with the port master.','Target town','Quantity','Mission','Status','Cargo on board','Transport','is being loaded','Accelerate loading process','Origin','Quantity','Mission','Arrival','Withdraw fleet!','','','','','','Loading speed','The loading speed shows how fast merchant ships can be loaded and unloaded in your port.','Trading Port (Level {0})','{0} Goods per minute','Form of Government','Temple of Hermes','Buy Merchant Ships','Merchant ships are your island kingdom&apos;s most important asset. You use them to transport your goods and units.','Learn more about Merchant Ships...','Maximum reached','Cost','Buy Merchant Ships','You don&apos;t have enough gold! You still need <b>{0}</b> Gold!','Maximum reached!','You are purchasing one of 40 additional Phoenician merchant ships. Every ship can transport up to 500 goods or a corresponding amount of land units. With every purchase of a Phoenician merchant ship, the Ambrosia price of the next one changes.','Purchase Phoenician Merchant Ship','{0} Ambrosia is missing','{0} Ambrosia is missing','Acquire now!!','Bonus Merchant Ships','Friend list','Form of Government','7 day bonus','Merchant ships','Phoenician Merchant Ships','Edit trade routes','Maximum reached','<p>A trade route allows you to send transports between two of your kingdom&apos;s towns every day. This way you can supply all of your settlements with wine or other goods. You have one free trade route available and can add more for a bit of Ambrosia.<br><br>Please make sure that there are always enough goods and merchant ships available at the allotted times during all trips on the trading routes and that the involved towns&apos; harbours are free of enemy fleets.</p>','Trade Route','Duration: 7 days','Not active','activate','Save changes','Delete','create new trade route','Another<br>{0}','extend','Extend automatically','You can automatically extend this feature by ticking the box. In the last three hours of the seven day runtime it will be extended by another 7 days.','End extension','If you untick the box the automatic extension will end immediately.','',''],
+				//traderoutestxt: ['Trade Routes','Choose source town','Choose destination town'],
+				//palacetxt: ['The palace is an excellent place to lead your empire into the future! It also provides a gorgeous view of the sea. Every expansion of your capital&apos;s palace allows you to set up an additional colony.','Current form of government: {0}','Towns in your empire',{anarchie:'Anarchy is a situation where there is no ruler. This form of government is established only during revolution period.',ikakratie:'Ikacracy is the leadership of the benevolent island ruler.',aristokratie:'Aristocracy is a government ruled by elite noble families.',demokratie:'Democracy is a government ruled by the people.',diktatur:'Dictatorship is a government ruled by a single military commander.',nomokratie:'Nomocracy is a form of government ruled by law in which the rulers themselves cannot easily change the laws.',oligarchie:'Oligarchy is a form of government in which power rests with a small number of people. In Ikariam these are the rich merchant families.',technokratie:'Technocracy is a government ruled by experts - at Ikariam these are the scientists and researchers.',theokratie:'Theocracy is a government ruled by the clergy.'},'Change form of government',{anarchie:['','25% additional corruption in all towns|All land units and warships will return home if they are stationed in foreign towns or are en route. If they are in the middle of a battle, they will automatically be scattered (exception: fights in own towns or ports).|No unit movements possible|No unit training possible|No espionage missions possible'],ikakratie:['None','None'],aristokratie:['-20% Building construction time|+20% Counter-espionage','+3% Corruption in all towns, apart from the capital city'],demokratie:['+75 Satisfaction in all towns|+1 Research point per hour for each cultural goods treaty issued','-20% Counter-espionage|+5% Building time for land units'],diktatur:['-2% Upkeep costs for land units|-2% Upkeep costs for navy units|-2% Building time for land units|-2% Building time for navy units|+2 Additional merchant ships','-75 Satisfaction in all towns'],nomokratie:['-5% Corruption in all towns|+20% Counter-espionage','+5% Building time for land units.|+5% Building time for navy units|+50% Loading time in your own ports'],oligarchie:['+5 Range of all trading posts|+10% speed for merchant ships|-2% Upkeep costs for navy units|+2 Additional merchant ships','+20% Building construction time|+3% Corruption in all towns'],technokratie:['+5% Research points per hour|+20% Unskilled labourers productivity','+1 Upkeep per scientist'],theokratie:['-20% Miracle cooldown|Satisfaction in all towns with a temple is increased by +2 times the conversion rate.<br>The maximum bonus is +150.|+1 gold production per priest','-5% Research points per hour|-20 Satisfaction in all towns without temples']},'Advantages','Disadvantages','Occupied cities','Occupied ports','You have not occupied any cities.','You have not occupied any ports.','If you want to switch your form of government, it will cost you <b>{0}</b> Gold for every town that you own (in total: <b>{1}</b> Gold). Until the new form of government is established, anarchy will rule. This will last for a certain time (<b>{2}</b> times the number of towns that you own, in total: <b>{3}</b>).','Researched forms of government','Not enough gold','Change form of government to',''],
+				//island: 'Island',
+				//luxres: 'Luxury resource',
+				//palaceColonytxt: ['A governor in your colony guarantees that all the daily administrative tasks are done properly. He also lowers the level of corruption in your colony. The governor&apos;s residence can be upgraded to a palace if you ever want to move your capital.','Towns in your empire','Relocate capital','You can declare this colony to your capital. With it, your governor&apos;s residence will be transformed into a palace of the same level and therefore this town will become your empire&apos;s capital. However, the palace in your old capital will be completely destroyed - so you will have to regain law and order by building a new governor&apos;s residence!','<p>You <b>can&apos;t</b> declare this colony your capital yet - the governor&apos;s residence needs to have the same level as your <b>amount of colonies</b> is first in order to be able to manage all colonies!</p><p class="red">You have to expand your governor&apos;s residence by another <b>{0}</b> in order to move your capital here.</p>','Declare this town your capital','The building is upgrading!'],
+				//levelcnt: ['levels','level'],
+				incr: '#',
+				//workshoptxt: ['The most skilled men of our town serve at the workshop. They use the latest inventions to improve the equipment of our troops and warships, such that they become even better and stronger! Every expansion level allows you to get more upgrades for troops and ships.','Units','Ships','Improve offensive power','Improve defence strength','Cost: {0} units of Gold','Cost: {0} units of crystal','Duration: {0}','Damage: {0}','Armour: {0}','Improve!','Get resources!','Highest level reached!','The building is upgrading!','Insufficient building level!','Insufficient gold quantity!','Insufficient crystal quantity!','Insufficient gold and crystal quantity!','','',''],
+				//militaryupgrades: {Units: {archer:[['Iron Arrowhead','Steel Arrowhead','Fire Arrowhead'],['Leather Armour','Reinforced Leather Armour','Studded Leather Armour']],bombardier:[['Fire-Bomb','HellFire-Bomb','Inferno-Bomb'],['Leather Basket','Reinforced Leather Basket','Studded Leather Basket']],catapult:[['Fire-Missile','HellFire-Missile','Inferno-Missile'],['Bronze Plating','Iron Plating','Steel Plating']],gyrocopter:[['Crossbow','Double Crossbow','Rapid Fire Crossbow'],['Bronze Plating','Iron Plating','Steel Plating']],marksman:[['Bronze Musket','Iron Musket','Steel Musket'],['Leather Armour','Reinforced Leather Armour','Studded Leather Armour']],mortar:[['Thunder Grenade','Great Thunder Grenade','Armageddon Grenade'],['Bronze Wall','Iron Wall','Steel Wall']],phalanx:[['Steel Spear','Iron Spear','Steel Spear'],['Bronze Shield','Iron Shield','Steel Shield']],ram:[['Bronze Head','Iron Head','Steel Head'],['Bronze Roof','Iron Roof','Steel Roof']],slinger:[['Bronze Balls','Iron Balls','Steel Balls'],['Leather Clothing','Reinforced Leather Clothing','Studded Leather Clothing']],spearman:[['Steel Spear','Iron Spear','Steel Spear'],['Leather Armour','Reinforced Leather Armour','Studded Leather Armour']],steamgiant:[['Bronze Fist','Iron Fist','Steel Fist'],['Bronze Plating','Iron Plating','Steel Plating']],swordsman:[['Bronze Sword','Iron Sword','Steel Sword'],['Bronze Helmet','Iron Helmet','Steel Helmet']]},Ships: {ballista:[['Ballista','Double Ballista','Triple Ballista'],['Bronze Plating','Iron Plating','Steel Plating']],ballooncarrier:[['Fire-Bomb','Hellfire Bomb','Inferno-Bomb'],['Single Bulkhead','Double Bulkhead','Triple Bulkhead']],catapult:[['Fire-Missile','Hellfire-Missile','Inferno Missile'],['Single Bulkhead','Double Bulkhead','Triple Bulkhead']],flamethrower:[['Fire-Spewer','HellFire Spewer','Inferno Spewer'],['Bronze Plating','Iron Plating','Steel Plating']],mortar:[['Thunder-Grenade','Great Thunder Grenade','Armageddon Grenade'],['Single Bulkhead','Double Bulkhead','Triple Bulkhead']],paddlespeedship:[['Bronze spur','Iron spur','Steel spur'],['Bronze Plating','Iron Plating','Steel Plating']],ram:[['Bronze spur','Iron spur','Steel spur'],['Bronze Plating','Iron Plating','Steel Plating']],rocketship:[['Fire Rocket','Hellfire Rocket','Inferno Rocket'],['Single Bulkhead','Double Bulkhead','Triple Bulkhead']],steamboat:[['Bronze ram spur','Iron ram spur','Steel ram spur'],['Single Bulkhead','Double Bulkhead','Triple Bulkhead']],submarine:[['Clockwork Torpedoes','Automaton Torpedoes','Machine Torpedoes'],['Single Bulkhead','Double Bulkhead','Triple Bulkhead']]}},
+				//templetxt: ['The temple is a place of faith, belief and reflection. Priests live here, paying homage to their God and spreading his word throughout the island. You can also request a miracle from him, if you pay him enough respect.','Faith Barometer','This island has a faith of {0} %.','Island faith percentage is {0} %.','Assign priests','Conversion rate of your population','Island conversion percentage','Town income','per Hour','{0} priests','{0} priest','No priest','Maximum number of priests','Confirm','Miracle','{0} (Level {1}/{2})','Duration: {0}','Cooldown: {0}','Completion of miracle effect','Completion of cooldown'],
+				//warehousetxt: ['A depot enables you to store large amounts of goods. Every extension level of the depot can hold 32,000 units of each type of good. However, the depot is not protected from pillagers.','Some of your supplies are protected from pillagers at the warehouse. It keeps rain, birds and other pests away. The warehouse keeper is also always well informed about your supplies. Expanding your warehouse allows you to protect and store more resources.','Town goods overview','100% increased theft security','Not active','Active','100% increased storage capacity','Safe','Resource','Safe<br>quantity','Capacity'],
+				//lootable: 'Lootable',
+				//blackmarkettxt: ['The Black Market allows you to sell military units for gold or another resource. Upgrade the building to enable you to sell more types of units and reduce the tax rate for this trade. Other leaders will see your offers in their Trading Post.','Offer units','My offers','Offer units: {0} / {1}','Tax break: {0} %','Your current tax rate is <b>{0} %</b>. The taxes are deducted from each of your sales.','While there is combat going on at the city, no soldier exchange is possible.','As a member of an alliance, you can put <b>4</b> additional offers up for sale.','Unit type','Amount','Currency','Limits','Price per unit','max','Add','My offers: {0} / {1}','You currently have no offers on sale in the Black Market.','Units','Amount','Price / unit','Tax','Profit / unit','Action','Cancel offer'],
+				//SCAtxt: ['Valuable sea charts are archived in the Sea Chart Archive. This allows our sailors to navigate the seven seas even faster. The higher the building level and the more distant the destination, the greater the time saving for the journey there and back.','5 Islands','20 Islands','50 Islands','Distance','Current duration (next level&apos;s saving / current saving)'],
+				//walltxt: ['The town wall protects your citizens against your enemies and the sun. Beware! Enemies will try to tear holes into your wall or to climb over it. Every level increases the resistance of your town wall.','Information','Ballista|Catapult|Bombs','Damage','Accuracy','Hit points','Armour','Garrison limit'],
+				/*safehousetxt: [
+					'A wise leader always keeps an eye on both his allies and his enemies. The hideout allows you to hire spies who can provide you with information from inside other towns. A larger hideout provides space for more spies.',
+					'Espionage reports',
+					'Archive',
+					'Train spy',
+					'This citizen is loyal and discreet. An ideal candidate for a spy. Training time for a spy:',
+					'{0} are currently working in the defence',
+					'Maximum number of spies has been reached!',
+					'Insufficient quantity of goods',
+					'Education',
+					'Reset <br> spy number',
+					'Training of a maximum number of spies',
+					'Info',
+					'You can train {0} spies',
+					'You can train {0} spy',
+					'<b>{0}</b> are waiting for their training',
+					'<b>{0}</b> is waiting for his training',
+					'No citizen is waiting for training',
+					'<b>{0}</b> are currently working in the defence',
+					'<b>{0}</b> is currently working in the defence',
+					'No spy is currently working in the defence',
+					'<b>{0}</b> are currently on a mission',
+					'<b>{0}</b> is currently on a mission',
+					'No spy on a mission',
+					'Spy on a mission',
+					'None of your spies are currently on a mission!',
+					'Owner',
+					'Target',
+					'Mission',
+					'Results',
+					'Agents',
+					'Decoys',
+					'Date',
+					'No espionage reports!'
+				],*/
+				//unitdescs: {slinger:'Slings are light and cheap weapons. They cannot inflict much damage on well-armed opponents, but at least their munition is readily available.',swordsman:'Sword fighters are usually barely armoured and fight without shields to retain their mobility. Thus they can circulate around the immobile Phalanx formation and attack from the flanks.',phalanx:'Hoplites are heavily armoured spearmen from the towns&apos; middle classes. They form the heart of every Greek army. In the so-called "Phalanx" formation they push forward in an unstoppable wall of spears and shields.',marksman:'Shots from the sulphur carbine can penetrate even the most durable armour. However, due to its sight line, only a single row of carabineers can fire, while the rest have to reload.',mortar:'The mortar fires explosive shells against the walls of a besieged city. No building can withstand this destructiveness. However, the rare munition for it has to be brought along additionally, so shots fired need to be very well-targeted.',catapult:'Catapults sling huge rocks against opponents&apos; defence facilities and thus they can destroy even the strongest stone walls. However they are less useful for defence against enemy armed forces.',ram:'Powerful men swing the massive tree trunk against the enemy gates, until they give way and the men run for cover under the roof. It might only be useful for gates and walls, but at least it does not need any munition.',steamgiant:'This powerful machine moves like a person on the battlefield, but has a superhuman hit strength. Stones, arrows and swords simply bounce off it. Woe betide anyone who dares to oppose it!',bombardier:'Our inventors have discovered that the sun is so hot because it attracts warm air. That is why a balloon filled with hot air also rises in direction of the sun and our soldiers can throw explosive shells down on our enemies from up there.',cook:'Your army&apos;s cooks know exactly how to give new courage to the warriors and heroes in the encampment: A glass of wine and a stew, just like mum used to make! If they take the evening to remember what they are fighting for, enemies will find it very hard to wear them down.',medic:'These doctors have voluntarily enlisted to help tend to the wounds of those on the battle front. They can remove arrow heads, bandage up sword wounds and have enough ice available for soldiers&apos; heads should enemies attack with slingshots.',gyrocopter:'A novel flying machine that is fast, versatile and not dependant on the direction of the wind - we can hunt cowardly enemies that want to attack us from the skies with it!',archer:'Bows are a very popular hunting equipment, so it is very easy to recruit archers amongst citizens. Military training turns simple citizens into formidable long-range combat troops.',spearman:'Spearmen are conscripts from the rural population, that go into battle with light armour and basic spears. They do not usually have a chance against professional soldiers.',spartan:'He is born for battle. His trade is that of war. He only fights on the front line on the field.',ship_ram:'Equipped with a simple ram at the stable bow, this ship is the primary warship of the navy. A dozen strong rowers power it in order to ram the spur against the opposing hull. That alone is often enough to make an enemy ship sink.',ship_flamethrower:'At the fire ship&apos;s bow there is flame thrower, which sprays Greek fire over the sea. Even on the ocean&apos;s surface, the mixture keeps on burning and creates a bed of flames. A terrifying close combat ship',ship_submarine:'A boat that sails below the water&apos;s surface is the ultimate sea weapon. It can slip past enemy lines almost unnoticed and cause massive amounts of damage.',ship_ballista:'This ship contains a ballista, which was originally meant for firing grappling hooks. However, the ballista is also very valuable as a precise long-range combat weapon, as it hits the enemy under the waterline, even though it does not cause a large amount of damage.',ship_catapult:'The catapult at the deck of the ship is smaller than its counterpart on land due to a lack of space. The ocean waves make it very imprecise, but it does fire clay jugs of burning oil, which leave dangerous little oil slicks behind at sea.',ship_mortar:'The mortar ship has an especially large hull with a high water displacement, so that it can withstand the enormous recoil of the mortar. If the fuse of a missile is correctly measured, the powerful projectile explodes just over the enemy deck.',ship_steamboat:'Just like the ram ship, the steam ram is fully equipped with a ram spur at its bow. However, it is a considerably more advanced version. Due to its steam engine, this ship can accelerate even more speedily and can therefore inflict a larger amount of damage on the enemy. The steam ram is probably the most dangerous ship at the front line.',ship_rocketship:'Thanks to our research, our scientists have managed to store large amounts of explosive power in wooden devices that can be blasted several hundred meters over the water&apos;s surface and can cause a huge explosion if thrust on opposing ships. The enemy should be afraid - very afraid - of this lethal weapon!',ship_paddlespeedship:'An invention that would have even astounded Heron: the paddle speedboat uses the impulse of a giant aeolipile as well as paddle wheels to drive into opposing ships with a huge amount of power and speed. The ship barely needs any crew.',ship_ballooncarrier:'The balloon carrier is an enormous floating stronghold. With the balloons on it we can attack our enemy in the skies at sea too.',ship_tender:'Tenders are designed for the support and maintenance of ships. Trained engineers and divers can repair minor damage in the dock immediately, allowing these units to return to the front lines. They also supply the sailors with food and wine.'},
+				//prodBuildtxt: [{forester:'The strong lumberjacks can chop down even the largest trees. But they also know that a forest must be cultivated and new trees planted so that we can continue to use only the best timber for our houses. The production of building material is increased by <b>2 %</b> for every level of expansion.',winegrower:'A winegrower only chooses the most sunny hills of the surrounding area to cover them with the comforting green of the vines. That&apos;s how the vineyards produce plump fruits that make for a much better harvest. Every level of the winegrower&apos;s expansion increases your wine production by <b>2 %</b>.',stonemason:'A trained stonemason always quarries the right blocks of marble with his strong arms. Thus less is broken and our builders always have the material they need. For every level of expansion this building increases the marble production by <b>2 %</b>.',glassblowing:'True masters of their art create sparkling pieces at the glassblower&apos;s house. The blow tubes, glass and all sorts of other apparatuses are only understood by our scientists. And they are so nimble, that barely anything ever gets broken. Every level of expansion increases your production of crystal glass by <b>2 %</b>.',alchemist:'When the wind blows from the west, a smell fills the streets around the tower and not many citizens are seen leaving the house without a peg on their nose. Our alchemists work restlessly on finding the perfect mixture and ensuring that we can get the maximum amount of sulphur from the pit. For every level of the building your sulphur production is increased by <b>2 %</b>.'},'{0} production','Basic Production','Premium Bonus','Cinetheater','Helios&apos; Tower','ÎžÏ…Î»Î¿ÎºÏŒÏ€Î¿Ï‚','Corruption','Resource','Bonus','There is corruption in this town!','Productivity and satisfaction in this town are rapidly decreasing! Upgrade {0} to reduce the corruption.','your Governor&apos;s Residence','your Palace',{forester:'Wood',winegrower:'Wine',stonemason:'Marble',glassblowing:'Crystal',alchemist:'Sulphur'}],
+				//reductBuildtxt: [{carpentering:'Only the best lumber is used at the carpenter&apos;s workshop. Therefore our handy craftsmen are able to build a solid framework and our houses do not have to be repaired all the time. Every level of the carpenter&apos;s workshop lowers your demand for building material by <b>1 %</b> of the basic value.',vineyard:'Only the purest wines mature in the town&apos;s deep and cool cellars. The cellarer ensures that not a drop goes to waste and that all the wine can run down the throats of your citizens. The demand for wine in your town will be reduced by <b>1 %</b> for each building level.',architect:'Angle, Compass and Yardstick: The architects&apos; office provides everything you need for building straight walls and stable roofs. And a well-planned house needs a lot less marble than a skew one. The demand for marble in your town will be reduced by <b>1 %</b> for each building level.',optician:'Lenses and magnifying glasses don&apos;t just help our scientists to see clearly and to find important papers on their desk, but they are also necessary in order to invent all those new technologies that make us so proud. The optician keeps everything we need carefully stored in boxes, so that less things get lost. The demand for crystal glass is reduced by <b>1 %</b> per building level.',fireworker:'Constant tests with fireworks don&apos;t just light up the skies but sometimes also the surrounding buildings. However our scientists can only optimise the demand for sulphur, when they keep testing new mixtures. The demand for sulphur in your town will be reduced by <b>1 %</b> for each building level.'},{carpentering:'Wood',vineyard:'Wine',architect:'Marble',optician:'Crystal',fireworker:'Sulphur'},'{0} cost reduction for building','{0} cost reduction for Units','{0} cost reduction for Ships','{0} cost reduction for Experiments','{0} cost reduction for Unit and Ship Improvements','Basic Cost','Research','Cost','{0} cost reduction','Resource'],
+				//militarytxt: ['Troop movements ({0})','Combat reports ({0})','Gauntlet Wars','Current battles','Fleet / Troop Movements','All','Mission','Arrival time','Speed','Units','Origin','Target','Action','Currently there are no troop movements for you to see!','Combat reports','There are no combat reports available at the moment.','Type','Last round','Rounds','Town','Owner','Action',{groundfight:['Battle','Display battle'],seafight:['Sea battle','Display sea battle']},'All','Reverse selection','-- Select action --','Delete','Mark as read','OK','Alliance Gauntlet Wars','Concluded Gauntlet Wars','Concluded Alliance Gauntlet Wars','You aren&apos;t currently involved in any Gauntlet Wars','Your alliance isn&apos;t currently involved in any Gauntlet Wars'],
+				//dismissunits: ['Dismiss units-ships','Dismiss unit(s)','Dismiss ship(s)','Reset entry','Dismiss as many as possible','Dismiss!','Costs',{citizens:'Citizens',wood:'Wood',wine:'Wine',sulfur:'Sulfur',upkeep:'Upkeep cost per hour',glass:'Crystal'},'Confirm','Number of units to dismiss','Yes','Cancel'],
+				//dailytaskstxt: ['Here you can find the list of tasks which you can complete to please the gods each day.<br>For each task completed, you&apos;ll receive a certain amount of favour. You can then select one or more rewards for this favour.<br><br>The tasks are available again every day, whilst the favour earned expires each week.','Tasks','Rewards','Tasks completed today: {0} / {1} ({2})','Successfully raid barbarian village','Trade goods','Spend Ambrosia','Improve something in the workshop','Conduct capture runs','Produce warships','Research something','Donate to upgrade a miracle','Donate to upgrade of resource deposit','Train troops','Commission building work','Pillage another player&apos;s town','Start pirate raid','Unlock an achievement','Screen the cultural feature in the Cinetheatre','Resources',{wood:'wood',wine:'wine',marble:'marble',glass:'crystal',sulfur:'sulphur',gold:'gold',research:'research points',spearman:'spearmen',slinger:'slingers',phalanx:'hoplites',swordsman:'swordsmen',archer:'archers',steamgiant:'Steam Giants',marksman:'Sulphur Carabineers',bombardier:'Ballon-Bombardier',premium:'24 hours Premium Account',resourceBonus:'24 hours Steam Saw',wineBonus:'24 hours Steam Wine Press',marbleBonus:'24 hours Steam Hammer',sulfurBonus:'24 hours Steam Sulphur Paddle Wheel',crystalBonus:'24 hours Steam Crystal Drill'},'Redeem','Not enought favours.','Display Cinetheater'],
+				//cinetheatretxt: ['The comedies and dramas of the Cinetheatre make your workers happy and motivate them. Afterwards they will labour all the more. The cultural feature does not interest your workers in the slightest, yet it is the most favourite of the Gods! They will give you favour for it.','Should you have any <b>problems</b> displaying a video or activating your bonus, please check whether you currently have an <b>ad-blocker</b>, <b>script blocker</b> or other <b>script</b> active in your browser. Let the video play through completely so that you can be certain of receiving your bonus. You will receive a <b>town advisor message</b> once it activates.','Did you enjoy that?','Play now!','Your bonus is now active.','Which feature would you like to show?','No feature available<br>at this time.','Drama','Comedy','Cultural Feature','Wood Production','{0} Production',{wine:'Wine',marble:'Marble',crystal:'Crystal',sulfur:'Sulphur'},'+20 % for 12 hrs','50 Favours','Show feature','You can earn production bonuses and favour here by watching videos from other Gameforge titles.','You must watch the video to the end in order to get the bonus.','The production bonuses last <b>12 hours</b> and only apply to the town where you watched the video. So think carefully about where you&apos;re going to visit the theatre.','You can only earn favour here once per day. It resets every midnight (server time).'],
+				//abandoncitytxt: ['Abandon of {0} {1}','Abandon colony','You can give up your colony. However, all resources, citizens and units will be lost. So make sure that all are safe before making this step. Are you sure you want to abandon your colony?','Please enter the security word from the picture below into the box provided to confirm the colony&apos;s deletion.','Security word'],
+				//chrcnt: ['characters','character'],
+				am: 'am',
+				pm: 'pm',
+				ambrosia: 'Ambrosía',
+				//ambrosiaFountain: 'Divine Ambrosia Fountain',
+				//ambrosiaFountaintxt: ['{0} Ambrosia is missing','{0} Ambrosia is missing','Acquire now!!','This palatial fountain incorporates the effigies of two deities holding aloft a cornucopia. Ambrosia once flowed unabated from this horn into the pool below, but since then the fountain seems to have dried up.','This spring has divine origins. If we pay homage to the gods and offer them gifts, we can make this fountain shine in great splendour once more.','If we pray at the fountain often enough and regularly empty the pool of Ambrosia, our efforts will be well rewarded!','If you log in several days in a row, the amount of Ambrosia to be collected will continuously increase. From <b>8<sup>th</sup></b> day, the amounts will repeat those from days <b>5<sup>th</sup></b> to <b>7<sup>th</sup></b>.','The fountain can be used on <b>365</b> consecutive days.','If you don&apos;t log in for a day, you won&apos;t receive any Ambrosia and the count will start again from scratch.'],
+				//deploying_troops: 'Deploying troops',
+				//deploymentarmy: 'Deploying units',
+				//deploymentfleet: 'Deploying ships',
+				//army_movement: 'Army movement',
+				//capture: 'Capture',
+				//raid: 'Raid',
+				//demolitiontxt: ['Confirm downgrading of building','Attention','By confirming this action your building will be downgraded by one level. Should it reach level 0 it will then be completely torn down and the building space will become available again. Are you really sure you want to reduce the building level by one level?','The following resources will be returned by demolishing','Yes, I am sure','No, better not'],
+				//deploying: 'Deploying',
+				//invfriendtxt: ['Invite friends','You can get in touch with players that are in your friend list more quickly and you can also both see when the other is online. If a player founds a colony, all his friends will receive a gold bonus. If a player completes a research topic, all his friends will receive a small bonus from the invested research points.','Add Ikariam players','Username','Add','Existing invitations'],
+				//takeoffertxt: ['Offer management','Choose which goods or units you want to buy from the player with name {0}. Also, set the amount of gold you intend to pay.','From here you can send fleets to sell goods on player with name {0}. The exchange will be completed only when your fleets arrive to their destination. For this, you can set the minimum price for your goods, if the owner reduces the offer meanwhile.'],
+				//notEnCap: ['Insufficient storage capacity','Go to the {0}','Go to the {0}','Go to<br>the {0} or the {1}'],
+				//speeduptxt: ['Shorten building time','Complete instantly','Do you want to halve (<b>&frac12;</b>) the building time<br>{1}<br>of the specific building (<b>{0}</b>);','Do you want to complete instantly<br>the specific building (<b>{0}</b>);','Cancel','Activate','<b>{0}</b> Ambrosia is required','<b>{0}</b> Ambrosia are requiredÏ‚','Buy Ambrosia'],
+				click_: '<b>Clic</b>'
 			}
 		},
 		Resources:
@@ -14242,7 +15247,7 @@
 		{
 			forest:
 			{
-				wood:[0,394,992,1732,2788,3783,5632,8139,10452,13298,18478,23213,29038,39494,49107,66010,81766,101146,134598,154304,205012,270839,311541,411229,506475,665201,767723,1007959,1240496,1526516,1995717,2311042,3020994,3935195,4572136,5624478,7325850,9011590,11085051,13635000,17704143,20630781,26786470,32948197,40527121,52472840,61315353,79388129,97648282,120108270,147734055,181713771,234684263,274916734,355055889,436719671,0,0,0,0],
+				wood:[0,394,992,1732,2788,3783,5632,8139,10452,13298,18478,23213,29038,39494,49107,66010,81766,101146,134598,154304,205012,270839,311541,411229,506475,665201,767723,1007959,1240496,1526516,1995717,2311042,3020994,3935195,4572136,5624478,7325850,9011590,11085051,13635408,17704143,20630781,26786470,32948197,40527121,52472840,61315353,79388129,97648282,120108270,147734055,181713771,234684263,274916734,355055889,436719671,0,0,0,0],
 				workers:[0,30,38,50,64,80,96,117,134,154,174,196,218,240,264,288,314,340,366,394,420,448,478,506,536,566,598,628,660,692,724,758,790,824,860,894,928,964,1000,1036,1072,1110,1146,1184,1222,1260,1300,1338,1378,1418,1458,1498,1538,1578,1618,1658,1698,1738,1778,1818,1858]
 			},
 			mine:
@@ -14344,7 +15349,7 @@
 		{
 			return false;
 		}
-		(function init(model, data, local, ajax)
+		(function init(model,data,local,ajax)
 		{
 			var mod, dat, loc, aj;
 			mod = !!unsafeWindow.ikariam && !!unsafeWindow.ikariam.model;
@@ -14400,7 +15405,7 @@
 			else
 			{
 				var initialAjax = [];
-				$('script').each(function(index, script)
+				$('script').each(function(index,script)
 				{
 					var match = /ikariam.getClass\(ajax.Responder, (.*)\);/.exec(script.innerHTML);
 					if(match)
